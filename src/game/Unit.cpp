@@ -3428,7 +3428,10 @@ void Unit::InterruptSpell(uint32 spellType, bool withDelayed, bool withInstant)
     Spell* spell = GetCurrentSpell(CurrentSpellTypes(spellType));
     if (spell
         && (withDelayed || spell->getState() != SPELL_STATE_DELAYED)
-        && (withInstant || spell->GetCastTime() > 0))
+        && (withInstant || spell->GetCastTime() > 0)
+        && (spell->GetSpellEntry()->Id != 31258)  // Death & Decay    - Rage Winterchill
+        && (spell->GetSpellEntry()->Id != 43383)  // Spirit Bolts     - Hex Lord Malacrass
+        && (spell->GetSpellEntry()->Id != 43648)) // Electrical Storm - Akil'zon
     {
         // for example, do not let self-stun aura interrupt itself
         if (!spell->IsInterruptable())
