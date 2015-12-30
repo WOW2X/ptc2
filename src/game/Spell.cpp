@@ -2198,6 +2198,7 @@ void Spell::SetTargetMap(uint32 i, uint32 cur)
                     break;
                 case 41376:     // Spite
                 case 46771:     // Flame Sear
+                case 43550:     // Mind Control - Priest (Hex)
                     unitList.remove_if(Hellground::ObjectGUIDCheck(m_caster->getVictimGUID()));
                     break;
                 case 45248:     // Shadow Blades
