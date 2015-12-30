@@ -922,9 +922,6 @@ struct boss_shade_of_akamaAI : public ScriptedAI
         {
             if (event_phase == AKAMA_FIGHT)
             {
-                SetBanish(false);
-                TurnOffChanneling();
-
                 target->InterruptNonMeleeSpells(false);
                 ((Creature *)target)->AI()->AttackStart(me);
             }
@@ -962,6 +959,9 @@ struct boss_shade_of_akamaAI : public ScriptedAI
                 {
                     me->AddThreat(pAkama, 1000000.0f);
                     me->AI()->AttackStart(pAkama);
+
+                    SetBanish(false);
+                    TurnOffChanneling();
                 }
                 break;
             }
