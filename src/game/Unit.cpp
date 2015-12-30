@@ -3932,6 +3932,18 @@ bool Unit::AddAura(Aura *Aur)
         }
     }
 
+    switch (Aur->GetId())
+    {
+        case 29521: // Dance Vibe - Karazhan Trash
+        {
+            if (Aur->GetTarget()->GetEntry() != 16409)
+            {
+                delete Aur;
+                return false;
+            }
+        }
+    }
+
     // update single target auras list (before aura add to aura list, to prevent unexpected remove recently added aura)
     if (Aur->IsSingleTarget() && Aur->GetTarget())
     {
