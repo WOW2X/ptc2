@@ -854,7 +854,7 @@ void CreatureEventAIMgr::LoadCreatureEventAI_Scripts(uint32 creatureId)
                 }
                 if (cInfo->ScriptID)
                 {
-                    sLog.outLog(LOG_DB_ERR, "CreatureEventAI: Creature Entry %u has EventAI script but it also has C++ script. EventAI script will be overriden.", cInfo->Entry);
+                    //sLog.outLog(LOG_DB_ERR, "CreatureEventAI: Creature Entry %u has EventAI script but it also has C++ script. EventAI script will be overriden.", cInfo->Entry);
                 }
             }
         }
