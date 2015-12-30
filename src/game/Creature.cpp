@@ -1305,7 +1305,16 @@ void Creature::SaveToDB(uint32 mapid, uint8 spawnMask)
 {
     // update in loaded data
     if (!m_DBTableGuid)
-        m_DBTableGuid = GetGUIDLow();
+    {
+        QueryResultAutoPtr result = GameDataDatabase.PQuery("SELECT MAX(guid) FROM creature;");
+
+        if (!result)
+            return;
+
+        Field *fields = result->Fetch();
+        m_DBTableGuid = fields[0].GetUInt32();
+        m_DBTableGuid++;
+    }
 
     CreatureData& data = sObjectMgr.NewOrExistCreatureData(m_DBTableGuid);
 
