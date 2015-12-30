@@ -780,7 +780,6 @@ void World::LoadConfigSettings(bool reload)
     loadConfig(CONFIG_ARENA_ELO_COEFFICIENT, "Arena.ELOCoefficient",32);
     loadConfig(CONFIG_ARENA_DAILY_REQUIREMENT, "Arena.DailyRequirement",0);
     loadConfig(CONFIG_ARENA_DAILY_AP_REWARD, "Arena.DailyAPReward",0);
-    loadConfig(CONFIG_ARENA_READY_START_TIMER, "Arena.ReadyStartTimer", 5000);
 
     // Battleground settings
     loadConfig(CONFIG_BATTLEGROUND_ANNOUNCE_START, "BattleGround.AnnounceStart", 0);

@@ -414,8 +414,6 @@ class HELLGROUND_IMPORT_EXPORT BattleGround
         void PrepareMessageToAll(char const *format,...);
         void SendMessageToAll(char const* text);
         void SendMessageToAll(int32 entry);
-        void SendMessageToTeam(uint32 team, char const* text);
-        void SendMessageToTeam(uint32 team, int32 entry);
         void SendObjectiveComplete(uint32 id, uint32 TeamID, float x, float y);
 
         /* Raid Group */
@@ -497,13 +495,9 @@ class HELLGROUND_IMPORT_EXPORT BattleGround
 
         void SetDeleteThis(){ m_SetDeleteThis = true; }
 
-        bool SetPlayerReady(uint64 guid);
-
     protected:
         //this method is called, when BG cannot spawn its own spirit guide, or something is wrong, It correctly ends BattleGround
         void EndNow();
-
-        std::set<uint64>                        m_guidsReady[2];
 
 
         /* Scorekeeping */

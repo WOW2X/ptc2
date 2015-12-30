@@ -111,8 +111,6 @@ class ChatHandler
         bool HandleAccountBattleGroundAnnCommand(const char* args);
         bool HandleAccountAnnounceBroadcastCommand(const char* args);
 
-        bool HandleArenaReadyCommand(const char* args);
-
         bool HandleBanAccountCommand(const char* args);
         bool HandleBanCharacterCommand(const char* args);
         bool HandleBanEmailCommand(const char* args);
