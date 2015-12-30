@@ -58,7 +58,6 @@ ChatCommand * ChatHandler::getCommandTable()
         { "battleground",   PERM_PLAYER,        PERM_CONSOLE, false, &ChatHandler::HandleAccountBattleGroundAnnCommand,   "", NULL },
         { "bg",             PERM_PLAYER,        PERM_CONSOLE, false, &ChatHandler::HandleAccountBattleGroundAnnCommand,   "", NULL },
         { "broadcast",      PERM_PLAYER,        PERM_CONSOLE, false, &ChatHandler::HandleAccountAnnounceBroadcastCommand, "", NULL },
-        { "guild",          PERM_PLAYER,        PERM_CONSOLE, false, &ChatHandler::HandleAccountGuildAnnToggleCommand,    "", NULL },
         { NULL,             0,                  0,            false,  NULL,                                               "", NULL }
     };
 
@@ -77,7 +76,6 @@ ChatCommand * ChatHandler::getCommandTable()
         { "bgann",          PERM_PLAYER,    PERM_CONSOLE, false,  &ChatHandler::HandleAccountBattleGroundAnnCommand, "", NULL },
         { "delete",         PERM_CONSOLE,   PERM_CONSOLE, true,   &ChatHandler::HandleAccountDeleteCommand,       "", NULL },
         { "friend",         PERM_ADM,       PERM_CONSOLE, true,   NULL,                                           "", accountFriendCommandTable },
-        { "gann",           PERM_PLAYER,    PERM_CONSOLE, false,  &ChatHandler::HandleAccountGuildAnnToggleCommand, "", NULL },
         { "bones",          PERM_PLAYER,    PERM_CONSOLE, false,  &ChatHandler::HandleAccountBonesHideCommand,    "", NULL },
         { "log",            PERM_ADM,       PERM_CONSOLE, true,   &ChatHandler::HandleAccountSpecialLogCommand,   "", NULL },
         { "onlinelist",     PERM_CONSOLE,   PERM_CONSOLE, true,   &ChatHandler::HandleAccountOnlineListCommand,   "", NULL },
@@ -409,25 +407,10 @@ ChatCommand * ChatHandler::getCommandTable()
         { NULL,             0,              0,            false,  NULL,                                           "", NULL }
     };
 
-    static ChatCommand guildDisableCommandTable[] =
-    {
-        { "announce",       PERM_GMT,       PERM_CONSOLE, true,   &ChatHandler::HandleGuildDisableAnnounceCommand,    "", NULL},
-        { NULL,             0,              0,            false,  NULL,                                               "", NULL}
-    };
-
-    static ChatCommand guildEnableCommandTable[] =
-    {
-        { "announce",       PERM_GMT,       PERM_CONSOLE, true,   &ChatHandler::HandleGuildEnableAnnounceCommand,     "", NULL},
-        { NULL,             0,              0,            false,  NULL,                                               "", NULL}
-    };
-
     static ChatCommand guildCommandTable[] =
     {
-        { "ann",            PERM_PLAYER,    PERM_CONSOLE, false,  &ChatHandler::HandleGuildAnnounceCommand,       "", NULL },
         { "create",         PERM_HIGH_GMT,  PERM_CONSOLE, true,   &ChatHandler::HandleGuildCreateCommand,         "", NULL },
         { "delete",         PERM_HIGH_GMT,  PERM_CONSOLE, true,   &ChatHandler::HandleGuildDeleteCommand,         "", NULL },
-        { "disable",        PERM_GMT,       PERM_CONSOLE, true,   NULL,                                           "", guildDisableCommandTable },
-        { "enable",         PERM_GMT,       PERM_CONSOLE, true,   NULL,                                           "", guildEnableCommandTable },
         { "invite",         PERM_HIGH_GMT,  PERM_CONSOLE, true,   &ChatHandler::HandleGuildInviteCommand,         "", NULL },
         { "rank",           PERM_HIGH_GMT,  PERM_CONSOLE, true,   &ChatHandler::HandleGuildRankCommand,           "", NULL },
         { "uninvite",       PERM_HIGH_GMT,  PERM_CONSOLE, true,   &ChatHandler::HandleGuildUninviteCommand,       "", NULL },

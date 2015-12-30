@@ -87,10 +87,9 @@ enum WorldTimers
     WUPDATE_CORPSES         = 5,
     WUPDATE_EVENTS          = 6,
     WUPDATE_AUTOBROADCAST   = 7,
-    WUPDATE_GUILD_ANNOUNCES = 8,
-    WUPDATE_DELETECHARS     = 9,
-    WUPDATE_OLDMAILS        = 10,
-    WUPDATE_ACTIVE_BANS     = 11,
+    WUPDATE_DELETECHARS     = 8,
+    WUPDATE_OLDMAILS        = 9,
+    WUPDATE_ACTIVE_BANS     = 10,
 
     WUPDATE_COUNT
 };
@@ -199,10 +198,6 @@ enum WorldConfigs
     CONFIG_RABBIT_DAY,
     CONFIG_SKIP_CINEMATICS,
     CONFIG_SKILL_PROSPECTING,
-
-    CONFIG_GUILD_ANN_INTERVAL,
-    CONFIG_GUILD_ANN_COOLDOWN,
-    CONFIG_GUILD_ANN_LENGTH,
 
     CONFIG_ENABLE_CUSTOM_XP_RATES,
     CONFIG_XP_RATE_MODIFY_ITEM_ENTRY,
@@ -752,9 +747,6 @@ class HELLGROUND_EXPORT World
         void SetInitialWorldSettings();
         void LoadConfigSettings(bool reload = false);
 
-        void QueueGuildAnnounce(uint32 guildid, uint32 team, std::string &msg);
-        void SendGuildAnnounce(uint32 team, ...);
-
         void SendWorldText(int32 string_id, uint32 preventFlags, ...);
         void SendWorldTextForLevels(uint32 minLevel, uint32 maxLevel, uint32 preventFlags, int32 string_id, ...);
         void SendGlobalText(const char* text, WorldSession *self);
@@ -980,7 +972,6 @@ class HELLGROUND_EXPORT World
         ACE_Based::LockedQueue<WorldSession*, ACE_Thread_Mutex> addSessQueue;
 
         std::list<std::string> m_Autobroadcasts;
-        std::list<std::pair<uint64, std::string> > m_GuildAnnounces[2];
 
         //used versions
         std::string m_DBVersion;

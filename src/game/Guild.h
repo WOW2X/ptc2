@@ -30,11 +30,6 @@
 
 class Item;
 
-enum GuildFlags
-{
-    GUILD_FLAG_DISABLE_ANN      = 0x01      // disables guild announce system for guild
-};
-
 enum GuildDefaultRanks
 {
     GR_GUILDMASTER  = 0,
@@ -436,11 +431,6 @@ class Guild
         void   RenumBankLogs();
         bool   AddGBankItemToDB(uint32 GuildId, uint32 BankTab , uint32 BankTabSlot , uint32 GUIDLow, uint32 Entry);
 
-        bool IsFlagged(GuildFlags flag) { return m_guildFlags & flag; }
-        void AddFlag(GuildFlags flag);
-        void RemoveFlag(GuildFlags flag);
-        void SetFlags(uint64 flags);
-
     protected:
         void AddRank(const std::string& name,uint32 rights,uint32 money);
 
@@ -493,8 +483,6 @@ class Guild
         void WriteMemberRosterPacket(Player *sessionPlayer, const MemberSlot &member, Player *pl, WorldPacket &data);
         void AddMemberToOrderList(const MemberSlot &newmember);
         void DelMemberFromOrderList(uint32 guid);
-
-        uint64 m_guildFlags;
 };
 #endif
 

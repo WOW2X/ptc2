@@ -129,11 +129,6 @@ BindIP = "0.0.0.0"
 #        Default: "sendmail.log"
 #                 "" - Empty name for disable
 #
-#    GannLogFile
-#        Log file of guild announce feature
-#        Default: "guildann.log"
-#                 "" - Empty name for disable
-#
 #    BossLogFile
 #        Log file of boss fights/ loots
 #        Default: "" - Empty name for disable
@@ -242,7 +237,6 @@ ArenaLogFile = ""
 CheatLogFile = "cheat.log"
 SpecialLogFile = "special.log"
 MailLogFile = "sendmail.log"
-GannLogFile = "guildann.log"
 BossLogFile = "boss.log"
 WardenLogFile = "warden.log"
 AuctionLogFile = "auction.log"
@@ -884,18 +878,6 @@ KeepDeletedCharsTime = 31
 #        example: "538,90"
 #        Note that it's HIGHLY DISCOURAGED to forbid starting maps (0, 1, 530)!
 #
-#    GuildAnnounce.Timer
-#        Interval beetwean guild announces (in minutes)
-#        Default: 1
-#
-#    GuildAnnounce.Cooldown
-#        Cooldown beetwean guild announces from same guild (in minutes)
-#        Default: 60
-#
-#    GuildAnnounce.Length
-#        Maximum length of guild announce message
-#        Default: 60
-#
 #    EnableCustomXPRates
 #        If enabled players can switch between blizzlike and server rate
 #
@@ -927,10 +909,6 @@ RabbitDay = 0
 SkipCinematics = 0
 SkillChance.Prospecting = 0
 ForbiddenMaps = ""
-
-GuildAnnounce.Timer = 1
-GuildAnnounce.Cooldown = 60
-GuildAnnounce.Length = 60
 
 EnableCustomXPRates = 1
 XPRateModifyItem.Entry = 0

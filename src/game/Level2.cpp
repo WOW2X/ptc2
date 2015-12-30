@@ -4545,42 +4545,6 @@ bool ChatHandler::HandleMmapOffsetCreateCommand(const char* /*args*/)
     return true;
 }
 
-bool ChatHandler::HandleGuildDisableAnnounceCommand(const char *args)
-{
-    if (!args)
-        return false;
-
-    std::string guildName = args;
-
-    Guild* guild = sGuildMgr.GetGuildByName(guildName);
-    if (!guild)
-        return false;
-
-    guild->AddFlag(GUILD_FLAG_DISABLE_ANN);
-    guild->BroadcastToGuild(m_session, "Guild announce system has been disabled for that guild");
-    PSendSysMessage("Guild announce system has been disabled for guild %s", guildName.c_str());
-
-    return true;
-}
-
-bool ChatHandler::HandleGuildEnableAnnounceCommand(const char *args)
-{
-    if (!args)
-        return false;
-
-    std::string guildName = args;
-
-    Guild* guild = sGuildMgr.GetGuildByName(guildName);
-    if (!guild)
-        return false;
-
-    guild->RemoveFlag(GUILD_FLAG_DISABLE_ANN);
-    guild->BroadcastToGuild(m_session, "Guild announce system has been enabled for that guild");
-    PSendSysMessage("Guild announce system has been enabled for guild %s", guildName.c_str());
-
-    return true;
-}
-
 bool ChatHandler::HandleTrollmuteCommand(const char* args)
 {
     if (!*args)

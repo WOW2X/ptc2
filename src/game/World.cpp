@@ -604,10 +604,6 @@ void World::LoadConfigSettings(bool reload)
     }
     delete[] forbiddenMaps;
 
-    loadConfig(CONFIG_GUILD_ANN_INTERVAL, "GuildAnnounce.Timer", 1*MINUTE*1000);
-    loadConfig(CONFIG_GUILD_ANN_COOLDOWN, "GuildAnnounce.Cooldown", 60*MINUTE);
-    loadConfig(CONFIG_GUILD_ANN_LENGTH, "GuildAnnounce.Length", 60);
-
     loadConfig(CONFIG_ENABLE_CUSTOM_XP_RATES, "EnableCustomXPRates", true);
     loadConfig(CONFIG_XP_RATE_MODIFY_ITEM_ENTRY, "XPRateModifyItem.Entry",0);
     loadConfig(CONFIG_XP_RATE_MODIFY_ITEM_PCT, "XPRateModifyItem.Pct",5);
@@ -1441,7 +1437,6 @@ void World::SetInitialWorldSettings()
     m_timers[WUPDATE_CORPSES].SetInterval(20*MINUTE*1000);  //erase corpses every 20 minutes
 
     m_timers[WUPDATE_AUTOBROADCAST].SetInterval(getConfig(CONFIG_AUTOBROADCAST_INTERVAL));
-    m_timers[WUPDATE_GUILD_ANNOUNCES].SetInterval(getConfig(CONFIG_GUILD_ANN_INTERVAL));
     m_timers[WUPDATE_DELETECHARS].SetInterval(DAY*IN_MILISECONDS); // check for chars to delete every day
     m_timers[WUPDATE_OLDMAILS].SetInterval(getConfig(CONFIG_RETURNOLDMAILS_INTERVAL)*1000);
     m_timers[WUPDATE_ACTIVE_BANS].SetInterval(getConfig(CONFIG_ACTIVE_BANS_UPDATE_TIME));
@@ -1748,31 +1743,6 @@ void World::Update(uint32 diff)
         diffRecorder.RecordTimeFor("Send Autobroadcast");
     }
 
-    ///- send guild announces every one minute
-    if (m_timers[WUPDATE_GUILD_ANNOUNCES].Passed())
-    {
-        m_timers[WUPDATE_GUILD_ANNOUNCES].Reset();
-        if (!m_GuildAnnounces[0].empty())
-        {
-            std::list<std::pair<uint64, std::string> >::iterator itr = m_GuildAnnounces[0].begin();
-            std::string guildName = sGuildMgr.GetGuildNameById(PAIR64_LOPART(itr->first));
-
-            sWorld.SendGuildAnnounce(PAIR64_HIPART(itr->first), guildName.c_str(), itr->second.c_str());
-            m_GuildAnnounces[0].pop_front();
-        }
-
-        if (!m_GuildAnnounces[1].empty())
-        {
-            std::list<std::pair<uint64, std::string> >::iterator itr = m_GuildAnnounces[1].begin();
-            std::string guildName = sGuildMgr.GetGuildNameById(PAIR64_LOPART(itr->first));
-
-            sWorld.SendGuildAnnounce(PAIR64_HIPART(itr->first), guildName.c_str(), itr->second.c_str());
-            m_GuildAnnounces[1].pop_front();
-        }
-
-        diffRecorder.RecordTimeFor("Send Guild announce");
-    }
-
     /// <li> Handle all other objects
     ///- Update objects when the timer has passed (maps, transport, creatures,...)
     MAP_UPDATE_DIFF(MapUpdateDiff().InitializeMapData())
@@ -1919,68 +1889,6 @@ void World::SendGlobalMessage(WorldPacket *packet, WorldSession *self, uint32 te
             itr->second->SendPacket(packet);
         }
     }
-}
-
-void World::QueueGuildAnnounce(uint32 guildid, uint32 team, std::string &msg)
-{
-    std::pair<uint64, std::string> temp;
-    //                           low, high
-    temp.first = MAKE_PAIR64(guildid, team);
-    temp.second = msg;
-    m_GuildAnnounces[team == ALLIANCE ? 0 : 1].push_back(temp);
-}
-
-void World::SendGuildAnnounce(uint32 team, ...)
-{
-    std::vector<std::vector<WorldPacket*> > data_cache;     // 0 = default, i => i-1 locale index
-
-    for (SessionMap::iterator itr = m_sessions.begin(); itr != m_sessions.end(); ++itr)
-    {
-        if (!itr->second || !itr->second->GetPlayer() || !itr->second->GetPlayer()->IsInWorld() || itr->second->GetPlayer()->GetTeam() != team || itr->second->IsAccountFlagged(ACC_DISABLED_GANN))
-            continue;
-
-        uint32 loc_idx = itr->second->GetSessionDbLocaleIndex();
-        uint32 cache_idx = loc_idx+1;
-
-        std::vector<WorldPacket*>* data_list;
-
-        // create if not cached yet
-        if (data_cache.size() < cache_idx+1 || data_cache[cache_idx].empty())
-        {
-            if (data_cache.size() < cache_idx+1)
-                data_cache.resize(cache_idx+1);
-
-            data_list = &data_cache[cache_idx];
-
-            char const* text = sObjectMgr.GetHellgroundString(LANG_GUILD_ANNOUNCE,loc_idx);
-
-            char buf[1000];
-
-            va_list argptr;
-            va_start(argptr, team);
-            vsnprintf(buf,1000, text, argptr);
-            va_end(argptr);
-
-            char* pos = &buf[0];
-
-            while (char* line = ChatHandler::LineFromMessage(pos))
-            {
-                WorldPacket* data = new WorldPacket();
-                ChatHandler::FillMessageData(data, NULL, CHAT_MSG_SYSTEM, LANG_UNIVERSAL, NULL, 0, line, NULL);
-                data_list->push_back(data);
-            }
-        }
-        else
-            data_list = &data_cache[cache_idx];
-
-        for (int i = 0; i < data_list->size(); ++i)
-            itr->second->SendPacket((*data_list)[i]);
-    }
-
-    // free memory
-    for (int i = 0; i < data_cache.size(); ++i)
-        for (int j = 0; j < data_cache[i].size(); ++j)
-            delete data_cache[i][j];
 }
 
 void World::SendGlobalGMMessage(WorldPacket *packet, WorldSession *self, uint32 team)

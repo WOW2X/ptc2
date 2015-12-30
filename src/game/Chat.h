@@ -106,7 +106,6 @@ class ChatHandler
         bool HandleAccountWeatherCommand(const char*args);
         bool HandleAccountSpecialLogCommand(const char* args);
         bool HandleAccountWhispLogCommand(const char* args);
-        bool HandleAccountGuildAnnToggleCommand(const char* args);
         bool HandleAccountBonesHideCommand(const char* args);
         bool HandleAccountXPToggleCommand(const char* args);
         bool HandleAccountBattleGroundAnnCommand(const char* args);
@@ -203,15 +202,11 @@ class ChatHandler
         bool HandleGMNotifyCommand(const char* args);
         bool HandleGMVisibleCommand(const char* args);
 
-        bool HandleGuildAnnounceCommand(const char *args);
         bool HandleGuildCreateCommand(const char* args);
         bool HandleGuildInviteCommand(const char* args);
         bool HandleGuildUninviteCommand(const char* args);
         bool HandleGuildRankCommand(const char* args);
         bool HandleGuildDeleteCommand(const char* args);
-
-        bool HandleGuildDisableAnnounceCommand(const char *args);
-        bool HandleGuildEnableAnnounceCommand(const char *args);
 
         bool HandleHonorAddCommand(const char* args);
         bool HandleHonorAddKillCommand(const char* args);

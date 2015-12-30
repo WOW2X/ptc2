@@ -701,7 +701,7 @@ enum HellgroundStrings
 
     LANG_AUTO_ANN                       = 786,
     LANG_ANNOUNCE_COLOR                 = 787,
-    LANG_GUILD_ANNOUNCE                 = 788,
+    //                                    788 not used
 
     LANG_MOVEGENS_FOLLOW_PLAYER         = 789,
     LANG_MOVEGENS_FOLLOW_CREATURE       = 790,

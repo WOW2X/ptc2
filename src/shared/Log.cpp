@@ -37,7 +37,6 @@ const char* logToStr[LOG_MAX_FILES][3] =
     { "CheatLogFile",       "a", NULL },                // LOG_CHEAT
     { "SpecialLogFile",     "a", NULL },                // LOG_SPECIAL
     { "MailLogFile",        "a", NULL },                // LOG_MAIL
-    { "GannLogFile",        "a", NULL },                // LOG_GUILD_ANN
     { "BossLogFile",        "a", NULL },                // LOG_BOSS
     { "WardenLogFile",      "a", NULL },                // LOG_WARDEN
     { "AuctionLogFile",     "a", NULL },                // LOG_AUCTION

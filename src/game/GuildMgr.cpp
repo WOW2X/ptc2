@@ -109,43 +109,6 @@ uint32 GuildMgr::GetGuildBankTabPrice( const uint8 & Index ) const
     return Index < GUILD_BANK_MAX_TABS ? m_guildBankTabPrices[Index] : 0;
 }
 
-void GuildMgr::LoadGuildAnnCooldowns()
-{
-    uint32 count = 0;
-
-    QueryResultAutoPtr result = RealmDataDatabase.Query("SELECT guild_id, cooldown_end FROM guild_announce_cooldown");
-
-    if (!result)
-    {
-        BarGoLink bar(1);
-
-        bar.step();
-
-        sLog.outString();
-        sLog.outString(">> Loaded 0 guildann_cooldowns.");
-        return;
-    }
-
-    BarGoLink bar(result->GetRowCount());
-
-    do
-    {
-        Field *fields = result->Fetch();
-        bar.step();
-
-        uint32 guild_id       = fields[0].GetUInt32();
-        uint64 respawn_time = fields[1].GetUInt64();
-
-        m_guildCooldownTimes[guild_id] = time_t(respawn_time);
-
-        ++count;
-    } while (result->NextRow());
-
-    sLog.outString(">> Loaded %u guild ann cooldowns.", m_guildCooldownTimes.size());
-    sLog.outString();
-}
-
-
 void GuildMgr::LoadGuilds()
 {
     Guild *newguild;
@@ -195,7 +158,6 @@ void GuildMgr::LoadGuilds()
     sLog.outString(">> Loaded %u guild definitions, next guild ID: %u", count, m_guildId);
 }
 
-
 uint32 GuildMgr::GenerateGuildId()
 {
     if (m_guildId >= 0xFFFFFFFE)
@@ -204,11 +166,4 @@ uint32 GuildMgr::GenerateGuildId()
         World::StopNow(ERROR_EXIT_CODE);
     }
     return m_guildId++;
-}
-
-void GuildMgr::SaveGuildAnnCooldown(uint32 guild_id)
-{
-    time_t tmpTime = time_t(time(NULL) + sWorld.getConfig(CONFIG_GUILD_ANN_COOLDOWN));
-    m_guildCooldownTimes[guild_id] = tmpTime;
-    RealmDataDatabase.PExecute("REPLACE INTO guild_announce_cooldown VALUES ('%u', '" UI64FMTD "')", guild_id, uint64(tmpTime));
 }

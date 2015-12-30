@@ -92,34 +92,6 @@ bool ChatHandler::HandleAccountBonesHideCommand(const char* args)
     return true;
 }
 
-bool ChatHandler::HandleAccountGuildAnnToggleCommand(const char* args)
-{
-    if (uint32 account_id = m_session->GetAccountId())
-    {
-        if (WorldSession *session = sWorld.FindSession(account_id))
-        {
-            if (session->IsAccountFlagged(ACC_DISABLED_GANN))
-            {
-                session->RemoveAccountFlag(ACC_DISABLED_GANN);
-                PSendSysMessage("Guild announces have been enabled for this account.");
-            }
-            else
-            {
-                session->AddAccountFlag(ACC_DISABLED_GANN);
-                PSendSysMessage("Guild announces have been disabled for this account.");
-            }
-        }
-    }
-    else
-    {
-        PSendSysMessage("Specified account not found.");
-        SetSentErrorMessage(true);
-        return false;
-    }
-
-    return true;
-}
-
 bool ChatHandler::HandleAccountBattleGroundAnnCommand(const char* args)
 {
     if (uint32 account_id = m_session->GetAccountId())
