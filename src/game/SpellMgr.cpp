@@ -3238,13 +3238,6 @@ void SpellMgr::LoadSpellCustomAttr()
             case 40861: // Wicked Beam
                 spellInfo->MaxAffectedTargets = 10;
                 break;
-            case 8122:
-            case 8124:
-            case 10888:
-            case 10890: // Psychic Scream
-            case 12494: // Frostbite
-                spellInfo->Attributes |= SPELL_ATTR_BREAKABLE_BY_DAMAGE;
-                break;
             case 32727: // Arena Preparation - remove invisibility aura
             case 44949: // Whirlwind's offhand attack - TODO: remove this (50% weapon damage effect)
                 spellInfo->Effect[1] = 0;

@@ -11055,6 +11055,7 @@ void InitTriggerAuraData()
     isTriggerAura[SPELL_AURA_MOD_DAMAGE_TAKEN] = true;
     isTriggerAura[SPELL_AURA_MOD_RESISTANCE] = true;
     isTriggerAura[SPELL_AURA_MOD_ROOT] = true;
+    isTriggerAura[SPELL_AURA_MOD_FEAR] = true; // Aura not have charges but need remove him on trigger
     isTriggerAura[SPELL_AURA_REFLECT_SPELLS] = true;
     isTriggerAura[SPELL_AURA_DAMAGE_IMMUNITY] = true;
     isTriggerAura[SPELL_AURA_PROC_TRIGGER_SPELL] = true;
@@ -11327,10 +11328,18 @@ void Unit::ProcDamageAndSpellfor (bool isVictim, Unit * pTarget, uint32 procFlag
                     continue;
                 break;
             }
+            // These auras may not have charges - that means they have chance to remove based on dmg
+            case SPELL_AURA_MOD_FEAR:
             case SPELL_AURA_MOD_STUN:
-                // Remove by default, but if charge exist drop it
-                if (triggeredByAura->m_procCharges == 0)
-                   removedSpells.push_back(triggeredByAura->GetId());
+            case SPELL_AURA_MOD_ROOT:
+                if (!useCharges && isVictim && damage && !i->spellProcEvent)
+                {
+                    // The chance to dispel an aura depends on the damage taken with respect to the casters level.
+                    uint32 max_dmg = getLevel() > 8 ? 30 * getLevel() - 100 : 50;
+                    float chance = float(damage) / max_dmg * 100.0f;
+                    if (roll_chance_f(chance))
+                        removedSpells.push_back(triggeredByAura->GetId());
+                }
                 break;
             case SPELL_AURA_MELEE_ATTACK_POWER_ATTACKER_BONUS:
             case SPELL_AURA_RANGED_ATTACK_POWER_ATTACKER_BONUS:
