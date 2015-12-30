@@ -2199,6 +2199,7 @@ class HELLGROUND_EXPORT Player : public Unit
 
         void SendCinematicStart(uint32 CinematicSequenceId);
 
+        bool AddItem(uint32 itemId, uint32 count);
         float GetXPRate(Rates rate);
 
         /*********************************************************/
