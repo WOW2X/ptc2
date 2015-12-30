@@ -47,14 +47,6 @@ ChatCommand * ChatHandler::getCommandTable()
         { NULL,             0,              0,            false,  NULL,                                           "", NULL }
     };
 
-    static ChatCommand accountAnnounceCommandTable[] =
-    {
-        { "battleground",   PERM_PLAYER,        PERM_CONSOLE, false, &ChatHandler::HandleAccountBattleGroundAnnCommand,   "", NULL },
-        { "bg",             PERM_PLAYER,        PERM_CONSOLE, false, &ChatHandler::HandleAccountBattleGroundAnnCommand,   "", NULL },
-        { "broadcast",      PERM_PLAYER,        PERM_CONSOLE, false, &ChatHandler::HandleAccountAnnounceBroadcastCommand, "", NULL },
-        { NULL,             0,                  0,            false,  NULL,                                               "", NULL }
-    };
-
     static ChatCommand accountFriendCommandTable[] =
     {
         { "add",            PERM_ADM,       PERM_CONSOLE, true,   &ChatHandler::HandleAccountFriendAddCommand,    "", NULL },
@@ -65,9 +57,7 @@ ChatCommand * ChatHandler::getCommandTable()
 
     static ChatCommand accountCommandTable[] =
     {
-        { "announce",       PERM_PLAYER,    PERM_CONSOLE, false,  NULL,                                           "", accountAnnounceCommandTable },
         { "create",         PERM_CONSOLE,   PERM_CONSOLE, true,   &ChatHandler::HandleAccountCreateCommand,       "", NULL },
-        { "bgann",          PERM_PLAYER,    PERM_CONSOLE, false,  &ChatHandler::HandleAccountBattleGroundAnnCommand, "", NULL },
         { "delete",         PERM_CONSOLE,   PERM_CONSOLE, true,   &ChatHandler::HandleAccountDeleteCommand,       "", NULL },
         { "friend",         PERM_ADM,       PERM_CONSOLE, true,   NULL,                                           "", accountFriendCommandTable },
         { "bones",          PERM_PLAYER,    PERM_CONSOLE, false,  &ChatHandler::HandleAccountBonesHideCommand,    "", NULL },

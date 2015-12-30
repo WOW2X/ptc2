@@ -92,50 +92,6 @@ bool ChatHandler::HandleAccountBonesHideCommand(const char* args)
     return true;
 }
 
-bool ChatHandler::HandleAccountBattleGroundAnnCommand(const char* args)
-{
-    if (uint32 account_id = m_session->GetAccountId())
-    {
-        if (WorldSession *session = sWorld.FindSession(account_id))
-        {
-            if (session->IsAccountFlagged(ACC_DISABLED_BGANN))
-            {
-                session->RemoveAccountFlag(ACC_DISABLED_BGANN);
-                PSendSysMessage("BattleGround announces have been enabled for this account.");
-            }
-            else
-            {
-                session->AddAccountFlag(ACC_DISABLED_BGANN);
-                PSendSysMessage("BattleGround announces have been disabled for this account.");
-            }
-        }
-    }
-    else
-    {
-        PSendSysMessage("Specified account not found.");
-        SetSentErrorMessage(true);
-        return false;
-    }
-
-    return true;
-}
-
-bool ChatHandler::HandleAccountAnnounceBroadcastCommand(const char* args)
-{
-    if (m_session->IsAccountFlagged(ACC_DISABLED_BROADCAST))
-    {
-        m_session->RemoveAccountFlag(ACC_DISABLED_BROADCAST);
-        PSendSysMessage("AutoBroadcast announces have been enabled for this account.");
-    }
-    else
-    {
-        m_session->AddAccountFlag(ACC_DISABLED_BROADCAST);
-        PSendSysMessage("AutoBroadcast announces have been disabled for this account.");
-    }
-
-    return true;
-}
-
 bool ChatHandler::HandleHelpCommand(const char* args)
 {
     char* cmd = strtok((char*)args, " ");

@@ -1736,7 +1736,7 @@ void World::Update(uint32 diff)
             std::advance(itr, rand() % m_Autobroadcasts.size());
             msg = *itr;
 
-            sWorld.SendWorldText(LANG_AUTO_ANN, ACC_DISABLED_BROADCAST, msg.c_str());
+            sWorld.SendWorldText(LANG_AUTO_ANN, 0, msg.c_str());
         }
 
         diffRecorder.RecordTimeFor("Send Autobroadcast");
