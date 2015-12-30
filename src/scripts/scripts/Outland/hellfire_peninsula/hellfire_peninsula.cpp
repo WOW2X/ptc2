@@ -336,6 +336,8 @@ struct npc_wounded_blood_elfAI : public npc_escortAI
 
     void Reset() { }
 
+    void MoveInLineOfSight(Unit* who) { }
+
     void EnterCombat(Unit* who)
     {
         if (HasEscortState(STATE_ESCORT_ESCORTING))
