@@ -1113,6 +1113,9 @@ struct npc_hand_berserkerAI : public ScriptedAI
 
     void EnterCombat(Unit* who)
     {
+        if (who->GetTypeId() == TYPEID_UNIT && who->GetEntry() == 22444)
+            return;
+
         if (rand()%60)
         {
             DoCast(who, SPELL_CHARGE);
@@ -1134,7 +1137,6 @@ struct npc_hand_berserkerAI : public ScriptedAI
     {
         if (Creature* Bunny = GetClosestCreatureWithEntry(me, NPC_BUNNY, 17.5f))
         {
-            Bunny->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
             DoCast(Bunny, SPELL_SOUL_BURDEN);
         }
     }
@@ -1188,9 +1190,7 @@ struct npc_anchorite_relic_bunnyAI : public ScriptedAI
     {
         if (spell->Id == SPELL_SOUL_BURDEN)
         {
-            me->InterruptNonMeleeSpells(false);
             me->SummonCreature(NPC_FEL_SPIRIT, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), 0.0f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 10000);
-            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
             ChTimer = 2000;
         }
     }
