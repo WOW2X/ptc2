@@ -43,6 +43,10 @@ EndScriptData */
 #define SPELL_INTANGIBLE_PRESENCE   29833
 #define SPELL_BERSERKER_CHARGE      26561                   //Only when mounted
 
+#define CREATURE_SPECTRAL_CHARGER   15547
+#define CREATURE_SPECTRAL_STALLION  15548
+#define CREATURE_SPECTRAL_STABLE    15551
+
 #define MOUNTED_DISPLAYID           16040
 
 //Attumen (TODO: Use the summoning spell instead of creature id. It works , but is not convenient for us)
@@ -86,6 +90,25 @@ struct boss_midnightAI : public ScriptedAI
     void EnterCombat(Unit* who)
     {
         pInstance->SetData(DATA_ATTUMEN_EVENT, IN_PROGRESS);
+        MidnightFormation();
+    }
+
+    void MidnightFormation()
+    {
+        std::list<Creature*> midnight_formation = FindAllCreaturesWithEntry(CREATURE_SPECTRAL_CHARGER, 50);
+        for (std::list<Creature*>::iterator it = midnight_formation.begin(); it != midnight_formation.end(); it++)
+            if ((*it)->isAlive())
+                (*it)->ToCreature()->AI()->AttackStart(m_creature->getVictim());
+
+        midnight_formation = FindAllCreaturesWithEntry(CREATURE_SPECTRAL_STALLION, 50);
+        for (std::list<Creature*>::iterator it = midnight_formation.begin(); it != midnight_formation.end(); it++)
+            if ((*it)->isAlive())
+                (*it)->ToCreature()->AI()->AttackStart(m_creature->getVictim());
+
+        midnight_formation = FindAllCreaturesWithEntry(CREATURE_SPECTRAL_STABLE, 50);
+        for (std::list<Creature*>::iterator it = midnight_formation.begin(); it != midnight_formation.end(); it++)
+            if ((*it)->isAlive())
+                (*it)->ToCreature()->AI()->AttackStart(m_creature->getVictim());
     }
 
     void KilledUnit(Unit *victim)
