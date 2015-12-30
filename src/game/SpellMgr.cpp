@@ -3314,6 +3314,7 @@ void SpellMgr::LoadSpellCustomAttr()
                 spellInfo->EffectImplicitTargetA[0] = TARGET_UNIT_TARGET_ENEMY;
                 break;
             case 6947:  // Curse of the Bleakheart
+            case 28714: // Flamecap
                 spellInfo->procFlags = 65876;      //any succesfull melee, ranged or negative spell hit
                 break;
             case 34580: // Impale(Despair item)
