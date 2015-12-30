@@ -64,7 +64,6 @@ ChatCommand * ChatHandler::getCommandTable()
         { "log",            PERM_ADM,       PERM_CONSOLE, true,   &ChatHandler::HandleAccountSpecialLogCommand,   "", NULL },
         { "onlinelist",     PERM_CONSOLE,   PERM_CONSOLE, true,   &ChatHandler::HandleAccountOnlineListCommand,   "", NULL },
         { "set",            PERM_ADM,       PERM_CONSOLE, true,   NULL,                                           "", accountSetCommandTable },
-        { "xp",             PERM_PLAYER,    PERM_CONSOLE, false,  &ChatHandler::HandleAccountXPToggleCommand,     "", NULL },
         { "whisp",          PERM_ADM,       PERM_CONSOLE, true,   &ChatHandler::HandleAccountWhispLogCommand,     "", NULL },
         { "",               PERM_PLAYER,    PERM_CONSOLE, false,  &ChatHandler::HandleAccountCommand,             "", NULL },
         { NULL,             0,              0,            false,  NULL,                                           "", NULL }

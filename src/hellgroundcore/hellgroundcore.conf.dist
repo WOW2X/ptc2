@@ -878,9 +878,6 @@ KeepDeletedCharsTime = 31
 #        example: "538,90"
 #        Note that it's HIGHLY DISCOURAGED to forbid starting maps (0, 1, 530)!
 #
-#    EnableCustomXPRates
-#        If enabled players can switch between blizzlike and server rate
-#
 #    XPRateModifyItem.Entry
 #        Entry of item which when equipped gives bonus to XP by XPRateModifyItem.Pct %
 #        Default: 0 (disabled)
@@ -910,7 +907,6 @@ SkipCinematics = 0
 SkillChance.Prospecting = 0
 ForbiddenMaps = ""
 
-EnableCustomXPRates = 1
 XPRateModifyItem.Entry = 0
 XPRateModifyItem.Pct = 5
 

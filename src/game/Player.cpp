@@ -20995,10 +20995,7 @@ void Player::SendTimeSync()
 
 float Player::GetXPRate(Rates rate)
 {
-    if (sWorld.getConfig(CONFIG_ENABLE_CUSTOM_XP_RATES) && GetSession()->IsAccountFlagged(ACC_BLIZZLIKE_RATES))
-        return 1.0f;
-    else
-        return sWorld.getConfig(Rates(rate));
+    return sWorld.getConfig(Rates(rate));
 }
 
 uint32 Player::CalculateTalentsPoints() const

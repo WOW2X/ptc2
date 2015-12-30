@@ -67,7 +67,7 @@ enum AccountFlags
     ACC_SPECIAL_LOG         = 0x0001,   // all incoming/outgoing trade/mails/auctions etc. are logged to file
     ACC_WHISPER_LOG         = 0x0002,   // all incoming and outgoing whispers are logged o file
                             //0x0004,   // not used
-    ACC_BLIZZLIKE_RATES     = 0x0008,   // enables fully blizzlike rates for account. ex: XP, QXP etc
+                            //0x0008,   // not used
     ACC_HIDE_BONES          = 0x0010,   // client won't show bones created from corpses
                             //0x0020,   // not used
                             //0x0040,   // not used
@@ -788,8 +788,6 @@ class HELLGROUND_IMPORT_EXPORT WorldSession
         uint32 m_latency;
 
         TimeTrackerSmall _kickTimer;
-
-        bool m_customRates;
 
         uint16 m_opcodesDisabled;
 

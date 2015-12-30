@@ -604,7 +604,6 @@ void World::LoadConfigSettings(bool reload)
     }
     delete[] forbiddenMaps;
 
-    loadConfig(CONFIG_ENABLE_CUSTOM_XP_RATES, "EnableCustomXPRates", true);
     loadConfig(CONFIG_XP_RATE_MODIFY_ITEM_ENTRY, "XPRateModifyItem.Entry",0);
     loadConfig(CONFIG_XP_RATE_MODIFY_ITEM_PCT, "XPRateModifyItem.Pct",5);
 
