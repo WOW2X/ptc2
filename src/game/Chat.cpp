@@ -679,7 +679,7 @@ ChatCommand * ChatHandler::getCommandTable()
         { "dismount",       PERM_PLAYER,    PERM_CONSOLE, false,  &ChatHandler::HandleDismountCommand,            "", NULL },
         { "distance",       PERM_GMT_DEV,   PERM_CONSOLE, false,  &ChatHandler::HandleGetDistanceCommand,         "", NULL },
         { "explorecheat",   PERM_ADM,       PERM_CONSOLE, false,  &ChatHandler::HandleExploreCheatCommand,        "", NULL },
-        //{ "flusharenapoints",PERM_CONSOLE, PERM_CONSOLE, false,  &ChatHandler::HandleFlushArenaPointsCommand,    "", NULL },
+        { "flusharena",     PERM_ADM,       PERM_CONSOLE, false,  &ChatHandler::HandleFlushArenaPointsCommand,    "", NULL },
         { "freeze",         PERM_GMT,       PERM_CONSOLE, false,  &ChatHandler::HandleFreezeCommand,              "", NULL },
         { "goname",         PERM_GMT,       PERM_CONSOLE, false,  &ChatHandler::HandleGonameCommand,              "", NULL },
         { "gps",            PERM_GMT_DEV,   PERM_CONSOLE, false,  &ChatHandler::HandleGPSCommand,                 "", NULL },
