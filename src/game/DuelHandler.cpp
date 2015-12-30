@@ -53,6 +53,12 @@ void WorldSession::HandleDuelAcceptedOpcode(WorldPacket& recvPacket)
     pl->duel->startTimer = now;
     plTarget->duel->startTimer = now;
 
+    if (sWorld.getConfig(CONFIG_DUEL_MOD))
+    {
+        pl->DuelMod();
+        plTarget->DuelMod();
+    }
+
     WorldPacket data(SMSG_DUEL_COUNTDOWN, 4);
     data << (uint32)3000;                                   // 3 seconds
     pl->SendPacketToSelf(&data);

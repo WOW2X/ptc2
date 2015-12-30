@@ -582,6 +582,10 @@ void World::LoadConfigSettings(bool reload)
     loadConfig(CONFIG_RABBIT_DAY, "Rabbit.Day", 0);
     loadConfig(CONFIG_SKILL_PROSPECTING, "SkillChance.Prospecting",false);
 
+    loadConfig(CONFIG_DUEL_MOD, "DuelMod.Enable", false);
+    loadConfig(CONFIG_DUEL_FULL_POWER, "DuelMod.PowerReset", false);
+    loadConfig(CONFIG_DUEL_CD_RESET, "DuelMod.Cooldowns", false);
+
     // note: disable value (-1) will assigned as 0xFFFFFFF, to prevent overflow at calculations limit it to max possible player level MAX_LEVEL(100)
     loadConfig(CONFIG_QUEST_LOW_LEVEL_HIDE_DIFF, "Quests.LowLevelHideDiff", 4);
     if (m_configs[CONFIG_QUEST_LOW_LEVEL_HIDE_DIFF] > MAX_LEVEL)

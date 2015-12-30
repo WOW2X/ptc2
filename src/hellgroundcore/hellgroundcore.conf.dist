@@ -872,6 +872,21 @@ KeepDeletedCharsTime = 31
 #        Default: 0 - no skilups
 #                 1 - skilups possible
 #
+#    DuelMod.Enable
+#        Allows players cooldowns/mana/hp to reset before each duel.
+#        Default: 0 (Disabled)
+#                 1 - Enabled
+#
+#    DuelMod.PowerReset
+#        Makes the players HP & Mana reset before each duel.
+#        Default: 0 (Disabled)
+#                 1 - Enabled
+#
+#    DuelMod.Cooldowns
+#        Makes the players arena cooldowns reset before each duel.
+#        Default: 0 (Disabled)
+#                 1 - Enabled
+#
 #    ForbiddenMaps
 #        map ids that users below SEC_GAMEMASTER cannot enter, with delimiter ','
 #        Default: ""
@@ -905,6 +920,11 @@ Quests.HighLevelHideDiff = 7
 RabbitDay = 0
 SkipCinematics = 0
 SkillChance.Prospecting = 0
+
+DuelMod.Enable = 0
+DuelMod.PowerReset = 0
+DuelMod.Cooldowns = 0
+
 ForbiddenMaps = ""
 
 XPRateModifyItem.Entry = 0

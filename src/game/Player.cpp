@@ -6822,6 +6822,20 @@ void Player::DuelComplete(DuelCompleteType type)
     duel = NULL;
 }
 
+void Player::DuelMod()
+{
+    if (sWorld.getConfig(CONFIG_DUEL_FULL_POWER))
+    {
+        SetHealth(GetMaxHealth());
+
+        if (getPowerType() == POWER_MANA)
+            SetPower(POWER_MANA, GetMaxPower(POWER_MANA));
+    }
+
+    if (sWorld.getConfig(CONFIG_DUEL_CD_RESET) && !GetMap()->IsDungeon())
+        RemoveArenaSpellCooldowns();
+}
+
 //---------------------------------------------------------//
 
 void Player::_ApplyItemMods(Item *item, uint8 slot,bool apply)
