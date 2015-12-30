@@ -41,6 +41,10 @@ EndScriptData */
 #define SPELL_GOUGE         29425
 #define SPELL_FRENZY        37023
 
+#define CREATURE_PHANTOM_GUEST      16409
+#define CREATURE_GHOSTLY_STEWARD    16414
+#define CREATURE_SKELETAL_WAITER    16415
+
 #define POS_Z               81.73
 
 float Locations[4][3]=
@@ -128,6 +132,25 @@ struct boss_moroesAI : public ScriptedAI
         DoScriptText(SAY_AGGRO, m_creature);
         AddsAttack();
         DoZoneInCombat();
+        MoroesFormation();
+    }
+
+    void MoroesFormation()
+    {
+        std::list<Creature*> moroes_formation = FindAllCreaturesWithEntry(CREATURE_PHANTOM_GUEST, 65);
+        for (std::list<Creature*>::iterator it = moroes_formation.begin(); it != moroes_formation.end(); it++)
+            if ((*it)->isAlive())
+                (*it)->ToCreature()->AI()->AttackStart(m_creature->getVictim());
+
+        moroes_formation = FindAllCreaturesWithEntry(CREATURE_GHOSTLY_STEWARD, 65);
+        for (std::list<Creature*>::iterator it = moroes_formation.begin(); it != moroes_formation.end(); it++)
+            if ((*it)->isAlive())
+                (*it)->ToCreature()->AI()->AttackStart(m_creature->getVictim());
+
+        moroes_formation = FindAllCreaturesWithEntry(CREATURE_SKELETAL_WAITER, 65);
+        for (std::list<Creature*>::iterator it = moroes_formation.begin(); it != moroes_formation.end(); it++)
+            if ((*it)->isAlive())
+                (*it)->ToCreature()->AI()->AttackStart(m_creature->getVictim());
     }
 
     void KilledUnit(Unit* victim)
