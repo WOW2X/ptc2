@@ -85,6 +85,7 @@ struct npc_aeranasAI : public ScriptedAI
         EnvelopingWinds_Timer = 9000;
         Shock_Timer = 5000;
 
+        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
         me->RemoveFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
         me->setFaction(FACTION_FRIENDLY);
 
@@ -110,6 +111,7 @@ struct npc_aeranasAI : public ScriptedAI
         if ((me->GetHealth()*100) / me->GetMaxHealth() < 30)
         {
             me->setFaction(FACTION_FRIENDLY);
+            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
             me->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
             me->RemoveAllAuras();
             me->DeleteThreatList();
