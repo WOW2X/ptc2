@@ -763,7 +763,6 @@ void Unit::RemoveSpellbyDamageTaken(uint32 damage, uint32 spell)
 {
     // The chance to dispel an aura depends on the damage taken with respect to the casters level.
     uint32 max_dmg = getLevel() > 8 ? 30 * getLevel() - 100 : 50;
-    float chance = float(damage) / max_dmg * 100.0f;
     bool roll;
 
     std::list<std::pair<uint32, uint64> > aurasToRemove;
@@ -782,9 +781,35 @@ void Unit::RemoveSpellbyDamageTaken(uint32 damage, uint32 spell)
             if (SpellMgr::GetDiminishingReturnsGroupForSpell((*i)->GetSpellProto(), false) == DIMINISHING_ENSLAVE)
                 continue;
 
-            roll = roll_chance_f(chance);
-            if (roll)
-                aurasToRemove.push_back(auraPair);
+            bool isRoot = false;
+            for (int j = 0 ; j < 3 ; j++)
+            {
+                if (SpellMgr::GetEffectMechanic((*i)->GetSpellProto(), j) == MECHANIC_ROOT)
+                {
+                    isRoot = true;
+                    break;
+                }
+            }
+
+            if (isRoot)
+            {
+               roll = roll_chance_f(30);
+               if (roll)
+               {
+                   aurasToRemove.push_back(auraPair);
+               }
+            }
+            else
+            {
+                (*i)->m_damageTakenForRemoveSpell += damage;
+                float chance = float((*i)->m_damageTakenForRemoveSpell) / max_dmg * 100.0f;
+                roll = roll_chance_f(chance);
+                if (roll)
+                {
+                    (*i)->m_damageTakenForRemoveSpell = 0;
+                    aurasToRemove.push_back(auraPair);
+                }
+            }
         }
     }
 
@@ -907,7 +932,7 @@ uint32 Unit::DealDamage(DamageLog *damageInfo, DamageEffectType damagetype, cons
         if (!spellProto || !(spellProto->AttributesEx4 & SPELL_ATTR_EX4_DAMAGE_DOESNT_BREAK_AURAS))
         {
             pVictim->RemoveAurasWithInterruptFlags(AURA_INTERRUPT_FLAG_DAMAGE, spellProto ? spellProto->Id : 0);
-            pVictim->RemoveSpellbyDamageTaken(damageInfo->damage, spellProto ? spellProto->Id : 0);
+            pVictim->RemoveSpellbyDamageTaken(damagetype == DOT ? damageInfo->damage / 2 : damageInfo->damage, spellProto ? spellProto->Id : 0);
         }
         else// if (spellProto->AttributesEx4 & SPELL_ATTR_EX4_DAMAGE_DOESNT_BREAK_AURAS) // if got here - 100% got this attribute
             pVictim->RemoveAurasWithInterruptFlags(AURA_INTERRUPT_FLAG_DAMAGE, spellProto->Id, true);

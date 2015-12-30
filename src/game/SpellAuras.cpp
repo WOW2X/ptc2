@@ -331,6 +331,8 @@ m_periodicTimer(0), m_amplitude(0), m_PeriodicEventId(0), m_AuraDRGroup(DIMINISH
 
     ASSERT(spellproto && spellproto == sSpellStore.LookupEntry(spellproto->Id) && "`info` must be pointer to sSpellStore element");
 
+    m_damageTakenForRemoveSpell = 0;
+
     m_spellProto = spellproto;
 
     int32 damage;

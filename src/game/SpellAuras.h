@@ -369,6 +369,7 @@ class HELLGROUND_IMPORT_EXPORT Aura
         void UnregisterSingleCastAura();
         bool IsSingleTarget() const {return m_isSingleTargetAura;}
         void SetIsSingleTarget(bool val) { m_isSingleTargetAura = val;}
+        uint32 m_damageTakenForRemoveSpell;
     protected:
         Aura(SpellEntry const* spellproto, uint32 eff, int32 *currentBasePoints, Unit *target, Unit *caster = NULL, Item* castItem = NULL);
 
