@@ -6238,6 +6238,11 @@ bool Player::RewardHonor(Unit *uVictim, uint32 groupsize, float honor, bool pvpt
     if (InBattleGround() && GetBattleGround() && GetBattleGround()->isArena())
         return true;
 
+    // Honor farm
+    // Tempest Keep            Nagrand                Terokkar Forest        Shadowmoon Valley
+    if (GetZoneId() == 3523 || GetZoneId() == 3518 || GetZoneId() == 3519 || GetZoneId() == 3520)
+        return true;
+
     if (honor <= 0)
     {
         if (!uVictim || uVictim == this || uVictim->HasAuraType(SPELL_AURA_NO_PVP_CREDIT) || uVictim->WorthHonor || uVictim->HasAura(SPELL_ID_PASSIVE_RESURRECTION_SICKNESS))
