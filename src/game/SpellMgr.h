@@ -769,7 +769,7 @@ class HELLGROUND_IMPORT_EXPORT SpellMgr
         void LoadSkillLineAbilityMap();
         void LoadSpellPetAuras();
         void LoadSpellCustomAttr();
-        void LoadCustomSpellCooldowns(SpellEntry* spellInfo);
+        void LoadSpellCustomCooldowns();
         void LoadSpellLinked();
         void LoadSpellEnchantProcData();
         void LoadSpellBonusData();

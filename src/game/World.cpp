@@ -1296,6 +1296,9 @@ void World::SetInitialWorldSettings()
     sLog.outString("Loading linked spells...");
     sSpellMgr.LoadSpellLinked();
 
+    sLog.outString("Loading custom spell cooldowns...");
+    sSpellMgr.LoadSpellCustomCooldowns();
+
     sLog.outString("Loading player Create Info & Level Stats...");
     sObjectMgr.LoadPlayerInfo();
 

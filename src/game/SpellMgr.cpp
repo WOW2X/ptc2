@@ -2824,8 +2824,6 @@ void SpellMgr::LoadSpellCustomAttr()
                 spellInfo->InterruptFlags &= ~SPELL_INTERRUPT_FLAG_MOVEMENT;
         }
 
-        LoadCustomSpellCooldowns(spellInfo);
-
         if (spellInfo->HasApplyAura(SPELL_AURA_DAMAGE_SHIELD) ||
             spellInfo->HasApplyAura(SPELL_AURA_PERIODIC_LEECH) ||
             spellInfo->HasEffect(SPELL_EFFECT_HEALTH_LEECH))
@@ -3523,85 +3521,48 @@ void SpellMgr::LoadSpellCustomAttr()
     CreatureAI::FillAISpellEntry();
 }
 
-// TODO: move this to database along with slot position in cast bar
-void SpellMgr::LoadCustomSpellCooldowns(SpellEntry* spellInfo)
+void SpellMgr::LoadSpellCustomCooldowns()
 {
-    if (!spellInfo)
-        return;
+    uint32 count = 0;
+    SpellEntry *spellInfo;
 
-    switch (spellInfo->Id)
+    //                                                       0              1
+    QueryResultAutoPtr result = GameDataDatabase.Query("SELECT spellid, cooldown FROM spell_cooldown");
+    if (!result)
     {
-        // 2 sec cooldown
-        case 22907:     // Shoot
-        case 35946:     // Shoot
-        case 44533:     // Wretched Stab
-            spellInfo->RecoveryTime = 2000;
-            break;
-        // 6 sec cooldown
-        case 44639:     // Frost Arrow
-        case 46082:     // Shadow Bolt Volley
-            spellInfo->RecoveryTime = 6000;
-            break;
-        // 8 sec cooldown
-        case 44534:     // Wretched Strike
-        case 44640:     // Lash of Pain
-            spellInfo->RecoveryTime = 8000;
-            break;
-        // 10 sec cooldown
-        case 44518:     // Immolate
-        case 46042:     // Immolate
-        case 44479:     // holy Light
-        case 46029:     // Holy Light
-            spellInfo->RecoveryTime = 10000;
-            break;
-        // 12 sec cooldown
-        case 44547:     // Deadly Embrace
-        case 44599:     // Inject Poison
-        case 46046:     // Inject Poison
-            spellInfo->RecoveryTime = 12000;
-            break;
-        // 15 sec cooldown
-        case 44478:     // Glaive Throw
-        case 46028:     // Glaive Throw
-        case 20299:     // Forked Lightning
-        case 46150:     // Forked Lightning
-        case 17741:     // Mana Shield
-        case 46151:     // Mana Shield
-            spellInfo->RecoveryTime = 15000;
-            break;
-        // 20 sec cooldown
-        case 44480:     // Seal of Wrath
-        case 46030:     // Seal of Wrath
-            spellInfo->RecoveryTime = 20000;
-            break;
-        // 24 sec cooldown
-        case 44505:     // Drink Fel Infusion
-            spellInfo->RecoveryTime = 24000;
-            break;
-        // 30 sec cooldown
-        case 44475:
-            spellInfo->RecoveryTime = 30000;
-            break;
-        // 3 min cooldown
-        case 30015: // Summon Naias
-        case 35413: // Summon Goliathon
-            spellInfo->RecoveryTime = 300000;
-            break;
-        // 30 min cooldown
-        case 44520:
-            spellInfo->RecoveryTime = 1800000;
-            break;
-        // 3h cooldown
-        case 16054: // Flames of the Black Flight
-            spellInfo->RecoveryTime = 10800000;
-            break;
-        case 44935: //Expose Razorthorn Root
-        case 29992: //Quest spell - needs cooldown to be able to add to possessed unit
-            spellInfo->RecoveryTime = 1080;
-            break;
-        default:
-            break;
+        BarGoLink bar(1);
+        bar.step();
+        sLog.outString();
+        sLog.outString(">> Loaded %u custom spell cooldowns", count);
+        return;
     }
+
+    BarGoLink bar(result->GetRowCount());
+
+    do
+    {
+        Field *fields = result->Fetch();
+
+        bar.step();
+
+        int32 spellid = fields[0].GetInt32();
+        uint32 cooldown = fields[1].GetUInt32();
+
+        spellInfo = (SpellEntry*)GetSpellStore()->LookupEntry(spellid);
+        if (!spellInfo)
+        {
+            sLog.outLog(LOG_DB_ERR, "Spell %i listed in spell_cooldown does not exist", spellid);
+            continue;
+        }
+
+        if (spellid > 0 && cooldown > 0)
+            spellInfo->RecoveryTime = cooldown;
+
+        ++count;
+    } while (result->NextRow());
+
+    sLog.outString();
+    sLog.outString(">> Loaded %u custom spell cooldowns", count);
 }
 
 void SpellMgr::LoadSpellLinked()
