@@ -233,7 +233,7 @@ LogFile = "Server.log"
 StatusParserFile = "parser.prsr"
 CharLogFile = "characters.log"
 DBErrorLogFile = "db_errors.log"
-ArenaLogFile = ""
+ArenaLogFile = "arena.log"
 CheatLogFile = "cheat.log"
 SpecialLogFile = "special.log"
 MailLogFile = "sendmail.log"
@@ -246,11 +246,11 @@ CrashLogFile = "crash.log"
 DBDiffFile = "querydiff.log"
 ExpLogFile = "exp.log"
 TradeLogFile = "trade.log"
-RaceChangeLogFile = "race_change.log"
+RaceChangeLogFile = ""
 WhispLogDir = "whisps/"
 
 GmLogTimestamp = 0
-LogTimestamp = 0
+LogTimestamp = 1
 CharLogTimestamp = 0
 LogFileLevel = 0
 LogFilter_TransportMoves = 1
@@ -282,7 +282,7 @@ EAIErrorLevel = 0
 #
 #    PlayerLimit
 #        Maximum number of players in the world. Excluding Mods, GM's and Admins
-#        Default: 100
+#        Default: 5000
 #                 0 (for infinite players)
 #                -1 (for Mods, GM's and Admins only)
 #                -2 (for GM's and Admins only)
@@ -326,7 +326,7 @@ EAIErrorLevel = 0
 #
 #    PlayerSaveInterval
 #        Player save interval (in milliseconds)
-#        Default: 900000 (15 min)
+#        Default: 120000 (2 min)
 #
 #    DisconnectToleranceInterval
 #        Tolerance for disconnected players before putting in the queue. (in seconds)
@@ -338,7 +338,7 @@ EAIErrorLevel = 0
 #
 #    MapUpdate.Threads
 #        Number of threads to update maps.
-#        Default: 1
+#        Default: 4
 #
 #    MapUpdate.UpdateVisitorsMax
 #        Max number of creatures updated by single visitor.
@@ -363,10 +363,10 @@ EAIErrorLevel = 0
 #
 #    SessionUpdate.Method
 #        Method to call when single session update time will be greater than SessionUpdate.MaxTime.
-#        0 - Do nothing
+#        0 - Do nothing (Default)
 #        1 - Log
 #        2 - Kick player + log
-#        3 - Ban account + log (Default)
+#        3 - Ban account + log
 #        4 - Ban ip and account + log
 #
 #    SessionUpdate.VerboseLog
@@ -400,8 +400,8 @@ EAIErrorLevel = 0
 
 UseProcessors = 0
 ProcessPriority = 1
-Compression = 1
-PlayerLimit = 100
+Compression = 2
+PlayerLimit = 5000
 SaveRespawnTimeImmediately = 1
 AddonChannel = 1
 MaxOverspeedPings = 2
@@ -411,17 +411,17 @@ SocketSelectTime = 10000
 GridCleanUpDelay = 300000
 MapUpdateInterval = 100
 ChangeWeatherInterval = 600000
-PlayerSaveInterval = 900000
+PlayerSaveInterval = 120000
 DisconnectToleranceInterval = 0
 UpdateUptimeInterval = 10
 
-MapUpdate.Threads = 1
+MapUpdate.Threads = 4
 MapUpdate.UpdateVisitorsMax = 20
 MapUpdate.CumulativeLogMethod = 0
 
 SessionUpdate.Threads = 1
 SessionUpdate.MaxTime = 1000
-SessionUpdate.Method = 3
+SessionUpdate.Method = 0
 SessionUpdate.VerboseLog = 0
 SessionUpdate.IdleKickTimer = 900000
 SessionUpdate.MinLogDiff = 25
@@ -1654,8 +1654,7 @@ BattleGround.WSGEndAfter.AlwaysDraw = 0
 #
 #    vmap.enableLOS
 #        Enable/Disable VMmap support for line of sight
-#        Default: 0 (false)
-#                 1 (true)
+#        Default: 1 (enable)
 #
 #    vmap.ignoreSpellIds
 #        These spells are ignored for LoS calculation
@@ -1668,13 +1667,11 @@ BattleGround.WSGEndAfter.AlwaysDraw = 0
 #
 #    vmap.petLOS
 #        Check LOS for pets, to avoid them going through walls etc.
-#        Default: 0 (disable, less CPU usage)
-#                 1 (enable, each pet attack command will check for LOS)
+#        Default: 1 (enable, each pet attack command will check for LOS)      
 #
 #    vmap.totem
 #        Use VMAP for totem summon place calculation
-#        Default: 0 (disable, less CPU usage)
-#                 1 (enable, each totem created check LOS)
+#        Default: 1 (enable, each totem created check LOS)                 
 #
 #    vmap.enableCluster
 #        Enable/Disable VMmap calculations in cluster
@@ -1691,11 +1688,11 @@ BattleGround.WSGEndAfter.AlwaysDraw = 0
 #
 ###################################################################################################################
 
-vmap.enableLOS = 0
+vmap.enableLOS = 1
 vmap.ignoreSpellIds = "7720"
 vmap.enableIndoorCheck = 1
-vmap.petLOS = 0
-vmap.totem = 0
+vmap.petLOS = 1
+vmap.totem = 1
 vmap.enableCluster = 0
 vmap.clusterProcesses = 4
 mmap.enabled = 0
@@ -1722,8 +1719,8 @@ mmap.enabled = 0
 
 Visibility.GroupMode = 1
 Visibility.Distance.Grey.Object = 10
-Visibility.Distance.ActiveObjectUpdate.Continents = 132
-Visibility.Distance.ActiveObjectUpdate.Instances = 132
+Visibility.Distance.ActiveObjectUpdate.Continents = 90
+Visibility.Distance.ActiveObjectUpdate.Instances = 170
 
 ###################################################################################################################
 # MOVEMENT
@@ -1734,7 +1731,7 @@ Visibility.Distance.ActiveObjectUpdate.Instances = 132
 #          Range: 0-5 (yards)
 #
 #    Movement.RecheckTimer
-#        How often perform check, if target moved and wee need to updte our destination
+#        How often perform check, if target moved and wee need to update our destination
 #        Default: 100 (ms)
 #
 #    Movement..WaypointPathfinding.*
@@ -1743,7 +1740,7 @@ Visibility.Distance.ActiveObjectUpdate.Instances = 132
 #
 ###################################################################################################################
 
-Movement.RecalculateRange = 1
+Movement.RecalculateRange = 2
 Movement.RecheckTimer = 100
 Movement.WaypointPathfinding.Continents = 1
 Movement.WaypointPathfinding.Instances = 1
@@ -1758,7 +1755,7 @@ Movement.WaypointPathfinding.Instances = 1
 #
 #    CoreBalancer.PlayableDiff
 #        When server average diff is higher than this value balancing will be performed
-#        Default: 200
+#        Default: 150
 #
 #    CoreBalancer.BalanceInterval
 #        Interval after which average diff will be checked against playable diff and balance if needed performed
@@ -1771,7 +1768,7 @@ Movement.WaypointPathfinding.Instances = 1
 ###################################################################################################################
 
 CoreBalancer.Enable = 0
-CoreBalancer.PlayableDiff = 200
+CoreBalancer.PlayableDiff = 150
 CoreBalancer.BalanceInterval = 300000
 CoreBalancer.VisibilityPenalty = 25
 
