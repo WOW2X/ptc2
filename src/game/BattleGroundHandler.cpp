@@ -541,6 +541,11 @@ void WorldSession::HandleBattleGroundLeaveOpcode(WorldPacket &recv_data)
     recv_data.read_skip<uint32>();                          // BattleGroundTypeId
     recv_data.read_skip<uint16>();                          // unk3
 
+    if (BattleGround* bg = _player->GetBattleGround())
+        if (bg->isRated())
+            if (bg->GetStatus() == STATUS_WAIT_JOIN || bg->GetStatus() == STATUS_IN_PROGRESS)
+                return;
+
     _player->LeaveBattleground();
 }
 
