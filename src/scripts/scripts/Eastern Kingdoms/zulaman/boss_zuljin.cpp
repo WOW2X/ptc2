@@ -575,7 +575,9 @@ struct feather_vortexAI : public ScriptedAI
         me->SetSpeed(MOVE_RUN, 1.0f);
     }
 
-    void EnterCombat(Unit* ) {
+    void EnterCombat(Unit* ) 
+    {
+        DoZoneInCombat();
         me->CastSpell(me, SPELL_CYCLONE_PASSIVE, false);
         me->CastSpell(me, SPELL_CYCLONE_VISUAL, false);
 
