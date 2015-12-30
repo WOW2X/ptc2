@@ -20,7 +20,7 @@
 /* ScriptData
 SDName: Hellfire_Peninsula
 SD%Complete: 99
- SDComment: Quest support: 9375, 9410, 9418, 10129, 10146, 10162, 10163, 10340, 10346, 10347, 10382 (Special flight paths), 11516, 10909, 10935, 9545, 10351, 10838, 9472, 9483, 10629
+ SDComment: Quest support: 9375, 9410, 9418, 9399, 10129, 10146, 10162, 10163, 10340, 10346, 10347, 10382 (Special flight paths), 11516, 10909, 10935, 9545, 10351, 10838, 9472, 9483, 10629
 SDCategory: Hellfire Peninsula
 EndScriptData */
 
@@ -47,6 +47,9 @@ npc_vindicator_sedai
 npc_pathaleon_image
 npc_viera
 npc_deranged_helboar
+npc_illidari_taskmaster
+npc_dreghood_brute
+npc_dreghood_geomancer
 EndContentData */
 
 #include "precompiled.h"
@@ -2351,6 +2354,341 @@ CreatureAI* GetAI_npc_barracks(Creature* creature)
     return new npc_barracksAI(creature);
 }
 
+/*######
+## npc_illidari_taskmaster
+######*/
+
+enum
+{
+    SPELL_DEMORALIZING_SHOUT                        = 16244,
+    SPELL_HASTE_OTHER                               = 34186,
+
+    NPC_DREGHOOD_GEOMANCER                          = 16937,
+    NPC_DREGHOOD_BRUTE                              = 16938,
+    NPC_BUNNY_TRIGGER                               = 30000    // 30000 = Own PlayTBC Trigger 
+};
+
+#define TASKMASTER_AGGRO_SAY_1 "Slay these intruders, filthy Dreghood! I promise you neverending pain if you disobey me!"
+#define TASKMASTER_AGGRO_SAY_2 "Go you little wretches! Show these fools that our master is not to be trifled with!"
+#define TASKMASTER_SLAVES_SAY  "Do not stop! I promise a thousand deaths if you even think of putting down that pick!"
+
+#define DREGHOOD_AGGRO_SAY_1      "Forgive me... I have no choice."
+#define DREGHOOD_IMPRISONED_SAY_1 "I will do as you ask, demon... at least for now."
+
+#define DREGHOOD_WARRIOR_FREED_SAY_1   "This is our chance! Run for it!"
+#define DREGHOOD_GEMONACER_FREED_SAY_1 "The Taskmaster's dead! Quick, Dreghoods! Run!"
+
+struct npc_illidari_taskmasterAI : public ScriptedAI
+{
+    npc_illidari_taskmasterAI(Creature* creature) : ScriptedAI(creature) {}
+
+    uint32 DemoralizingShout;
+    uint32 TaskmasterOOCtime; // Taskmaster say timer
+    uint32 DreghoodOOCtime;   // Dreghood say timer
+
+    bool haste;
+    bool canSay;
+
+    void Reset()
+    { 
+         DemoralizingShout  = urand(5000, 15000);
+         TaskmasterOOCtime  = urand(5000, 15000); 
+         DreghoodOOCtime    = 2000;
+         haste  = false;
+         canSay = false;
+    }
+
+    void EnterCombat(Unit* who)
+    {
+        switch(urand(0,1))
+        {
+            case 0:
+                DoSay(TASKMASTER_AGGRO_SAY_1, 0, 0);
+                break;
+            case 1:
+                DoSay(TASKMASTER_AGGRO_SAY_2, 0, 0);
+                break;
+        }
+
+        std::list<Creature*> slaves = FindAllCreaturesWithEntry(NPC_DREGHOOD_BRUTE, 25);
+        for (std::list<Creature*>::iterator it = slaves.begin(); it != slaves.end(); it++)
+        {
+            if ((*it) && (*it)->isAlive())
+            {
+                (*it)->ToCreature()->AI()->AttackStart(me->getVictim());
+                (*it)->Say(DREGHOOD_AGGRO_SAY_1, 0, 0);
+            }
+        }
+
+        slaves = FindAllCreaturesWithEntry(NPC_DREGHOOD_GEOMANCER, 25);
+        for (std::list<Creature*>::iterator it = slaves.begin(); it != slaves.end(); it++)
+        {
+            if ((*it) && (*it)->isAlive())
+                (*it)->ToCreature()->AI()->AttackStart(me->getVictim());
+        }
+    } 
+
+    void UpdateAI(const uint32 diff)
+    {
+        if (!me->isInCombat())
+        {
+            if (Creature* brute = GetClosestCreatureWithEntry(me, NPC_DREGHOOD_BRUTE, 25.0f))
+            {
+                if (TaskmasterOOCtime < diff)
+                {
+                    me->Say(TASKMASTER_SLAVES_SAY, 0, 0);
+                    TaskmasterOOCtime = 60000;
+                    canSay = true;
+                }
+                else
+                    TaskmasterOOCtime -= diff;
+
+                if (canSay)
+                {
+                    if (DreghoodOOCtime < diff)
+                    {
+                        if (Creature* brute = GetClosestCreatureWithEntry(me, NPC_DREGHOOD_BRUTE, 25.0f))
+                            brute->Say(DREGHOOD_IMPRISONED_SAY_1, 0, 0);
+
+                        DreghoodOOCtime = 60000;
+                    }
+                    else
+                        DreghoodOOCtime -= diff;
+                }
+            }
+        }
+
+        if (!UpdateVictim())
+            return;
+
+        if (DemoralizingShout < diff)
+        {
+            AddSpellToCast(SPELL_DEMORALIZING_SHOUT);
+            DemoralizingShout = urand(10000, 15000);
+        }
+        else
+            DemoralizingShout -= diff;
+
+        if (!haste && HealthBelowPct(20))
+        {
+            DoCast(me, SPELL_HASTE_OTHER);
+            haste = true;
+        }
+
+        DoMeleeAttackIfReady();
+    }
+
+    void JustDied(Unit* killer)
+    {
+        std::list<Creature*> slaves = FindAllCreaturesWithEntry(NPC_DREGHOOD_BRUTE, 25);
+        for (std::list<Creature*>::iterator it = slaves.begin(); it != slaves.end(); it++)
+        {
+            if ((*it) && (*it)->isAlive() && (*it)->isInCombat())
+            {
+                (*it)->AttackStop();
+                (*it)->UpdateEntry(19477, 35);
+
+                switch (urand(0,1))
+                {
+                    case 0:
+                        (*it)->Say(DREGHOOD_WARRIOR_FREED_SAY_1, 0, 0);
+                        break;
+                    case 1:
+                        break;
+                }
+
+                if (Creature* bunny = GetClosestCreatureWithEntry(me, NPC_BUNNY_TRIGGER, 60.0f))
+                    (*it)->GetMotionMaster()->MoveChase(bunny);
+            }
+        }
+
+        slaves = FindAllCreaturesWithEntry(NPC_DREGHOOD_GEOMANCER, 25);
+        for (std::list<Creature*>::iterator it = slaves.begin(); it != slaves.end(); it++)
+        {
+            if ((*it) && (*it)->isAlive() && (*it)->isInCombat())
+            {
+                (*it)->AttackStop();
+                (*it)->setFaction(35);
+
+                switch (urand(0,1))
+                {
+                    case 0:
+                        (*it)->Say(DREGHOOD_GEMONACER_FREED_SAY_1, 0, 0);
+                        break;
+                    case 1:
+                        break;
+                }
+
+                if (Creature* bunny = GetClosestCreatureWithEntry(me, NPC_BUNNY_TRIGGER, 90.0f))
+                    (*it)->GetMotionMaster()->MoveChase(bunny);
+            }
+        }
+    }      
+};
+
+CreatureAI* GetAI_npc_illidari_taskmaster(Creature* creature)
+{
+    return new npc_illidari_taskmasterAI(creature);
+}
+
+/*######
+## npc_dreghood_brute
+######*/
+
+#define SPELL_HAMSTRING    31553
+
+struct npc_dreghood_bruteAI : public ScriptedAI
+{
+    npc_dreghood_bruteAI(Creature* creature) : ScriptedAI(creature) {}
+
+    uint32 HamstringTimer;
+    bool check;
+
+    void Reset() 
+    {
+        HamstringTimer   = 8000;
+
+        check = false;
+
+        if (me->GetEntry() != 16938) // Due to entry update
+            me->UpdateEntry(16938);
+
+        if (me->getFaction() != 90)  // Due to faction update
+            me->setFaction(90);
+
+        me->SetVisibility(VISIBILITY_ON);
+    }
+
+    void UpdateAI(const uint32 diff)
+    {
+        if (HamstringTimer <= diff)
+        {
+            DoCast(me->getVictim(), SPELL_HAMSTRING);
+            HamstringTimer = 10000;
+        }
+        else HamstringTimer -= diff;
+
+        if (Creature* bunny = GetClosestCreatureWithEntry(me, NPC_BUNNY_TRIGGER, 60.0f))
+        {
+            float dist = me->GetDistance2d(bunny);
+        
+            // Faction friendly so freed
+            if (me->getFaction() == 35)
+                check = true;
+
+            if (check)
+            {
+                me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                me->RemoveAllAuras();
+                me->DeleteThreatList();
+                me->CombatStop();
+            }
+
+            if (dist < 3 && check)
+			{
+                me->SetVisibility(VISIBILITY_OFF);
+                me->setDeathState(JUST_DIED);
+                me->RemoveCorpse();
+            }
+        }
+
+        if (!check)
+            if (!UpdateVictim())
+                return;
+
+        DoMeleeAttackIfReady();
+    }
+};
+
+CreatureAI* GetAI_npc_dreghood_brute(Creature* creature)
+{
+    return new npc_dreghood_bruteAI(creature);
+}
+
+
+/*######
+## npc_dreghood_geomancer
+######*/
+
+#define SPELL_FIREBALL        34083
+#define SPELL_EARTH_SHIELD    32734
+
+struct npc_dreghood_geomancerAI : public ScriptedAI
+{
+    npc_dreghood_geomancerAI(Creature* creature) : ScriptedAI(creature) {}
+
+    uint32 FireballTimer;
+    uint32 EarthShieldTimer;
+
+    bool check;
+
+    void Reset() 
+    {
+        FireballTimer = 5000;
+        EarthShieldTimer = 120000;
+        check = false; 
+
+        if (me->getFaction() != 90) // Due to faction update
+            me->setFaction(90);
+
+        me->SetVisibility(VISIBILITY_ON);
+        DoCast(me, SPELL_EARTH_SHIELD);
+    }
+
+    void UpdateAI(const uint32 diff)
+    {
+        if (EarthShieldTimer <= diff)
+        {
+            DoCast(me, SPELL_EARTH_SHIELD);
+            EarthShieldTimer = 120000;
+        }
+        else EarthShieldTimer -= diff;
+
+        if (FireballTimer <= diff)
+        {
+            DoCast(me->getVictim(), SPELL_FIREBALL);
+            FireballTimer = 5000;
+        }
+        else FireballTimer -= diff;
+
+        if (Creature* bunny = GetClosestCreatureWithEntry(me, NPC_BUNNY_TRIGGER, 60.0f))
+        {
+            float dist = me->GetDistance2d(bunny);
+        
+            // Faction friendly so we're freed
+            if (me->getFaction() == 35)
+                check = true;
+
+            if (check)
+            {
+                me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                me->InterruptNonMeleeSpells(false);
+                me->RemoveAllAuras();
+                me->DeleteThreatList();
+                me->CombatStop();
+            }
+
+            if (dist < 3 && check)
+			{
+                me->SetVisibility(VISIBILITY_OFF);
+                me->setDeathState(JUST_DIED);
+                me->RemoveCorpse();
+            }
+        }
+	
+        if (!check)
+            if (!UpdateVictim())
+                return;
+
+        DoMeleeAttackIfReady();
+    }
+};
+
+CreatureAI* GetAI_npc_dreghood_geomancer(Creature* creature)
+{
+    return new npc_dreghood_geomancerAI(creature);
+}
+
 void AddSC_hellfire_peninsula()
 {
     Script *newscript;
@@ -2503,5 +2841,20 @@ void AddSC_hellfire_peninsula()
     newscript = new Script;
     newscript->Name = "npc_barracks";
     newscript->GetAI = &GetAI_npc_barracks;
+    newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name = "npc_illidari_taskmaster";
+    newscript->GetAI = &GetAI_npc_illidari_taskmaster;
+    newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name = "npc_dreghood_brute";
+    newscript->GetAI = &GetAI_npc_dreghood_brute;
+    newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name = "npc_dreghood_geomancer";
+    newscript->GetAI = &GetAI_npc_dreghood_geomancer;
     newscript->RegisterSelf();
 }
