@@ -312,6 +312,7 @@ struct npc_kservantAI : public npc_escortAI
         RandomTalkCooldown = 0;
 
         me->SetReactState(REACT_PASSIVE);
+        me->addUnitState(UNIT_STAT_IGNORE_PATHFINDING);
         Start(false, false, me->GetCharmerOrOwnerGUID());
     }
 
