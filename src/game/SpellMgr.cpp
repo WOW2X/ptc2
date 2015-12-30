@@ -3345,6 +3345,7 @@ void SpellMgr::LoadSpellCustomAttr()
             case 42681:
             case 42683:
             case 42684:
+            case 51582: // Rocket boots
                 spellInfo->AttributesEx4 |= SPELL_ATTR_EX4_NOT_USABLE_IN_ARENA;
                 break;
             case 43730: // Stormchops effect
