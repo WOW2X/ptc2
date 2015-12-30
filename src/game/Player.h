@@ -970,6 +970,9 @@ class HELLGROUND_EXPORT Player : public Unit
         explicit Player (WorldSession *session);
         ~Player ();
 
+        bool LoginCheck;
+        uint32 LoginTimer;
+
         void CleanupsBeforeDelete();
 
         static UpdateMask updateVisualBits;

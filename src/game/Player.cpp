@@ -469,6 +469,9 @@ Player::Player (WorldSession *session): Unit(), m_reputationMgr(this), m_camera(
     m_GrantableLevelsCount = 0;
     m_outdoors = GetTerrain()->IsOutdoors(GetPositionX(), GetPositionY(), GetPositionZ());
 
+    LoginCheck = false;
+    LoginTimer = 3500;
+
     StartTeleportTimer();
 }
 
@@ -1188,6 +1191,19 @@ void Player::Update(uint32 update_diff, uint32 p_time)
 {
     if (!IsInWorld() || _preventUpdate)
         return;
+
+    if (!LoginCheck)
+    {
+        SetRooted(true);
+
+        if (LoginTimer <= p_time)
+        {
+            SetRooted(false);
+            LoginCheck = true;
+        }
+        else
+            LoginTimer -= p_time;
+    }
 
     updateMutex.acquire();
 
