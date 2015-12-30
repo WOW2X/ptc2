@@ -122,8 +122,12 @@ struct mob_inner_demonAI : public ScriptedAI
         {
             if(m_creature->getVictimGUID() != victimGUID)
             {
+                DoModifyThreatPercent(m_creature->getVictim(), -100);
                 if(owner->isAlive())
+                {
+                    m_creature->AddThreat(owner, 1000000.0f);
                     AttackStart(owner);
+                }
                 else
                     m_creature->Kill(m_creature,false);
             }
@@ -227,23 +231,17 @@ struct boss_leotheras_the_blindAI : public ScriptedAI
     {
         for(uint8 i = 0; i < 3; i++)
         {
-            Creature *add = Unit::GetCreature(*m_creature,SpellBinderGUID[i]);
-            if (add && add->isAlive())
-            {
-                add->setDeathState(DEAD);
-                add->RemoveCorpse();
-            }
-            else
-            {
-                if(add && add->isDead())
-                    add->RemoveCorpse();
-            }
+            if (Creature *add = Unit::GetCreature(*m_creature,SpellBinderGUID[i]))
+                add->DisappearAndDie();
+
             float nx = x;
             float ny = y;
             float o = 2.4f;
+
             if (i == 0) {nx += 10; ny -= 5; o=2.5f;}
             if (i == 1) {nx -= 8; ny -= 7; o=0.9f;}
             if (i == 2) {nx -= 3; ny += 9; o=5.0f;}
+
             Creature* binder = m_creature->SummonCreature(MOB_SPELLBINDER,nx,ny,z,o,TEMPSUMMON_DEAD_DESPAWN,0);
             if (binder)
                 SpellBinderGUID[i] = binder->GetGUID();
@@ -398,6 +396,11 @@ struct boss_leotheras_the_blindAI : public ScriptedAI
         m_creature->LoadEquipment(m_creature->GetEquipmentId());
     }
 
+    void JustReachedHome()
+    {
+        Reset();
+    }
+
     void UpdateAI(const uint32 diff)
     {
         //Return since we have no target
@@ -464,7 +467,10 @@ struct boss_leotheras_the_blindAI : public ScriptedAI
         if(Berserk_Timer < diff)
         {
             if(!m_creature->HasAura(SPELL_BERSERK, 0))
+            {
+                m_creature->InterruptNonMeleeSpells(false);
                 DoCast(m_creature, SPELL_BERSERK);
+            }
             m_creature->SetSpeed(MOVE_RUN, 3.0);
             Berserk_Timer = 5000;
         }
@@ -604,6 +610,8 @@ struct boss_leotheras_the_blindAI : public ScriptedAI
         {
             //at this point he divides himself in two parts
             Creature *Copy = NULL;
+            CastConsumingMadness();
+            DespawnDemon();
             Copy = DoSpawnCreature(DEMON_FORM, 0, 0, 0, 0, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 6000);
             if(Copy)
              {
