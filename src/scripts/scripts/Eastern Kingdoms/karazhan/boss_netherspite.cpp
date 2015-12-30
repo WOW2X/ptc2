@@ -194,7 +194,7 @@ struct boss_netherspiteAI : public ScriptedAI
                     // remove currently beaming portal
                     if(Creature *beamer = Unit::GetCreature(*portal, BeamerGUID[j]))
                     {
-                        beamer->CastSpell(target, PortalBeam[j], false);
+                        beamer->CastSpell(target, PortalBeam[j], true);
                         beamer->SetVisibility(VISIBILITY_OFF);
                         beamer->DealDamage(beamer, beamer->GetMaxHealth());
                         beamer->RemoveFromWorld();
@@ -204,7 +204,7 @@ struct boss_netherspiteAI : public ScriptedAI
                     // create new one and start beaming on the target
                     if(Creature *beamer = portal->SummonCreature(PortalID[j],portal->GetPositionX(),portal->GetPositionY(),portal->GetPositionZ(),portal->GetOrientation(),TEMPSUMMON_TIMED_DESPAWN,60000))
                     {
-                        beamer->CastSpell(target, PortalBeam[j], false);
+                        beamer->CastSpell(target, PortalBeam[j], true);
                         BeamerGUID[j] = beamer->GetGUID();
                     }
                 }
