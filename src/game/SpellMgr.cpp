@@ -3072,6 +3072,9 @@ void SpellMgr::LoadSpellCustomAttr()
             case 17289: // Shadow Shock
                 spellInfo->EffectBasePoints[0] = 74;
                 break;
+            case 15472: // Shadow Bolt (used by Shadowmoon Channeler 17653 in Blood Furnace Heroic)
+                 spellInfo->EffectBasePoints[0] = urand(151, 179);
+                 break;
             case 36920: // Fireball (Vazruden)
                 spellInfo->EffectBasePoints[0] = 151;
                 break;
