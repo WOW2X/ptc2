@@ -2773,6 +2773,40 @@ CreatureAI* GetAI_npc_fei_fei(Creature* pCreature)
     return (CreatureAI*)thisAI;
 }
 
+/*######
+## npc_fel_cannon_mki
+######*/
+
+#define SPELL_FEL_CANNON_BLAST    36238
+
+struct npc_fel_cannon_mkiAI : public ScriptedAI
+{
+    npc_fel_cannon_mkiAI(Creature* creature) : ScriptedAI(creature) {}
+
+    uint32 CastTimer;
+    uint32 CheckTimer;
+
+    void Reset()
+    {
+        CastTimer = 2000;
+    }
+
+    void UpdateAI(const uint32 diff)
+    {
+        if (CastTimer <= diff)
+        {
+            DoCast(me->getVictim(), SPELL_FEL_CANNON_BLAST);
+            CastTimer = 2000 + urand(0, 2000);
+        }
+        else CastTimer -= diff;
+    }
+};
+
+CreatureAI* GetAI_npc_fel_cannon_mki(Creature* creature)
+{
+    return new npc_fel_cannon_mkiAI(creature);
+}
+
 void AddSC_hellfire_peninsula()
 {
     Script *newscript;
@@ -2946,5 +2980,10 @@ void AddSC_hellfire_peninsula()
     newscript->Name = "npc_fei_fei";
     newscript->GetAI = &GetAI_npc_fei_fei;
     newscript->pQuestRewardedNPC = &QuestComplete_npc_fei_fei;
+    newscript->RegisterSelf();
+	
+    newscript = new Script;
+    newscript->Name = "npc_fel_cannon_mki";
+    newscript->GetAI = &GetAI_npc_fel_cannon_mki;
     newscript->RegisterSelf();
 }
