@@ -1409,6 +1409,10 @@ bool CreatureEventAI::CanCast(Unit* Target, SpellEntry const *Spell, bool Trigge
     if (!Triggered && me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_SILENCED))
         return false;
 
+    //Target is not within los with caster 
+    if (!m_creature->IsWithinLOSInMap(Target))
+        return false;
+
     //Check for power
     if (!Triggered && me->GetPower((Powers)Spell->powerType) < SpellMgr::CalculatePowerCost(Spell, me, SpellMgr::GetSpellSchoolMask(Spell)))
         return false;
