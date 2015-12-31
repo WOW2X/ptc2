@@ -2693,6 +2693,86 @@ CreatureAI* GetAI_npc_dreghood_geomancer(Creature* creature)
     return new npc_dreghood_geomancerAI(creature);
 }
 
+/*########
+# npc_fei_fei
+#########*/
+
+#define QUEST_FEI_FEI_TREAT    10919
+#define SPELL_FEI_FEI_STASH    39216
+#define NPC_FEI_STASH_BUNNY    22467
+
+struct npc_fei_feiAI : public npc_escortAI
+{
+    npc_fei_feiAI(Creature *c) : npc_escortAI(c) {}
+
+    void Reset() { }
+
+    void WaypointReached(uint32 i) 
+    { 
+        switch (i)
+        {
+            case 1:
+                DoCast(me, SPELL_FEI_FEI_STASH);
+                break;
+            case 2:
+                DoCast(me, SPELL_FEI_FEI_STASH);
+                break;
+            case 7:
+                DoCast(me, SPELL_FEI_FEI_STASH);
+                break;
+            case 8:
+                DoCast(me, SPELL_FEI_FEI_STASH);
+                break;
+            case 9:
+                DoCast(me, SPELL_FEI_FEI_STASH);
+                break;
+            case 10:
+                DoCast(me, SPELL_FEI_FEI_STASH);
+                break;
+            case 11:
+                DoCast(me, SPELL_FEI_FEI_STASH);
+                break;
+            case 14:
+                DoCast(me, SPELL_FEI_FEI_STASH);
+                break;
+        }
+    }
+};
+
+bool QuestComplete_npc_fei_fei(Player* pPlayer, Creature* pCreature, Quest const* quest)
+{
+    if (quest->GetQuestId() == QUEST_FEI_FEI_TREAT)
+        CAST_AI(npc_escortAI, (pCreature->AI()))->Start(false, false, pPlayer->GetGUID(), 0, true);
+
+    return true;
+}
+
+CreatureAI* GetAI_npc_fei_fei(Creature* pCreature)
+{
+    npc_fei_feiAI* thisAI = new npc_fei_feiAI(pCreature);
+				
+    thisAI->AddWaypoint(1, -697.934, 2612.59, 89.4752, 5000);
+    thisAI->AddWaypoint(2, -688.665, 2580.78, 86.9841, 5000);
+    thisAI->AddWaypoint(3, -689.199, 2588.81, 87.446);
+    thisAI->AddWaypoint(4, -667.044, 2611.74, 85.7029);
+    thisAI->AddWaypoint(5, -649.407, 2636.82, 86.1539);
+    thisAI->AddWaypoint(6, -659.047, 2651.34, 87.048);
+    thisAI->AddWaypoint(7, -656.048, 2652.06, 86.5892, 5000);
+    thisAI->AddWaypoint(8, -656.055, 2674.2, 88.1354, 5000);
+    thisAI->AddWaypoint(9, -691.042, 2652.45, 92.1508, 5000);
+    thisAI->AddWaypoint(10, -688.807, 2701.25, 94.8354, 5000);
+    thisAI->AddWaypoint(11, -667.514, 2716.08, 94.4471, 5000);
+    thisAI->AddWaypoint(12, -688.593, 2723.67, 94.4145);
+    thisAI->AddWaypoint(13, -687.635, 2743.1, 93.9095);
+    thisAI->AddWaypoint(14, -697.062, 2748.04, 93.938, 5000);
+    thisAI->AddWaypoint(15, -687.635, 2743.1, 93.9095);
+    thisAI->AddWaypoint(16, -685.121, 2689.01, 93.8042);
+    thisAI->AddWaypoint(17, -688.862, 2627.19, 89.8591);
+    thisAI->AddWaypoint(18, -685.494, 2626.74, 89.2711);
+
+    return (CreatureAI*)thisAI;
+}
+
 void AddSC_hellfire_peninsula()
 {
     Script *newscript;
@@ -2860,5 +2940,11 @@ void AddSC_hellfire_peninsula()
     newscript = new Script;
     newscript->Name = "npc_dreghood_geomancer";
     newscript->GetAI = &GetAI_npc_dreghood_geomancer;
+    newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name = "npc_fei_fei";
+    newscript->GetAI = &GetAI_npc_fei_fei;
+    newscript->pQuestRewardedNPC = &QuestComplete_npc_fei_fei;
     newscript->RegisterSelf();
 }
