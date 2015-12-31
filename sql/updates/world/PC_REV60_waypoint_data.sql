@@ -15,3 +15,6 @@ INSERT INTO waypoint_data (id, point, position_x, position_y, position_z, move_t
 
 UPDATE `creature` SET `MovementType` = '2' WHERE `creature`.`guid` = 69051; 
 UPDATE `creature_template` SET `MovementType` = '2' WHERE `creature_template`.`entry` = 19354;
+
+DELETE FROM `creature_addon` WHERE `creature_addon`.`guid` = 69051;
+INSERT INTO `creature_addon` (`guid`, `path_id`, `mount`, `bytes0`, `bytes1`, `bytes2`, `emote`, `moveflags`, `auras`) VALUES ('69051', '69051', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
