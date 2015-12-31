@@ -263,7 +263,7 @@ Unit::Unit() :
     WorldObject(), i_motionMaster(this), movespline(new Movement::MoveSpline()),
     _threatManager(this), _hostileRefManager(this), m_stateMgr(this),
     IsAIEnabled(false), NeedChangeAI(false), i_AI(NULL), i_disabledAI(NULL),
-    m_procDeep(0), m_AI_locked(false), m_removedAurasCount(0)
+    m_procDeep(0), m_AI_locked(false), m_removedAurasCount(0), _lastDamagedTime(0)
 {
     m_modAuras = new AuraList[TOTAL_AURAS];
     m_objectType |= TYPEMASK_UNIT;
@@ -9564,6 +9564,10 @@ int32 Unit::ModifyHealth(int32 dVal)
 
     if (dVal==0)
         return 0;
+
+    // Part of Evade mechanics. Only track health lost, not gained.
+    if (dVal < 0 && GetTypeId() != TYPEID_PLAYER && !ToCreature()->isPet())
+        SetLastDamagedTime(time(NULL));
 
     int32 curHealth = (int32)GetHealth();
 

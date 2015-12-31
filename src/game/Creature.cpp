@@ -2255,6 +2255,14 @@ bool Creature::IsOutOfThreatArea(Unit* pVictim) const
     if (sMapStore.LookupEntry(GetMapId())->IsDungeon())
         return false;
 
+    // Case where mob is being kited.
+    // Mob may not be in range to attack or may have dropped target. In any case,
+    // don't evade if damage received within the last 10 seconds
+    // Does not apply to world bosses to prevent kiting to cities
+    if (!isWorldBoss() && !GetInstanceId())
+        if (time(NULL) - GetLastDamagedTime() <= MAX_AGGRO_RESET_TIME)
+            return false;
+
     uint32 AttackDist = GetAttackDistance(pVictim);
 
     uint32 distToHome = std::max(AttackDist, sWorld.getConfig(CONFIG_EVADE_HOMEDIST));

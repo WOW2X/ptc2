@@ -211,6 +211,7 @@ enum UnitRename
 };
 
 #define CREATURE_MAX_SPELLS     5
+#define MAX_AGGRO_RESET_TIME    10 // in seconds
 
 enum Swing
 {
@@ -1621,6 +1622,10 @@ class HELLGROUND_IMPORT_EXPORT Unit : public WorldObject
         Movement::MoveSpline * movespline;
         MovementInfo m_movementInfo;
 
+        // Part of Evade mechanics
+        time_t GetLastDamagedTime() const { return _lastDamagedTime; }
+        void SetLastDamagedTime(time_t val) { _lastDamagedTime = val; }
+
     protected:
         explicit Unit ();
 
@@ -1719,6 +1724,8 @@ class HELLGROUND_IMPORT_EXPORT Unit : public WorldObject
 
         void UpdateSplineMovement(uint32 t_diff);
         TimeTrackerSmall m_movesplineTimer;
+
+        time_t _lastDamagedTime; // Part of Evade mechanics
 };
 
 typedef std::set<Unit*> UnitSet;
