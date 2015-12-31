@@ -4855,7 +4855,8 @@ void Spell::EffectSummonPet(uint32 i)
             if (OldSummon->isDead())
                 return;
 
-            OldSummon->GetMap()->Remove((Creature*)OldSummon,false);
+            if (owner->getClass() != CLASS_WARLOCK)
+                OldSummon->GetMap()->Remove((Creature*)OldSummon,false);
             OldSummon->SetMapId(owner->GetMapId());
 
             float px, py, pz;
