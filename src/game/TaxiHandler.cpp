@@ -54,6 +54,36 @@ void WorldSession::SendTaxiStatus(uint64 guid)
         return;
     }
 
+    switch (GetPlayer()->getRace())
+    {
+        case RACE_HUMAN:
+        case RACE_DWARF:
+        case RACE_NIGHTELF:
+        case RACE_GNOME:
+        case RACE_DRAENEI:
+            {
+                if (unit->GetEntry() == 18930)
+                    return;
+            }
+            break;
+        case RACE_ORC:
+        case RACE_UNDEAD_PLAYER:
+        case RACE_TAUREN:
+        case RACE_TROLL:
+        case RACE_BLOODELF:
+            {
+                if (unit->GetEntry() == 18931)
+                    return;
+            }
+            break;
+    }
+
+    if (unit->GetEntry() == 18930 && GetPlayer()->GetQuestStatus(10120) == QUEST_STATUS_COMPLETE)
+        return;
+
+    if (unit->GetEntry() == 18931 && GetPlayer()->GetQuestStatus(10288) == QUEST_STATUS_COMPLETE)
+        return;
+
     uint32 curloc = sObjectMgr.GetNearestTaxiNode(unit->GetPositionX(),unit->GetPositionY(),unit->GetPositionZ(),unit->GetMapId(),GetPlayer()->GetTeam());
 
     // not found nearest
