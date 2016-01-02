@@ -1767,8 +1767,7 @@ void SendClassTrainerMenu_guard_ironforge(Player *player, Creature *_Creature, u
             break;
         case GOSSIP_ACTION_INFO_DEF + 8:                    //Shaman
             player->SEND_POI(-4732, -1147, 6, 6, 0, "Ironforge Shaman Trainer");
-                                                            //incorrect id
-            player->SEND_GOSSIP_MENU(2766, _Creature->GetGUID());
+            player->SEND_GOSSIP_MENU(10842, _Creature->GetGUID());
             break;
     }
 }
@@ -3324,8 +3323,7 @@ void SendClassTrainerMenu_guard_stormwind(Player *player, Creature *_Creature, u
             break;
         case GOSSIP_ACTION_INFO_DEF + 9:                    //Shaman
             player->SEND_POI(-9033, 550, 6, 6, 0, "Valley Of Heroes");
-                                                            //incorrect id
-            player->SEND_GOSSIP_MENU(2593,_Creature->GetGUID());
+            player->SEND_GOSSIP_MENU(10106,_Creature->GetGUID());
             break;
     }
 }
