@@ -69,6 +69,10 @@ struct mob_phantom_guestAI : public ScriptedAI
         if(!UpdateVictim())
             return;
 
+        // Spectral Guests continue to dance while attacking you. - Disable dance emote in combat
+        if (me->isInCombat())
+            me->SetUInt32Value(UNIT_NPC_EMOTESTATE, 0);
+
         if(MainTimer < diff)
         {
             switch(Type)
