@@ -325,9 +325,26 @@ struct boss_attumenAI : public ScriptedAI
         {
             if (ChargeTimer < diff)
             {
-                if (Unit * target = SelectUnit(SELECT_TARGET_RANDOM, 0, 100.0f, true, 0, 5.0f))
-                    AddSpellToCast(target, SPELL_BERSERKER_CHARGE);
+                Unit *pTarget;
+                std::list<HostileReference *> t_list = me->getThreatManager().getThreatList();
+                std::vector<Unit *> target_list;
+                for (std::list<HostileReference *>::iterator itr = t_list.begin(); itr != t_list.end(); ++itr)
+                {
+                    pTarget = Unit::GetUnit(*me, (*itr)->getUnitGuid());
+                    if (pTarget && pTarget->GetDistance2d(me) > 5 && pTarget->GetTypeId() == TYPEID_PLAYER)
+                        target_list.push_back(pTarget);
+                    pTarget = NULL;
+                }
+                if (target_list.size())
+                    pTarget = *(target_list.begin()+rand()%target_list.size());
 
+                float px, py, pz;
+                px = pTarget->GetPositionX();
+                py = pTarget->GetPositionX();
+                pz = pTarget->GetPositionX();
+
+                AddSpellToCast(pTarget, SPELL_BERSERKER_CHARGE);
+                me->GetMotionMaster()->MoveCharge(px, py, pz);
                 ChargeTimer = 20000;
             }
             else
