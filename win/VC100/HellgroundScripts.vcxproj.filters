@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Scripts">
@@ -1563,6 +1563,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\scripts\scripts\Eastern Kingdoms\molten_core\molten_core.cpp">
       <Filter>Scripts\Eastern Kingdoms\Molten Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scripts\scripts\Outland\hellfire_peninsula\stair_of_destiny.cpp">
+      <Filter>Scripts\Outland\Hellfire Peninsula</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

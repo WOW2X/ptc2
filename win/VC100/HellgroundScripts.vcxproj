@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug_PCH|Win32">
@@ -469,6 +469,7 @@
     <ClCompile Include="..\..\src\scripts\scripts\boss\boss_lethon.cpp" />
     <ClCompile Include="..\..\src\scripts\scripts\boss\boss_taerar.cpp" />
     <ClCompile Include="..\..\src\scripts\scripts\boss\boss_ysondre.cpp" />
+    <ClCompile Include="..\..\src\scripts\scripts\Outland\hellfire_peninsula\stair_of_destiny.cpp" />
     <ClCompile Include="..\..\src\scripts\scripts\special\mob_generic_creature.cpp" />
     <ClCompile Include="..\..\src\scripts\scripts\special\simple_ai.cpp" />
     <ClCompile Include="..\..\src\scripts\scripts\special\guard_ai.cpp" />

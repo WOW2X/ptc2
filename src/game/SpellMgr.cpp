@@ -3076,6 +3076,9 @@ void SpellMgr::LoadSpellCustomAttr()
             case 17290: // Fireball (used by Hellfire Imp 17477 in Blood Furnace Heroic)
                  spellInfo->EffectBasePoints[0] = urand(151, 179);
                  break;
+            case 33627: // Rain of Fire (Pit Commander)
+                spellInfo->EffectBasePoints[0] = urand(48000, 58000); // Sure not correct WoWhead comments saying about 45 - 58k damage per tick
+                break;
             case 36920: // Fireball (Vazruden)
                 spellInfo->EffectBasePoints[0] = 151;
                 break;
@@ -3430,6 +3433,7 @@ void SpellMgr::LoadSpellCustomAttr()
                 spellInfo->EffectImplicitTargetA[1] = TARGET_UNIT_CASTER;
                 spellInfo->EffectImplicitTargetA[2] = TARGET_UNIT_TARGET_ENEMY;
                 break;
+            case 32785: // Infernal Rain
             case 30541: // Magtheridon's Blaze
                 spellInfo->EffectImplicitTargetA[0] = TARGET_UNIT_TARGET_ENEMY;
                 spellInfo->EffectImplicitTargetB[0] = 0;

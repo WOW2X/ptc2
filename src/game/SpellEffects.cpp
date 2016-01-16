@@ -803,6 +803,15 @@ void Spell::EffectDummy(uint32 i)
                     m_caster->CastSpell(unitTarget, spell_list[urand(0, 5)], true);
                     return;
                 }
+                case 32785:                                 // Infernal Rain
+                {
+                    if (!unitTarget || unitTarget->GetTypeId() != TYPEID_UNIT /*|| unitTarget->GetEntry() != 19215*/)
+                        return;
+
+                    // Summon Infernal Siegebreaker
+                    m_caster->SummonCreature(18946, unitTarget->GetPositionX(), unitTarget->GetPositionY(), unitTarget->GetPositionZ(), 0.0f, TEMPSUMMON_CORPSE_TIMED_DESPAWN, 60000);
+                    return;
+                }
                 case 46292:                                 // Cataclysm Breath
                 {
                     // Cataclysm Spells
@@ -3137,6 +3146,9 @@ void Spell::EffectSendEvent(uint32 EffectIndex)
             }
             break;
         }
+        // Summon Infernals
+        // TO-DO now the event is handled in stair_of_destiny.cpp
+        //case 33393: { break; }
         // Place Belmara's Tome
         case 34140:
         {
