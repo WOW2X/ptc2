@@ -732,6 +732,7 @@ class HELLGROUND_IMPORT_EXPORT Creature : public Unit
         bool CanReactToPlayerOnTaxi();
 
         bool IsTemporarySummon() { return m_tempSummon; }
+        bool IsTemporaryVisibility() { return m_tempVisibility; }
 
         void UpdateDeathTimer(uint32 timer) { if(m_deathTimer < timer) m_deathTimer = timer; }
 
@@ -790,6 +791,7 @@ class HELLGROUND_IMPORT_EXPORT Creature : public Unit
         CreatureData const* m_creatureData;
 
         bool m_tempSummon;
+        bool m_tempVisibility;
 
     private:
         //WaypointMovementGenerator vars

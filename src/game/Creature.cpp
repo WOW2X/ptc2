@@ -155,7 +155,7 @@ m_gossipOptionLoaded(false), m_isPet(false), m_isTotem(false), m_reactState(REAC
 m_defaultMovementType(IDLE_MOTION_TYPE), m_equipmentId(0), m_AlreadyCallAssistance(false),
 m_regenHealth(true), m_isDeadByDefault(false), m_AlreadySearchedAssistance(false), m_creatureData(NULL),
 m_meleeDamageSchoolMask(SPELL_SCHOOL_MASK_NORMAL),m_creatureInfo(NULL), m_DBTableGuid(0), m_formation(NULL), m_PlayerDamageReq(0),
-m_tempSummon(false)
+m_tempSummon(false), m_tempVisibility(false)
 {
     m_regenTimer = 2000;
     m_valuesCount = UNIT_END;
@@ -217,7 +217,10 @@ void Creature::RemoveFromWorld()
 
 void Creature::DisappearAndDie()
 {
-    DestroyForNearbyPlayers();
+    m_tempVisibility = true;
+    SetVisibility(VISIBILITY_OFF);
+    UpdateObjectVisibility();
+
     if (isAlive())
         setDeathState(JUST_DIED);
     RemoveCorpse();
@@ -1893,6 +1896,9 @@ void Creature::Respawn(bool force)
     }
 
     RemoveCorpse();
+
+    if (IsTemporaryVisibility())
+        SetVisibility(VISIBILITY_ON);
 
     if (getDeathState()==DEAD)
     {

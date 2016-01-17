@@ -11992,6 +11992,8 @@ Pet* Unit::CreateTamedPetFrom(Creature* creatureTarget,uint32 spell_id)
         return NULL;
     }
 
+    creatureTarget->DisappearAndDie();
+
     pet->SetOwnerGUID(GetGUID());
     pet->SetCreatorGUID(GetGUID());
     pet->SetUInt32Value(UNIT_FIELD_FACTIONTEMPLATE, getFaction());

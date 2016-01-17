@@ -2559,8 +2559,6 @@ struct npc_dreghood_bruteAI : public ScriptedAI
 
         if (me->getFaction() != 90)  // Due to faction update
             me->setFaction(90);
-
-        me->SetVisibility(VISIBILITY_ON);
     }
 
     void UpdateAI(const uint32 diff)
@@ -2589,11 +2587,7 @@ struct npc_dreghood_bruteAI : public ScriptedAI
             }
 
             if (dist < 3 && check)
-			{
-                me->SetVisibility(VISIBILITY_OFF);
-                me->setDeathState(JUST_DIED);
-                me->RemoveCorpse();
-            }
+                me->DisappearAndDie();
         }
 
         if (!check)
@@ -2635,7 +2629,6 @@ struct npc_dreghood_geomancerAI : public ScriptedAI
         if (me->getFaction() != 90) // Due to faction update
             me->setFaction(90);
 
-        me->SetVisibility(VISIBILITY_ON);
         DoCast(me, SPELL_EARTH_SHIELD);
     }
 
@@ -2673,11 +2666,7 @@ struct npc_dreghood_geomancerAI : public ScriptedAI
             }
 
             if (dist < 3 && check)
-			{
-                me->SetVisibility(VISIBILITY_OFF);
-                me->setDeathState(JUST_DIED);
-                me->RemoveCorpse();
-            }
+                me->DisappearAndDie();
         }
 	
         if (!check)
