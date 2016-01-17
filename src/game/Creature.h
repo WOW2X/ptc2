@@ -642,7 +642,7 @@ class HELLGROUND_IMPORT_EXPORT Creature : public Unit
         time_t const& GetRespawnTime() const { return m_respawnTime; }
         time_t GetRespawnTimeEx() const;
         void SetRespawnTime(uint32 respawn) { m_respawnTime = respawn ? time(NULL) + respawn : 0; }
-        void Respawn();
+        void Respawn(bool force = false);
         void SaveRespawnTime();
 
         uint32 GetRespawnDelay() const { return m_respawnDelay; }

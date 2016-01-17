@@ -18778,8 +18778,8 @@ bool Player::canSeeOrDetect(Unit const* u, WorldObject const* viewPoint, bool de
         return false;
 
     // forbidden to seen (at GM respawn command)
-    if (u->GetVisibility() == VISIBILITY_RESPAWN)
-        return false;
+    //if (u->GetVisibility() == VISIBILITY_RESPAWN)
+        //return false;
 
     // always seen by owner
     if (GetGUID() == u->GetCharmerOrOwnerGUID())

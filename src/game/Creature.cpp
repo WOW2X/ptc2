@@ -1880,14 +1880,19 @@ void Creature::setDeathState(DeathState s)
     }
 }
 
-void Creature::Respawn()
+void Creature::Respawn(bool force)
 {
-    RemoveCorpse();
+    DestroyForNearbyPlayers();
 
-    // forced recreate creature object at clients
-    UnitVisibility currentVis = GetVisibility();
-    SetVisibility(VISIBILITY_RESPAWN);
-    SetVisibility(currentVis);                              // restore visibility state
+    if (force)
+    {
+        if (isAlive())
+            setDeathState(JUST_DIED);
+        else if (getDeathState() != CORPSE)
+            setDeathState(CORPSE);
+    }
+
+    RemoveCorpse();
 
     if (getDeathState()==DEAD)
     {
@@ -1927,6 +1932,7 @@ void Creature::Respawn()
     }
 
     SendMonsterStop();
+    UpdateObjectVisibility();
 }
 
 void Creature::ForcedDespawn(uint32 timeMSToDespawn)
