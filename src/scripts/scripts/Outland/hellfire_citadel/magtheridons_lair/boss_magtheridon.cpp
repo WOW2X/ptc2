@@ -321,7 +321,7 @@ struct boss_magtheridonAI : public BossAI
 
 struct mob_hellfire_channelerAI : public ScriptedAI
 {
-    mob_hellfire_channelerAI(Creature *c) : ScriptedAI(c)
+    mob_hellfire_channelerAI(Creature *c) : ScriptedAI(c), summons(c)
     {
         pInstance = m_creature->GetInstanceData();
         m_creature->setActive(true);
@@ -329,6 +329,7 @@ struct mob_hellfire_channelerAI : public ScriptedAI
 
     ScriptedInstance* pInstance;
 
+    SummonList summons;
     uint32 ShadowBoltVolley_Timer;
     uint32 DarkMending_Timer;
     uint32 Fear_Timer;
@@ -343,6 +344,7 @@ struct mob_hellfire_channelerAI : public ScriptedAI
         Infernal_Timer = urand(10000, 50000);
 
         Check_Timer = 5000;
+        summons.DespawnAll();
     }
 
     void EnterCombat(Unit *who)
@@ -354,6 +356,12 @@ struct mob_hellfire_channelerAI : public ScriptedAI
         me->InterruptNonMeleeSpells(false);
         DoZoneInCombat();
         AttackStart(who);
+    }
+
+    void JustSummoned(Creature* summoned)
+    {
+        summons.Summon(summoned);
+        summoned->AI()->AttackStart(me->getVictim());
     }
 
     void MoveInLineOfSight(Unit*) {}
