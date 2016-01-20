@@ -206,20 +206,25 @@ struct instance_magtheridons_lair : public ScriptedInstance
         {
             if (RespawnTimer <= diff)
             {
-                for (std::set<uint64>::iterator i = ChannelerGUID.begin(); i != ChannelerGUID.end(); ++i)
+                Creature *Magtheridon = instance->GetCreature(MagtheridonGUID);
+                if (Magtheridon && Magtheridon->isAlive())
                 {
-                    if (Creature *Channeler = instance->GetCreature(*i))
+                    for (std::set<uint64>::iterator i = ChannelerGUID.begin(); i != ChannelerGUID.end(); ++i)
                     {
-                        if(Channeler->isAlive())
-                            Channeler->AI()->EnterEvadeMode();
-                        else
-                            Channeler->Respawn();
+                        if (Creature *Channeler = instance->GetCreature(*i))
+                        {
+                            if(Channeler->isAlive())
+                                Channeler->AI()->EnterEvadeMode();
+                            else
+                                Channeler->Respawn();
+                        }
                     }
                 }
 
                 HandleGameObject(DoorGUID, true);
 
                 RespawnTimer = 0;
+
                 if (Encounters[0] != DONE)
                     Encounters[0] = NOT_STARTED;
             }
