@@ -345,6 +345,7 @@ struct mob_hellfire_channelerAI : public ScriptedAI
 
         Check_Timer = 5000;
         summons.DespawnAll();
+        me->CastSpell((Unit*)NULL, SPELL_SHADOW_GRASP_C, false);
     }
 
     void EnterCombat(Unit *who)
@@ -372,10 +373,7 @@ struct mob_hellfire_channelerAI : public ScriptedAI
             me->CastSpell(me, SPELL_SOUL_TRANSFER, true);
     }
 
-    void JustReachedHome()
-    {
-        me->CastSpell((Unit*)NULL, SPELL_SHADOW_GRASP_C, false);
-    }
+    void JustReachedHome() { Reset(); }
 
     void UpdateAI(const uint32 diff)
     {
