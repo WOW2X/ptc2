@@ -43,14 +43,16 @@ EndScriptData */
 #define SPELL_INTANGIBLE_PRESENCE   29833
 #define SPELL_BERSERKER_CHARGE      26561                   //Only when mounted
 
-#define CREATURE_SPECTRAL_CHARGER   15547
-#define CREATURE_SPECTRAL_STALLION  15548
-#define CREATURE_SPECTRAL_STABLE    15551
-
 #define MOUNTED_DISPLAYID           16040
 
 //Attumen (TODO: Use the summoning spell instead of creature id. It works , but is not convenient for us)
 #define SUMMON_ATTUMEN 15550
+
+enum MidnightCreatures {
+    CREATURE_SPECTRAL_CHARGER     = 15547,
+    CREATURE_SPECTRAL_STALLION    = 15548,
+    CREATURE_SPECTRAL_STABLE      = 15551
+};
 
 struct boss_midnightAI : public ScriptedAI
 {
@@ -77,7 +79,7 @@ struct boss_midnightAI : public ScriptedAI
 
         m_creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
         m_creature->SetVisibility(VISIBILITY_ON);
-
+        m_creature->addUnitState(UNIT_STAT_IGNORE_PATHFINDING);
         if(pInstance->GetData(DATA_ATTUMEN_EVENT) != DONE)
             pInstance->SetData(DATA_ATTUMEN_EVENT, NOT_STARTED);
         else
@@ -252,6 +254,7 @@ struct boss_attumenAI : public ScriptedAI
     void Reset()
     {
         ResetTimer = 2000;
+        m_creature->addUnitState(UNIT_STAT_IGNORE_PATHFINDING);
     }
 
     void KilledUnit(Unit *victim)
@@ -325,26 +328,11 @@ struct boss_attumenAI : public ScriptedAI
         {
             if (ChargeTimer < diff)
             {
-                Unit *pTarget;
-                std::list<HostileReference *> t_list = me->getThreatManager().getThreatList();
-                std::vector<Unit *> target_list;
-                for (std::list<HostileReference *>::iterator itr = t_list.begin(); itr != t_list.end(); ++itr)
+                if (Unit * target = SelectUnit(SELECT_TARGET_RANDOM, 0, 100.0f, true, 0, 5.0f))
                 {
-                    pTarget = Unit::GetUnit(*me, (*itr)->getUnitGuid());
-                    if (pTarget && pTarget->GetDistance2d(me) > 5 && pTarget->GetTypeId() == TYPEID_PLAYER)
-                        target_list.push_back(pTarget);
-                    pTarget = NULL;
+                    AddSpellToCast(target, SPELL_BERSERKER_CHARGE);
+                    m_creature->GetMotionMaster()->MoveCharge(target->GetPositionX(), target->GetPositionY(), target->GetPositionZ());
                 }
-                if (target_list.size())
-                    pTarget = *(target_list.begin()+rand()%target_list.size());
-
-                float px, py, pz;
-                px = pTarget->GetPositionX();
-                py = pTarget->GetPositionX();
-                pz = pTarget->GetPositionX();
-
-                AddSpellToCast(pTarget, SPELL_BERSERKER_CHARGE);
-                me->GetMotionMaster()->MoveCharge(px, py, pz);
                 ChargeTimer = 20000;
             }
             else
