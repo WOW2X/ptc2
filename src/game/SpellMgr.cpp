@@ -3523,6 +3523,10 @@ void SpellMgr::LoadSpellCustomAttr()
             case 29838: //Second Wind (Rank 2)
                 spellInfo->procFlags &= ~PROC_FLAG_ON_TAKE_PERIODIC;
                 break;
+            case 29847: // Attumen charge - set visual only
+                spellInfo->Effect[1] = 0;
+                spellInfo->Effect[2] = 0;
+                break;
             case 126:   // Eye of Kilrogg not usable at raids to prevent abusing like SWP trash pull
                 spellInfo->AttributesEx6 |= SPELL_ATTR_EX6_NOT_IN_RAID_INSTANCE;
                 break;

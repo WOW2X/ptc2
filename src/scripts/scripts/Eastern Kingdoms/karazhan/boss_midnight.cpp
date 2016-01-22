@@ -41,7 +41,7 @@ EndScriptData */
 
 #define SPELL_SHADOWCLEAVE          29832
 #define SPELL_INTANGIBLE_PRESENCE   29833
-#define SPELL_BERSERKER_CHARGE      26561                   //Only when mounted
+#define SPELL_BERSERKER_CHARGE      29847                   //Only when mounted
 
 #define MOUNTED_DISPLAYID           16040
 
@@ -79,7 +79,7 @@ struct boss_midnightAI : public ScriptedAI
 
         m_creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
         m_creature->SetVisibility(VISIBILITY_ON);
-        m_creature->addUnitState(UNIT_STAT_IGNORE_PATHFINDING);
+
         if(pInstance->GetData(DATA_ATTUMEN_EVENT) != DONE)
             pInstance->SetData(DATA_ATTUMEN_EVENT, NOT_STARTED);
         else
@@ -254,7 +254,7 @@ struct boss_attumenAI : public ScriptedAI
     void Reset()
     {
         ResetTimer = 2000;
-        m_creature->addUnitState(UNIT_STAT_IGNORE_PATHFINDING);
+
     }
 
     void KilledUnit(Unit *victim)
