@@ -738,6 +738,8 @@ class HELLGROUND_IMPORT_EXPORT Creature : public Unit
 
         virtual float GetXPMod() const override { return m_xpMod; }
 
+        void ProhibitSpellSchool(SpellSchoolMask idSchoolMask, uint32 unTimeMs);
+
     protected:
         bool CreateFromProto(uint32 guidlow,uint32 Entry,uint32 team, const CreatureData *data = NULL);
         bool InitEntry(uint32 entry, uint32 team=ALLIANCE, const CreatureData* data=NULL);

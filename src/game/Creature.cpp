@@ -2761,6 +2761,11 @@ bool Creature::CanFly() const
     return GetCreatureInfo()->InhabitType & INHABIT_AIR || IsLevitating();
 }
 
+void Creature::ProhibitSpellSchool(SpellSchoolMask idSchoolMask, uint32 unTimeMs)
+{
+    _AddCreatureCategoryCooldown(idSchoolMask, unTimeMs);
+}
+
 
 bool AttackResumeEvent::Execute(uint64 /*e_time*/, uint32 /*p_time*/)
 {
