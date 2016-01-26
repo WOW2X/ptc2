@@ -10695,6 +10695,12 @@ Item* Player::StoreItem(ItemPosCountVec const& dest, Item* pItem, bool update)
         lastItem = _StoreItem(pos,pItem,count,true,update);
     }
 
+    if(update)
+    {
+        UpdateExpertise(BASE_ATTACK);
+        UpdateExpertise(OFF_ATTACK);
+    }
+
     return lastItem;
 }
 
