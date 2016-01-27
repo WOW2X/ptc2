@@ -9535,7 +9535,7 @@ bool Unit::canAttack(Unit const* target, bool force) const
     if ((m_invisibilityMask || target->m_invisibilityMask) && !canDetectInvisibilityOf(target, this))
         return false;
 
-    if (target->GetVisibility() == VISIBILITY_GROUP_STEALTH && !canDetectStealthOf(target, this, GetDistance(target)))
+    if(target->GetVisibility() == VISIBILITY_GROUP_STEALTH && !canDetectStealthOf(target, this, GetExactDistance2d(target->GetPositionX(), target->GetPositionY())))
         return false;
 
     return true;
@@ -9749,15 +9749,32 @@ bool Unit::canDetectInvisibilityOf(Unit const* u, WorldObject const* viewPoint) 
 
 bool Unit::canDetectStealthOf(Unit const* target, WorldObject const* viewPoint, float distance) const
 {
+    if(!target)
+        return false;
+
     if (hasUnitState(UNIT_STAT_STUNNED))
         return false;
 
-    if (distance < 0.24f) //collision
+    distance -= target->GetObjectSize() + (GetObjectSize()/2);
+
+    if(distance < 0)
+        distance = 0;
+
+    if(distance < 0.24f) //collision
         return true;
 
-    if (!viewPoint->HasInArc(M_PI, target)) //behind
-        return false;
-
+    //Condition for npc
+    if(GetTypeId() == TYPEID_UNIT)
+    {
+        if(!HasInArc(M_PI, target)) //behind
+            return false;
+    }
+    else
+    {
+        if(!viewPoint->HasInArc(M_PI, target)) //behind
+            return false;
+    }
+    
     if (HasAuraType(SPELL_AURA_DETECT_STEALTH))
         return true;
 
