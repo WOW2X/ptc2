@@ -853,6 +853,7 @@ bool SpellCantDealDmgToPlayer(uint32 id)
 uint32 Unit::DealDamage(DamageLog *damageInfo, DamageEffectType damagetype, const SpellEntry *spellProto, bool durabilityLoss)
 {
     Unit *pVictim = damageInfo->target;
+
     if (!pVictim->isAlive() || pVictim->IsTaxiFlying() || pVictim->GetTypeId() == TYPEID_UNIT && ((Creature*)pVictim)->IsInEvadeMode() || pVictim->HasAura(27827, 2))
         return 0;
 
@@ -1151,6 +1152,9 @@ uint32 Unit::DealDamage(DamageLog *damageInfo, DamageEffectType damagetype, cons
 
     // send damage to client here - after modifications
     SendDamageLog(damageInfo);
+
+    if(!pVictim->IsStandState() && pVictim->GetTypeId() == TYPEID_PLAYER)
+        pVictim->SetStandState(PLAYER_STATE_NONE);
 
     DEBUG_LOG("DealDamageEnd returned %d damage", damageInfo->damage);
     return damageInfo->damage;
@@ -1640,6 +1644,17 @@ void Unit::CalculateMeleeDamage(MeleeDamageLog *damageInfo)
     }
     else // Umpossible get negative result but....
         damageInfo->damage = 0;
+
+    if(damageInfo->target->GetTypeId() == TYPEID_PLAYER && !damageInfo->target->IsStandState())
+    {
+        if(damageInfo->attackType != RANGED_ATTACK && (damageInfo->hitInfo & HITINFO_CRITICALHIT) == 0)
+        {
+            damageInfo->hitInfo |= HITINFO_CRITICALHIT;
+            damageInfo->targetState = VICTIMSTATE_NORMAL;
+            damageInfo->procEx |= PROC_EX_NORMAL_HIT;
+            damageInfo->damage += damageInfo->damage;
+        }
+    }
 }
 
 void Unit::DealMeleeDamage(MeleeDamageLog *damageInfo, bool durabilityLoss)
@@ -2332,9 +2347,8 @@ void Unit::RollMeleeHit(MeleeDamageLog *damageInfo, int32 crit_chance, int32 mis
 
     bool fromBehind = !pVictim->HasInArc(M_PI, this);
 
-    if (!pVictim->IsStandState())
+    if(!pVictim->IsStandState())
     {
-        crit_chance = 100;
         dodge_chance = 0;
         parry_chance = 0;
         block_chance = 0;
@@ -3204,16 +3218,18 @@ float Unit::GetUnitCriticalChance(WeaponAttackType attackType, const Unit *pVict
     crit += pVictim->GetTotalAuraModifier(SPELL_AURA_MOD_ATTACKER_SPELL_AND_WEAPON_CRIT_CHANCE);
 
     // reduce crit chance from Rating for players
-    if (pVictim->GetTypeId()==TYPEID_PLAYER)
+    if (pVictim->GetTypeId() == TYPEID_PLAYER)
     {
-        if (attackType==RANGED_ATTACK)
+        if (attackType == RANGED_ATTACK)
             crit -= ((Player*)pVictim)->GetRatingBonusValue(CR_CRIT_TAKEN_RANGED);
         else
             crit -= ((Player*)pVictim)->GetRatingBonusValue(CR_CRIT_TAKEN_MELEE);
+
     }
 
     if (crit < 0.0f)
         crit = 0.0f;
+
     return crit;
 }
 
@@ -9358,7 +9374,7 @@ void Unit::CombatStart(Unit* target, bool initialAggro)
 
     if (initialAggro)
     {
-        if (!target->IsStandState()/* && !target->hasUnitState(UNIT_STAT_STUNNED)*/)
+        if(!target->IsStandState() && target->GetTypeId() != TYPEID_PLAYER)
             target->SetStandState(PLAYER_STATE_NONE);
 
         if (!target->isInCombat() && target->GetTypeId() != TYPEID_PLAYER
