@@ -115,16 +115,20 @@ void PetAI::PrepareSpellForAutocast(uint32 spellID)
 
     bool inCombat = me->getVictim();
 
-    // ignore some combinations of combat state and combat/noncombat spells
-    if (!inCombat)
+    //Devour Magic - FelhunterAI
+    if(spellID != 19505)
     {
-        if (!SpellMgr::IsPositiveSpell(spellInfo->Id))
-            return;
-    }
-    else
-    {
-        if (SpellMgr::IsNonCombatSpell(spellInfo))
-            return;
+        // ignore some combinations of combat state and combat/noncombat spells
+        if(!inCombat)
+        {
+            if(!SpellMgr::IsPositiveSpell(spellInfo->Id))
+                return;
+        }
+        else
+        {
+            if(SpellMgr::IsNonCombatSpell(spellInfo))
+                return;
+        }
     }
 /*
     if (m_owner && m_owner->GetTypeId() == TYPEID_PLAYER)
@@ -140,12 +144,11 @@ void PetAI::PrepareSpellForAutocast(uint32 spellID)
     }
     else
     {
-
         bool spellUsed = false;
         for (std::set<uint64>::iterator tar = m_AllySet.begin(); tar != m_AllySet.end(); ++tar)
         {
             Unit* Target = me->GetMap()->GetUnit(*tar);
-
+           
             //only buff targets that are in combat, unless the spell can only be cast while out of combat
             if (!Target)
                 continue;
@@ -157,6 +160,7 @@ void PetAI::PrepareSpellForAutocast(uint32 spellID)
                 break;
             }
         }
+
         if (!spellUsed)
             delete spell;
     }
@@ -447,21 +451,21 @@ void FelhunterAI::PrepareSpellForAutocast(uint32 spellID)
     {
         SpellEntry const *spellInfo = sSpellStore.LookupEntry(spellID);
         Unit *target = me->getVictim();
-        if (!spellInfo || !target)
+
+        if (!spellInfo)
             return;
-        Unit::AuraMap const& auras = target->GetAuras();
-        for (Unit::AuraMap::const_iterator itr = auras.begin(); itr != auras.end(); ++itr)
+
+        if(!target)
         {
-            Aura *aur = (*itr).second;
-            if (aur && aur->GetSpellProto()->Dispel == DISPEL_MAGIC)
-            {
-                if (aur->IsPositive())
-                {
-                    AddSpellForAutocast(spellID, target);
-                    return;
-                }
-            }
+            target = me->GetOwner();
         }
+
+        if(!target)
+        {
+            return;
+        }
+
+        AddSpellForAutocast(spellID, target);
     }
     else
         PetAI::PrepareSpellForAutocast(spellID);
