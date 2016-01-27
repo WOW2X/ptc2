@@ -477,6 +477,7 @@ Player::Player (WorldSession *session): Unit(), m_reputationMgr(this), m_camera(
 
 Player::~Player ()
 {
+    UpdateVisibilityAndView();
     CleanupsBeforeDelete();
 
     // it must be unloaded already in PlayerLogout and accessed only for loggined player
