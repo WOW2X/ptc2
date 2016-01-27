@@ -4427,23 +4427,27 @@ SpellCastResult Spell::CheckCast(bool strict)
             if(Unit* target = m_targets.getUnitTarget())
             {
                 uint32 dispelMask = SpellMgr::GetDispellMask(DispelType(GetSpellEntry()->EffectMiscValue[i]));
-  
+
                 std::vector<uint32> buffs;
                 buffs.clear();
                 Unit::AuraMap& Auras = target->GetAuras();
                 for(Unit::AuraMap::iterator i = Auras.begin(); i != Auras.end(); ++i)
                 {
                     SpellEntry const *spellInfo = i->second->GetSpellProto();
-                    // do not select passive auras
-                    if(i->second->IsPassive())
-                        continue;
-                    // only beneficial effects count
-                    // if(!SpellMgr::IsPositiveSpell(spellInfo->Id))
-                    //  continue;
-                    if(spellInfo->Dispel != dispelMask)
-                        continue;
-
-                    buffs.push_back(spellInfo->Id);
+                    if(m_caster->IsFriendlyTo(target))
+                    {
+                        if((spellInfo->DmgClass == SPELL_DAMAGE_CLASS_MAGIC || ((1 << spellInfo->Dispel) & dispelMask)) && !i->second->IsPositive() && !i->second->IsPassive() && spellInfo->SchoolMask != SPELL_SCHOOL_MASK_NORMAL)
+                        {
+                            buffs.push_back(spellInfo->Id);
+                        }
+                    }
+                    else if(m_caster->IsHostileTo(target))
+                    {
+                        if(((1 << spellInfo->Dispel) & dispelMask) && i->second->IsPositive() && !i->second->IsPassive() && spellInfo->SchoolMask != SPELL_SCHOOL_MASK_NORMAL)
+                        {
+                            buffs.push_back(spellInfo->Id);
+                        }
+                    }
                 }
 
                 if(buffs.empty())
