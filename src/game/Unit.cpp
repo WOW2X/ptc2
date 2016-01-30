@@ -8149,6 +8149,7 @@ uint32 Unit::SpellDamageBonus(Unit *pVictim, SpellEntry const *spellProto, uint3
         }
     }
 
+
     uint32 creatureTypeMask = pVictim->GetCreatureTypeMask();
     AuraList const& mDamageDoneVersus = GetAurasByType(SPELL_AURA_MOD_DAMAGE_DONE_VERSUS);
     for (AuraList::const_iterator i = mDamageDoneVersus.begin();i != mDamageDoneVersus.end(); ++i)
@@ -8176,13 +8177,34 @@ uint32 Unit::SpellDamageBonus(Unit *pVictim, SpellEntry const *spellProto, uint3
         switch ((*i)->GetModifier()->m_miscvalue)
         {
             //Molten Fury
-            case 4920: case 4919:
+            case 4920: 
+            case 4919:
                 if (pVictim->HasAuraState(AURA_STATE_HEALTHLESS_20_PERCENT))
-                    TakenTotalMod *= (100.0f+(*i)->GetModifier()->m_amount)/100.0f; break;
+                    TakenTotalMod *= (100.0f+(*i)->GetModifier()->m_amount)/100.0f; 
+                break;
         }
     }
 
-    bool hasmangle=false;
+    if(getClass() == CLASS_ROGUE)
+    {
+        //Dirty Deeds
+        if(HasAura(14083)) //Rank 2
+        {
+            if(pVictim->HasAuraState(AURA_STATE_HEALTHLESS_35_PERCENT))
+            {
+                TakenTotalMod *= 1.2f;
+            }
+        }
+        else if(HasAura(14082)) //Rank 1
+        {
+            if(pVictim->HasAuraState(AURA_STATE_HEALTHLESS_35_PERCENT))
+            {
+                TakenTotalMod *= 1.1f;
+            }
+        }
+    }
+
+    bool hasmangle = false;
     // .. taken pct: dummy auras
     AuraList const& mDummyAuras = pVictim->GetAurasByType(SPELL_AURA_DUMMY);
     for (AuraList::const_iterator i = mDummyAuras.begin(); i != mDummyAuras.end(); ++i)
@@ -9185,29 +9207,6 @@ void Unit::MeleeDamageBonus(Unit *pVictim, uint32 *pdamage,WeaponAttackType attT
         }
     }
 
-    // .. taken pct: class scripts
-    AuraList const& mclassScritAuras = GetAurasByType(SPELL_AURA_override_CLASS_SCRIPTS);
-    for (AuraList::const_iterator i = mclassScritAuras.begin(); i != mclassScritAuras.end(); ++i)
-    {
-        switch ((*i)->GetMiscValue())
-        {
-            case 6427: case 6428:                           // Dirty Deeds
-                if (pVictim->HasAuraState(AURA_STATE_HEALTHLESS_35_PERCENT))
-                {
-                    Aura* eff0 = GetAura((*i)->GetId(),0);
-                    if (!eff0 || (*i)->GetEffIndex()!=1)
-                    {
-                        sLog.outLog(LOG_DEFAULT, "ERROR: Spell structure of DD (%u) changed.",(*i)->GetId());
-                        continue;
-                    }
-
-                    // effect 0 have expected value but in negative state
-                    TakenTotalMod *= (-eff0->GetModifier()->m_amount+100.0f)/100.0f;
-                }
-                break;
-        }
-    }
-
     if (attType != RANGED_ATTACK)
     {
         AuraList const& mModMeleeDamageTakenPercent = pVictim->GetAurasByType(SPELL_AURA_MOD_MELEE_DAMAGE_TAKEN_PCT);
@@ -9219,6 +9218,28 @@ void Unit::MeleeDamageBonus(Unit *pVictim, uint32 *pdamage,WeaponAttackType attT
         AuraList const& mModRangedDamageTakenPercent = pVictim->GetAurasByType(SPELL_AURA_MOD_RANGED_DAMAGE_TAKEN_PCT);
         for (AuraList::const_iterator i = mModRangedDamageTakenPercent.begin(); i != mModRangedDamageTakenPercent.end(); ++i)
             TakenTotalMod *= ((*i)->GetModifierValue()+100.0f)/100.0f;
+    }
+
+    if(spellProto && spellProto->Id != 6603 && spellProto->Id != 2764 && spellProto->Id != 75)
+    {
+        if(getClass() == CLASS_ROGUE)
+        {
+            //Dirty Deeds
+            if(HasAura(14083)) //Rank 2
+            {
+                if(pVictim->HasAuraState(AURA_STATE_HEALTHLESS_35_PERCENT))
+                {
+                    TakenTotalMod *= 1.2f;
+                }
+            }
+            else if(HasAura(14082)) //Rank 1
+            {
+                if(pVictim->HasAuraState(AURA_STATE_HEALTHLESS_35_PERCENT))
+                {
+                    TakenTotalMod *= 1.1f;
+                }
+            }
+        }
     }
 
     float tmpDamage = float(int32(*pdamage) + DoneFlatBenefit) * DoneTotalMod;
