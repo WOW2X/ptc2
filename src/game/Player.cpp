@@ -17302,6 +17302,17 @@ void Player::RemovePet(Pet* pet, PetSaveMode mode, bool returnreagent, bool isDy
     if (!pet)
         pet = GetPet();
 
+    //Bestial Wrath, Bestial Within
+    if(pet && pet->HasAura(19574))
+    {
+        pet->RemoveAurasDueToSpell(19574);
+    }
+
+    if(HasAura(34471))
+    {
+        RemoveAurasDueToSpell(34471);
+    }
+
     // Remove auras off unsummoned pet when owner dies
     if (isDying && !pet && GetTemporaryUnsummonedPetNumber())
         RealmDataDatabase.PExecute("DELETE FROM pet_aura WHERE guid = '%u'", GetTemporaryUnsummonedPetNumber());
