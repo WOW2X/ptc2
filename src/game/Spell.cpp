@@ -4426,33 +4426,37 @@ SpellCastResult Spell::CheckCast(bool strict)
             case SPELL_EFFECT_DISPEL:
             if(Unit* target = m_targets.getUnitTarget())
             {
-                uint32 dispelMask = SpellMgr::GetDispellMask(DispelType(GetSpellEntry()->EffectMiscValue[i]));
-
-                std::vector<uint32> buffs;
-                buffs.clear();
-                Unit::AuraMap& Auras = target->GetAuras();
-                for(Unit::AuraMap::iterator i = Auras.begin(); i != Auras.end(); ++i)
+                //Devour Magic
+                if(GetSpellEntry()->Id == 27277 || GetSpellEntry()->Id == 27276 || GetSpellEntry()->Id == 19736 || GetSpellEntry()->Id == 19734 || GetSpellEntry()->Id == 19731 || GetSpellEntry()->Id == 19505)
                 {
-                    SpellEntry const *spellInfo = i->second->GetSpellProto();
-                    if(m_caster->IsFriendlyTo(target))
+                    uint32 dispelMask = SpellMgr::GetDispellMask(DispelType(GetSpellEntry()->EffectMiscValue[i]));
+
+                    std::vector<uint32> buffs;
+                    buffs.clear();
+                    Unit::AuraMap& Auras = target->GetAuras();
+                    for(Unit::AuraMap::iterator i = Auras.begin(); i != Auras.end(); ++i)
                     {
-                        if((spellInfo->DmgClass == SPELL_DAMAGE_CLASS_MAGIC || ((1 << spellInfo->Dispel) & dispelMask)) && !i->second->IsPositive() && !i->second->IsPassive() && spellInfo->SchoolMask != SPELL_SCHOOL_MASK_NORMAL)
+                        SpellEntry const *spellInfo = i->second->GetSpellProto();
+                        if(m_caster->IsFriendlyTo(target))
                         {
-                            buffs.push_back(spellInfo->Id);
+                            if((spellInfo->DmgClass == SPELL_DAMAGE_CLASS_MAGIC || ((1 << spellInfo->Dispel) & dispelMask)) && !i->second->IsPositive() && !i->second->IsPassive() && spellInfo->SchoolMask != SPELL_SCHOOL_MASK_NORMAL)
+                            {
+                                buffs.push_back(spellInfo->Id);
+                            }
+                        }
+                        else if(m_caster->IsHostileTo(target))
+                        {
+                            if(((1 << spellInfo->Dispel) & dispelMask) && i->second->IsPositive() && !i->second->IsPassive() && spellInfo->SchoolMask != SPELL_SCHOOL_MASK_NORMAL)
+                            {
+                                buffs.push_back(spellInfo->Id);
+                            }
                         }
                     }
-                    else if(m_caster->IsHostileTo(target))
-                    {
-                        if(((1 << spellInfo->Dispel) & dispelMask) && i->second->IsPositive() && !i->second->IsPassive() && spellInfo->SchoolMask != SPELL_SCHOOL_MASK_NORMAL)
-                        {
-                            buffs.push_back(spellInfo->Id);
-                        }
-                    }
-                }
 
-                if(buffs.empty())
-                {
-                    return SPELL_FAILED_NOTHING_TO_DISPEL;
+                    if(buffs.empty())
+                    {
+                        return SPELL_FAILED_NOTHING_TO_DISPEL;
+                    }
                 }
             }
 
