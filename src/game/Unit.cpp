@@ -1150,23 +1150,26 @@ uint32 Unit::DealDamage(DamageLog *damageInfo, DamageEffectType damagetype, cons
         }
     }
 
-    //Rapid Killing
-    switch(spellProto->Id)
+    if(spellProto)
     {
-        //Aimed Shot
-        case 19434:
-        case 20900:
-        case 20901:
-        case 20902:
-        case 20903:
-        case 20904:
-        case 27065:
-        case 75:
-        if(HasAura(35099))
-            RemoveAurasDueToSpell(35099);
-        else if(HasAura(35098))
-            RemoveAurasDueToSpell(35098);
-        break;
+        //Rapid Killing
+        switch(spellProto->Id)
+        {
+            //Aimed Shot
+            case 19434:
+            case 20900:
+            case 20901:
+            case 20902:
+            case 20903:
+            case 20904:
+            case 27065:
+            case 75:
+            if(HasAura(35099))
+                RemoveAurasDueToSpell(35099);
+            else if(HasAura(35098))
+                RemoveAurasDueToSpell(35098);
+            break;
+        }
     }
 
 
