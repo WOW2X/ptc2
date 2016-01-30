@@ -40,6 +40,7 @@
 #include "BattleGround.h"
 #include "Guild.h"
 #include "GuildMgr.h"
+#include "WaypointMovementGenerator.h"
 
 void WorldSession::HandleTabardVendorActivateOpcode(WorldPacket & recv_data)
 {
@@ -280,8 +281,14 @@ void WorldSession::HandleGossipHelloOpcode(WorldPacket & recv_data)
     //if(GetPlayer()->hasUnitState(UNIT_STAT_DIED))
     //    GetPlayer()->RemoveSpellsCausingAura(SPELL_AURA_FEIGN_DEATH);
 
-    if (unit->isArmorer() || unit->isCivilian() || unit->isQuestGiver() || unit->isServiceProvider())
+    if(unit->isArmorer() || unit->isCivilian() || unit->isQuestGiver() || unit->isServiceProvider())
+    {
         unit->StopMoving();
+        if(unit->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
+        {
+            unit->GetMotionMaster()->top()->Stop();
+        }
+    }
 
     // If spirit guide, no need for gossip menu, just put player into resurrect queue
     if (unit->isSpiritGuide())
@@ -301,6 +308,7 @@ void WorldSession::HandleGossipHelloOpcode(WorldPacket & recv_data)
         unit->prepareGossipMenu(_player);
         unit->sendPreparedGossip(_player);
     }
+
 }
 
 /*void WorldSession::HandleGossipSelectOptionOpcode(WorldPacket & recv_data)

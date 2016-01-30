@@ -55,6 +55,8 @@ void WaypointMovementGenerator<Creature>::Initialize(Creature &creature)
 
     if (creature.GetMap()->WaypointMovementAutoActive())
         creature.setActive(true, ACTIVE_BY_WAYPOINT_MOVEMENT);
+
+    StopedByPlayer = false;
 }
 
 void WaypointMovementGenerator<Creature>::Finalize(Creature &creature)
@@ -144,12 +146,28 @@ bool WaypointMovementGenerator<Creature>::Update(Creature &creature, const uint3
 
     if (creature.IsStopped())
     {
-        atNode(creature);
+        if(!StopedByPlayer)
+        {
+            atNode(creature);
+            return tryToMove(creature);
+        }
+        else
+        {
+            if(_nextMoveTime.Passed())
+            {
+                StopedByPlayer = false;
+            }
+        }
 
         _nextMoveTime.Update(diff);
-        return tryToMove(creature);
     }
     return true;
+}
+
+void WaypointMovementGenerator<Creature>::Stop()
+{
+    _nextMoveTime.Reset(STOP_TIME_FOR_PLAYER);
+    StopedByPlayer = true;
 }
 
 bool WaypointMovementGenerator<Creature>::GetResetPosition(Creature&, float& x, float& y, float& z)

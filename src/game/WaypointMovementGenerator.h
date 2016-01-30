@@ -83,6 +83,7 @@ class WaypointMovementGenerator<Creature> : public MovementGeneratorMedium< Crea
         void LoadPath(Creature &c);
 
         bool GetResetPosition(Creature&, float& x, float& y, float& z);
+        void Stop();
 
     private:
 
@@ -94,6 +95,7 @@ class WaypointMovementGenerator<Creature> : public MovementGeneratorMedium< Crea
         bool _isArrivalDone;
         uint32 _pathId;
         bool _repeating;
+        bool StopedByPlayer;
 };
 
 /** FlightPathMovementGenerator generates movement of the player for the paths
