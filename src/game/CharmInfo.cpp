@@ -92,6 +92,7 @@ CharmInfo::CharmInfo(Unit* unit)
 
     if (m_unit->GetTypeId() == TYPEID_UNIT)
     {
+        m_oryginalReactState = REACT_UNKNOWN;
         m_oldReactState = ((Creature*)m_unit)->GetReactState();
         ((Creature*)m_unit)->SetReactState(REACT_PASSIVE);
     }
@@ -101,6 +102,7 @@ CharmInfo::~CharmInfo()
 {
     if (m_unit->GetTypeId() == TYPEID_UNIT)
     {
+        m_oryginalReactState = REACT_UNKNOWN;
         ((Creature*)m_unit)->SetReactState(m_oldReactState);
     }
 }
@@ -324,6 +326,12 @@ void CharmInfo::HandleFollowCommand()
 {
     if (m_unit->GetMotionMaster()->GetCurrentMovementGeneratorType() == FOLLOW_MOTION_TYPE)
         return;
+
+    if(m_unit->GetTypeId() == TYPEID_UNIT)
+    {
+        m_oryginalReactState = ((Creature*)m_unit)->GetReactState();
+        ((Creature*)m_unit)->SetReactState(REACT_PASSIVE);
+    }
 
     SetCommandState(COMMAND_FOLLOW);
 

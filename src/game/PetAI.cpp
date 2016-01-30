@@ -29,6 +29,7 @@
 #include "SpellMgr.h"
 #include "Creature.h"
 #include "Util.h"
+#include "ObjectMgr.h"
 
 int PetAI::Permissible(const Creature *creature)
 {
@@ -40,6 +41,7 @@ int PetAI::Permissible(const Creature *creature)
 
 PetAI::PetAI(Creature *c) : CreatureAI(c), i_tracker(TIME_INTERVAL_LOOK), m_forceTimer(0)
 {
+    ShadowfiendInitialized = false;
     m_AllySet.clear();
     m_owner = me->GetCharmerOrOwner();
 
@@ -259,6 +261,69 @@ void PetAI::UpdateAI(const uint32 diff)
             m_forceTimer -= diff;
     }
 
+    if(m_owner)
+    {
+        if(me->GetCharmInfo() && me->GetCharmInfo()->GetOrginalReactState() != REACT_UNKNOWN && me->GetReactState() != me->GetCharmInfo()->GetOrginalReactState())
+        {
+            if(me->GetDistance(m_owner) <= PET_FOLLOW_DIST*0.9f)
+            {
+                me->SetReactState(me->GetCharmInfo()->GetOrginalReactState());
+            }
+        }
+    }
+
+    if(!me->getVictim())
+    {
+        //Shadowfiend
+        if(!ShadowfiendInitialized && me->GetEntry() == 19668)
+        {
+            if(m_owner->GetMap())
+            {
+                Unit* target = m_owner->GetMap()->GetUnit(m_owner->GetSelection());
+                if(target && me->IsHostileTo(target))
+                    AttackStart(target);
+
+                ShadowfiendInitialized = true;
+            }
+        }
+
+        if(me->GetCharmInfo() && !me->HasReactState(REACT_PASSIVE) && !me->GetCharmInfo()->HasCommandState(COMMAND_STAY))
+        {
+            Unit * target = m_owner->getAttackerForHelper();
+            if(!target)
+
+                target = me->getAttackerForHelper();
+
+            if(target)
+                AttackStart(target);
+            else
+            {
+                if(!me->GetCharmInfo()->HasCommandState(COMMAND_STAY))
+                {
+                    if(me->GetCharmInfo()->HasCommandState(COMMAND_FOLLOW) && !me->hasUnitState(UNIT_STAT_FOLLOW))
+                        me->GetMotionMaster()->MoveFollow(m_owner, PET_FOLLOW_DIST, PET_FOLLOW_ANGLE);
+                }
+            }
+        }
+    }
+    else
+    {
+        if(!me->GetOwner() || !me->GetOwner()->GetObjectGuid().IsPlayer())
+            _stopAttack();
+
+        if(_needToStop())
+        {
+            _stopAttack();
+            return;
+        }
+        else
+        {
+            DoMeleeAttackIfReady();
+        }
+    }
+
+
+    /*
     if (me->getVictim())
     {
         if (_needToStop())
@@ -278,8 +343,8 @@ void PetAI::UpdateAI(const uint32 diff)
         }
         else if (Unit* owner = me->GetOwner())
         {
-            if (!me->HasReactState(REACT_PASSIVE) && !me->GetCharmInfo()->HasCommandState(COMMAND_STAY))
-            {
+          //  if (!me->HasReactState(REACT_PASSIVE) && !me->GetCharmInfo()->HasCommandState(COMMAND_STAY))
+           // {
                 Unit* target = NULL;
                 if (owner->isInCombat())
                     target = owner->getAttackerForHelper();
@@ -288,13 +353,14 @@ void PetAI::UpdateAI(const uint32 diff)
 
                 if (target)
                     AttackStart(target);
-            }
+          //  }
 
             // we still do NOT have target, if follow command were appliend and we are NOT followin, reapply movegen :P
             if (!me->getVictim() && me->GetCharmInfo()->HasCommandState(COMMAND_FOLLOW) && !me->hasUnitState(UNIT_STAT_FOLLOW))
                 me->GetMotionMaster()->MoveFollow(owner, PET_FOLLOW_DIST,PET_FOLLOW_ANGLE);
         }
     }
+    */
 
     if (!me->GetCharmInfo())
         return;
@@ -383,6 +449,11 @@ void ImpAI::UpdateAI(const uint32 diff)
             m_forceTimer -= diff;
     }
 
+  
+    if(Unit * target = m_owner->getAttackerForHelper())
+        AttackStart(target);
+
+    
    // me->getVictim() can't be used for check in case stop fighting, me->getVictim() clear at Unit death etc.
     if (Unit *target = me->getVictim())
     {
@@ -420,7 +491,7 @@ void ImpAI::UpdateAI(const uint32 diff)
                 me->GetMotionMaster()->MoveFollow(m_owner,PET_FOLLOW_DIST,PET_FOLLOW_ANGLE);
         }
     }
-
+    
     if (!me->GetCharmInfo())
         return;
 

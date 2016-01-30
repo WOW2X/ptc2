@@ -28,7 +28,8 @@ enum ReactStates
 {
     REACT_PASSIVE    = 0,
     REACT_DEFENSIVE  = 1,
-    REACT_AGGRESSIVE = 2
+    REACT_AGGRESSIVE = 2,
+    REACT_UNKNOWN    = 3
 };
 
 enum CommandStates
@@ -125,6 +126,7 @@ struct HELLGROUND_IMPORT_EXPORT CharmInfo
         void HandleFollowCommand();
         void HandleAttackCommand(uint64 targetGUID);
         void HandleSpellActCommand(uint64 targetGUID, uint32 spellId);
+        ReactStates GetOrginalReactState() { return m_oryginalReactState; };
 
     private:
         Unit* m_unit;
@@ -138,6 +140,7 @@ struct HELLGROUND_IMPORT_EXPORT CharmInfo
 
         //for restoration after charmed
         ReactStates     m_oldReactState;
+        ReactStates     m_oryginalReactState;
 
         CooldownMgr m_CooldownMgr;
 };
