@@ -263,11 +263,19 @@ void PetAI::UpdateAI(const uint32 diff)
 
     if(m_owner)
     {
-        if(me->GetCharmInfo() && me->GetCharmInfo()->GetOrginalReactState() != REACT_UNKNOWN && me->GetReactState() != me->GetCharmInfo()->GetOrginalReactState())
+        if(me->GetCharmInfo() && me->GetCharmInfo()->IsNeedReturn())
         {
             if(me->GetDistance(m_owner) <= PET_FOLLOW_DIST*0.9f)
             {
-                me->SetReactState(me->GetCharmInfo()->GetOrginalReactState());
+                me->GetCharmInfo()->SetNeedReturn(false);
+            }
+            else
+            {
+                if(me->GetCharmInfo()->HasCommandState(COMMAND_FOLLOW) && !me->hasUnitState(UNIT_STAT_FOLLOW))
+                {
+                    me->GetMotionMaster()->MoveFollow(m_owner, PET_FOLLOW_DIST, PET_FOLLOW_ANGLE);
+                }
+                return;
             }
         }
     }

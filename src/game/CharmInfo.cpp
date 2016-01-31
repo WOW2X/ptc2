@@ -90,9 +90,10 @@ CharmInfo::CharmInfo(Unit* unit)
         m_charmspells[i].active = ACT_DISABLED;
     }
 
+    SetNeedReturn(false);
+
     if (m_unit->GetTypeId() == TYPEID_UNIT)
     {
-        m_oryginalReactState = REACT_UNKNOWN;
         m_oldReactState = ((Creature*)m_unit)->GetReactState();
         ((Creature*)m_unit)->SetReactState(REACT_PASSIVE);
     }
@@ -102,7 +103,7 @@ CharmInfo::~CharmInfo()
 {
     if (m_unit->GetTypeId() == TYPEID_UNIT)
     {
-        m_oryginalReactState = REACT_UNKNOWN;
+        SetNeedReturn(false); 
         ((Creature*)m_unit)->SetReactState(m_oldReactState);
     }
 }
@@ -329,8 +330,7 @@ void CharmInfo::HandleFollowCommand()
 
     if(m_unit->GetTypeId() == TYPEID_UNIT)
     {
-        m_oryginalReactState = ((Creature*)m_unit)->GetReactState();
-        ((Creature*)m_unit)->SetReactState(REACT_PASSIVE);
+        SetNeedReturn(true);
     }
 
     SetCommandState(COMMAND_FOLLOW);
