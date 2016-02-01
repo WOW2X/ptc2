@@ -3570,27 +3570,44 @@ void Spell::TakePower()
         return;
 
     bool hit = true;
-    if (m_caster->GetTypeId() == TYPEID_PLAYER)
+
+    if(m_caster && m_caster->GetTypeId() == TYPEID_PLAYER)
     {
-        if (GetSpellEntry()->powerType == POWER_RAGE || GetSpellEntry()->powerType == POWER_ENERGY)
-            if (uint64 targetGUID = m_targets.getUnitTargetGUID())
-                for (std::list<TargetInfo>::iterator ihit= m_UniqueTargetInfo.begin(); ihit != m_UniqueTargetInfo.end(); ++ihit)
+        if(GetSpellEntry()->powerType == POWER_ENERGY)
+        {
+            if(uint64 targetGUID = m_targets.getUnitTargetGUID())
+            {
+                for(std::list<TargetInfo>::iterator ihit = m_UniqueTargetInfo.begin(); ihit != m_UniqueTargetInfo.end(); ++ihit)
                 {
-                    if (ihit->deleted)
+                    if(ihit->deleted)
                         continue;
 
-                    if (ihit->targetGUID == targetGUID)
+                    if(ihit->targetGUID == targetGUID)
                     {
-                        if (ihit->missCondition != SPELL_MISS_NONE && ihit->missCondition != SPELL_MISS_MISS/* && ihit->targetGUID!=m_caster->GetGUID()*/)
-                            hit = false;
-                        else if (((Player*)m_caster)->getClass() == CLASS_DRUID && ihit->missCondition == SPELL_MISS_MISS && GetSpellEntry()->powerType == POWER_ENERGY) // not sure if it's limited only to druid/energy
-                            hit = false;
-                        break;
+                        if(ihit->missCondition != SPELL_MISS_NONE)
+                        { 
+                            if(((Player*)m_caster)->getClass() == CLASS_ROGUE)
+                            {
+                                hit = false;
+                            }
+                            else if(((Player*)m_caster)->getClass() == CLASS_DRUID)
+                            {
+                                if(GetSpellEntry()->powerType == POWER_ENERGY)
+                                {
+                                    hit = false;
+                                }
+                            } 
+                        }
+
+                        if(!hit)
+                            break;
                     }
                 }
 
-        if (hit && SpellMgr::NeedsComboPoints(GetSpellEntry()))
-            ((Player*)m_caster)->ClearComboPoints();
+                if(hit && SpellMgr::NeedsComboPoints(GetSpellEntry()))
+                    ((Player*)m_caster)->ClearComboPoints();
+            }
+        }
     }
 
     if (!m_powerCost)
