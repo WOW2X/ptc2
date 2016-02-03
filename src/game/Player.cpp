@@ -17302,13 +17302,14 @@ void Player::RemovePet(Pet* pet, PetSaveMode mode, bool returnreagent, bool isDy
     if (!pet)
         pet = GetPet();
 
-    //Bestial Wrath, Bestial Within
-    if(pet && pet->HasAura(19574))
+    // Hunter: Bestial Wrath
+    if (pet && pet->HasAura(19574))
     {
         pet->RemoveAurasDueToSpell(19574);
     }
 
-    if(HasAura(34471))
+    // Hunter: The Beast Within
+    if (HasAura(34471))
     {
         RemoveAurasDueToSpell(34471);
     }

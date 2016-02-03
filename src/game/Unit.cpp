@@ -1150,10 +1150,10 @@ uint32 Unit::DealDamage(DamageLog *damageInfo, DamageEffectType damagetype, cons
         }
     }
 
-    if(spellProto)
+    if (spellProto)
     {
-        //Rapid Killing
-        switch(spellProto->Id)
+        // Rapid Killing
+        switch (spellProto->Id)
         {
             //Aimed Shot
             case 19434:
@@ -1164,9 +1164,9 @@ uint32 Unit::DealDamage(DamageLog *damageInfo, DamageEffectType damagetype, cons
             case 20904:
             case 27065:
             case 75:
-            if(HasAura(35099))
+            if (HasAura(35099))
                 RemoveAurasDueToSpell(35099);
-            else if(HasAura(35098))
+            else if (HasAura(35098))
                 RemoveAurasDueToSpell(35098);
             break;
         }
@@ -1176,7 +1176,7 @@ uint32 Unit::DealDamage(DamageLog *damageInfo, DamageEffectType damagetype, cons
     // send damage to client here - after modifications
     SendDamageLog(damageInfo);
 
-    if(!pVictim->IsStandState() && pVictim->GetTypeId() == TYPEID_PLAYER)
+    if (!pVictim->IsStandState() && pVictim->GetTypeId() == TYPEID_PLAYER)
         pVictim->SetStandState(PLAYER_STATE_NONE);
 
     DEBUG_LOG("DealDamageEnd returned %d damage", damageInfo->damage);
@@ -1668,9 +1668,9 @@ void Unit::CalculateMeleeDamage(MeleeDamageLog *damageInfo)
     else // Umpossible get negative result but....
         damageInfo->damage = 0;
 
-    if(damageInfo->target->GetTypeId() == TYPEID_PLAYER && !damageInfo->target->IsStandState())
+    if (damageInfo->target->GetTypeId() == TYPEID_PLAYER && !damageInfo->target->IsStandState())
     {
-        if(damageInfo->attackType != RANGED_ATTACK && (damageInfo->hitInfo & HITINFO_CRITICALHIT) == 0)
+        if (damageInfo->attackType != RANGED_ATTACK && (damageInfo->hitInfo & HITINFO_CRITICALHIT) == 0)
         {
             damageInfo->hitInfo |= HITINFO_CRITICALHIT;
             damageInfo->targetState = VICTIMSTATE_NORMAL;
@@ -1684,6 +1684,7 @@ void Unit::DealMeleeDamage(MeleeDamageLog *damageInfo, bool durabilityLoss)
 {
     if (!damageInfo)
         return;
+
     Unit *pVictim = damageInfo->target;
 
     if (!this || !pVictim)
@@ -2370,7 +2371,7 @@ void Unit::RollMeleeHit(MeleeDamageLog *damageInfo, int32 crit_chance, int32 mis
 
     bool fromBehind = !pVictim->HasInArc(M_PI, this);
 
-    if(!pVictim->IsStandState())
+    if (!pVictim->IsStandState())
     {
         dodge_chance = 0;
         parry_chance = 0;
@@ -8185,19 +8186,19 @@ uint32 Unit::SpellDamageBonus(Unit *pVictim, SpellEntry const *spellProto, uint3
         }
     }
 
-    if(getClass() == CLASS_ROGUE)
+    if (getClass() == CLASS_ROGUE)
     {
         //Dirty Deeds
-        if(HasAura(14083)) //Rank 2
+        if (HasAura(14083)) //Rank 2
         {
-            if(pVictim->HasAuraState(AURA_STATE_HEALTHLESS_35_PERCENT))
+            if (pVictim->HasAuraState(AURA_STATE_HEALTHLESS_35_PERCENT))
             {
                 TakenTotalMod *= 1.2f;
             }
         }
-        else if(HasAura(14082)) //Rank 1
+        else if (HasAura(14082)) //Rank 1
         {
-            if(pVictim->HasAuraState(AURA_STATE_HEALTHLESS_35_PERCENT))
+            if (pVictim->HasAuraState(AURA_STATE_HEALTHLESS_35_PERCENT))
             {
                 TakenTotalMod *= 1.1f;
             }
@@ -9220,21 +9221,21 @@ void Unit::MeleeDamageBonus(Unit *pVictim, uint32 *pdamage,WeaponAttackType attT
             TakenTotalMod *= ((*i)->GetModifierValue()+100.0f)/100.0f;
     }
 
-    if(spellProto && spellProto->Id != 6603 && spellProto->Id != 2764 && spellProto->Id != 75)
+    if (spellProto && spellProto->Id != 6603 && spellProto->Id != 2764 && spellProto->Id != 75)
     {
-        if(getClass() == CLASS_ROGUE)
+        if (getClass() == CLASS_ROGUE)
         {
-            //Dirty Deeds
-            if(HasAura(14083)) //Rank 2
+            // Dirty Deeds
+            if (HasAura(14083)) // Rank 2
             {
-                if(pVictim->HasAuraState(AURA_STATE_HEALTHLESS_35_PERCENT))
+                if (pVictim->HasAuraState(AURA_STATE_HEALTHLESS_35_PERCENT))
                 {
                     TakenTotalMod *= 1.2f;
                 }
             }
-            else if(HasAura(14082)) //Rank 1
+            else if (HasAura(14082)) // Rank 1
             {
-                if(pVictim->HasAuraState(AURA_STATE_HEALTHLESS_35_PERCENT))
+                if (pVictim->HasAuraState(AURA_STATE_HEALTHLESS_35_PERCENT))
                 {
                     TakenTotalMod *= 1.1f;
                 }
@@ -9418,7 +9419,7 @@ void Unit::CombatStart(Unit* target, bool initialAggro)
 
     if (initialAggro)
     {
-        if(!target->IsStandState() && target->GetTypeId() != TYPEID_PLAYER)
+        if (!target->IsStandState() && target->GetTypeId() != TYPEID_PLAYER)
             target->SetStandState(PLAYER_STATE_NONE);
 
         if (!target->isInCombat() && target->GetTypeId() != TYPEID_PLAYER
@@ -9595,7 +9596,7 @@ bool Unit::canAttack(Unit const* target, bool force) const
     if ((m_invisibilityMask || target->m_invisibilityMask) && !canDetectInvisibilityOf(target, this))
         return false;
 
-    if(target->GetVisibility() == VISIBILITY_GROUP_STEALTH && !canDetectStealthOf(target, this, GetExactDistance2d(target->GetPositionX(), target->GetPositionY())))
+    if (target->GetVisibility() == VISIBILITY_GROUP_STEALTH && !canDetectStealthOf(target, this, GetExactDistance2d(target->GetPositionX(), target->GetPositionY())))
         return false;
 
     return true;
@@ -9809,7 +9810,7 @@ bool Unit::canDetectInvisibilityOf(Unit const* u, WorldObject const* viewPoint) 
 
 bool Unit::canDetectStealthOf(Unit const* target, WorldObject const* viewPoint, float distance) const
 {
-    if(!target)
+    if (!target)
         return false;
 
     if (hasUnitState(UNIT_STAT_STUNNED))
@@ -9817,21 +9818,21 @@ bool Unit::canDetectStealthOf(Unit const* target, WorldObject const* viewPoint, 
 
     distance -= target->GetObjectSize() + (GetObjectSize()/2);
 
-    if(distance < 0)
+    if (distance < 0)
         distance = 0;
 
-    if(distance < 0.24f) //collision
+    if (distance < 0.24f) //collision
         return true;
 
-    //Condition for npc
+    // Condition for npc
     if(GetTypeId() == TYPEID_UNIT)
     {
-        if(!HasInArc(M_PI, target)) //behind
+        if (!HasInArc(M_PI, target)) //behind
             return false;
     }
     else
     {
-        if(!viewPoint->HasInArc(M_PI, target)) //behind
+        if (!viewPoint->HasInArc(M_PI, target)) //behind
             return false;
     }
     

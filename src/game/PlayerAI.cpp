@@ -34,7 +34,7 @@ bool PlayerAI::UpdateVictim(float range)
         {
             if (!me->getVictim() || !me->getVictim()->isAlive())
             {
-                if(Unit *victim = charmer->SelectNearbyTarget(range))
+                if (Unit *victim = charmer->SelectNearbyTarget(range))
                     AttackStart(victim);
                 else
                     if (charmer->getVictim())

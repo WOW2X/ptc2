@@ -146,14 +146,14 @@ bool WaypointMovementGenerator<Creature>::Update(Creature &creature, const uint3
 
     if (creature.IsStopped())
     {
-        if(!StopedByPlayer)
+        if (!StopedByPlayer)
         {
             atNode(creature);
             return tryToMove(creature);
         }
         else
         {
-            if(_nextMoveTime.Passed())
+            if (_nextMoveTime.Passed())
             {
                 StopedByPlayer = false;
             }

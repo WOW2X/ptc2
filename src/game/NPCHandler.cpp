@@ -281,10 +281,10 @@ void WorldSession::HandleGossipHelloOpcode(WorldPacket & recv_data)
     //if(GetPlayer()->hasUnitState(UNIT_STAT_DIED))
     //    GetPlayer()->RemoveSpellsCausingAura(SPELL_AURA_FEIGN_DEATH);
 
-    if(unit->isArmorer() || unit->isCivilian() || unit->isQuestGiver() || unit->isServiceProvider())
+    if (unit->isArmorer() || unit->isCivilian() || unit->isQuestGiver() || unit->isServiceProvider())
     {
         unit->StopMoving();
-        if(unit->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
+        if (unit->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
         {
             unit->GetMotionMaster()->top()->Stop();
         }

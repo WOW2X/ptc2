@@ -261,17 +261,17 @@ void PetAI::UpdateAI(const uint32 diff)
             m_forceTimer -= diff;
     }
 
-    if(m_owner)
+    if (m_owner)
     {
-        if(me->GetCharmInfo() && me->GetCharmInfo()->IsNeedReturn())
+        if (me->GetCharmInfo() && me->GetCharmInfo()->IsNeedReturn())
         {
-            if(me->GetDistance(m_owner) <= PET_FOLLOW_DIST*0.9f)
+            if (me->GetDistance(m_owner) <= PET_FOLLOW_DIST*0.9f)
             {
                 me->GetCharmInfo()->SetNeedReturn(false);
             }
             else
             {
-                if(me->GetCharmInfo()->HasCommandState(COMMAND_FOLLOW) && !me->hasUnitState(UNIT_STAT_FOLLOW))
+                if (me->GetCharmInfo()->HasCommandState(COMMAND_FOLLOW) && !me->hasUnitState(UNIT_STAT_FOLLOW))
                 {
                     me->GetMotionMaster()->MoveFollow(m_owner, PET_FOLLOW_DIST, PET_FOLLOW_ANGLE);
                 }
@@ -280,35 +280,35 @@ void PetAI::UpdateAI(const uint32 diff)
         }
     }
 
-    if(!me->getVictim())
+    if (!me->getVictim())
     {
-        //Shadowfiend
-        if(!ShadowfiendInitialized && me->GetEntry() == 19668)
+        // Priest: Shadowfiend
+        if (!ShadowfiendInitialized && me->GetEntry() == 19668)
         {
-            if(m_owner->GetMap())
+            if (m_owner->GetMap())
             {
                 Unit* target = m_owner->GetMap()->GetUnit(m_owner->GetSelection());
-                if(target && me->IsHostileTo(target))
+                if (target && me->IsHostileTo(target))
                     AttackStart(target);
 
                 ShadowfiendInitialized = true;
             }
         }
 
-        if(me->GetCharmInfo() && !me->HasReactState(REACT_PASSIVE) && !me->GetCharmInfo()->HasCommandState(COMMAND_STAY))
+        if (me->GetCharmInfo() && !me->HasReactState(REACT_PASSIVE) && !me->GetCharmInfo()->HasCommandState(COMMAND_STAY))
         {
             Unit * target = m_owner->getAttackerForHelper();
-            if(!target)
 
+            if (!target)
                 target = me->getAttackerForHelper();
 
-            if(target)
+            if (target)
                 AttackStart(target);
             else
             {
-                if(!me->GetCharmInfo()->HasCommandState(COMMAND_STAY))
+                if (!me->GetCharmInfo()->HasCommandState(COMMAND_STAY))
                 {
-                    if(me->GetCharmInfo()->HasCommandState(COMMAND_FOLLOW) && !me->hasUnitState(UNIT_STAT_FOLLOW))
+                    if (me->GetCharmInfo()->HasCommandState(COMMAND_FOLLOW) && !me->hasUnitState(UNIT_STAT_FOLLOW))
                         me->GetMotionMaster()->MoveFollow(m_owner, PET_FOLLOW_DIST, PET_FOLLOW_ANGLE);
                 }
             }
@@ -316,10 +316,10 @@ void PetAI::UpdateAI(const uint32 diff)
     }
     else
     {
-        if(!me->GetOwner() || !me->GetOwner()->GetObjectGuid().IsPlayer())
+        if (!me->GetOwner() || !me->GetOwner()->GetObjectGuid().IsPlayer())
             _stopAttack();
 
-        if(_needToStop())
+        if (_needToStop())
         {
             _stopAttack();
             return;
@@ -458,7 +458,7 @@ void ImpAI::UpdateAI(const uint32 diff)
     }
 
   
-    if(Unit * target = m_owner->getAttackerForHelper())
+    if (Unit * target = m_owner->getAttackerForHelper())
         AttackStart(target);
 
     

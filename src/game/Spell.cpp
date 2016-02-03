@@ -3571,40 +3571,40 @@ void Spell::TakePower()
 
     bool hit = true;
 
-    if(m_caster && m_caster->GetTypeId() == TYPEID_PLAYER)
+    if (m_caster && m_caster->GetTypeId() == TYPEID_PLAYER)
     {
-        if(GetSpellEntry()->powerType == POWER_ENERGY)
+        if (GetSpellEntry()->powerType == POWER_ENERGY)
         {
-            if(uint64 targetGUID = m_targets.getUnitTargetGUID())
+            if (uint64 targetGUID = m_targets.getUnitTargetGUID())
             {
-                for(std::list<TargetInfo>::iterator ihit = m_UniqueTargetInfo.begin(); ihit != m_UniqueTargetInfo.end(); ++ihit)
+                for (std::list<TargetInfo>::iterator ihit = m_UniqueTargetInfo.begin(); ihit != m_UniqueTargetInfo.end(); ++ihit)
                 {
-                    if(ihit->deleted)
+                    if (ihit->deleted)
                         continue;
 
-                    if(ihit->targetGUID == targetGUID)
+                    if (ihit->targetGUID == targetGUID)
                     {
-                        if(ihit->missCondition != SPELL_MISS_NONE)
+                        if (ihit->missCondition != SPELL_MISS_NONE)
                         { 
-                            if(((Player*)m_caster)->getClass() == CLASS_ROGUE)
+                            if (((Player*)m_caster)->getClass() == CLASS_ROGUE)
                             {
                                 hit = false;
                             }
-                            else if(((Player*)m_caster)->getClass() == CLASS_DRUID)
+                            else if (((Player*)m_caster)->getClass() == CLASS_DRUID)
                             {
-                                if(GetSpellEntry()->powerType == POWER_ENERGY)
+                                if (GetSpellEntry()->powerType == POWER_ENERGY)
                                 {
                                     hit = false;
                                 }
                             } 
                         }
 
-                        if(!hit)
+                        if (!hit)
                             break;
                     }
                 }
 
-                if(hit && SpellMgr::NeedsComboPoints(GetSpellEntry()))
+                if (hit && SpellMgr::NeedsComboPoints(GetSpellEntry()))
                     ((Player*)m_caster)->ClearComboPoints();
             }
         }
@@ -4444,33 +4444,33 @@ SpellCastResult Spell::CheckCast(bool strict)
             if(Unit* target = m_targets.getUnitTarget())
             {
                 //Devour Magic
-                if(GetSpellEntry()->Id == 27277 || GetSpellEntry()->Id == 27276 || GetSpellEntry()->Id == 19736 || GetSpellEntry()->Id == 19734 || GetSpellEntry()->Id == 19731 || GetSpellEntry()->Id == 19505)
+                if (GetSpellEntry()->Id == 27277 || GetSpellEntry()->Id == 27276 || GetSpellEntry()->Id == 19736 || GetSpellEntry()->Id == 19734 || GetSpellEntry()->Id == 19731 || GetSpellEntry()->Id == 19505)
                 {
                     uint32 dispelMask = SpellMgr::GetDispellMask(DispelType(GetSpellEntry()->EffectMiscValue[i]));
 
                     std::vector<uint32> buffs;
                     buffs.clear();
                     Unit::AuraMap& Auras = target->GetAuras();
-                    for(Unit::AuraMap::iterator i = Auras.begin(); i != Auras.end(); ++i)
+                    for (Unit::AuraMap::iterator i = Auras.begin(); i != Auras.end(); ++i)
                     {
                         SpellEntry const *spellInfo = i->second->GetSpellProto();
-                        if(m_caster->IsFriendlyTo(target))
+                        if (m_caster->IsFriendlyTo(target))
                         {
-                            if((spellInfo->DmgClass == SPELL_DAMAGE_CLASS_MAGIC || ((1 << spellInfo->Dispel) & dispelMask)) && !i->second->IsPositive() && !i->second->IsPassive() && spellInfo->SchoolMask != SPELL_SCHOOL_MASK_NORMAL)
+                            if ((spellInfo->DmgClass == SPELL_DAMAGE_CLASS_MAGIC || ((1 << spellInfo->Dispel) & dispelMask)) && !i->second->IsPositive() && !i->second->IsPassive() && spellInfo->SchoolMask != SPELL_SCHOOL_MASK_NORMAL)
                             {
                                 buffs.push_back(spellInfo->Id);
                             }
                         }
-                        else if(m_caster->IsHostileTo(target))
+                        else if (m_caster->IsHostileTo(target))
                         {
-                            if(((1 << spellInfo->Dispel) & dispelMask) && i->second->IsPositive() && !i->second->IsPassive() && spellInfo->SchoolMask != SPELL_SCHOOL_MASK_NORMAL)
+                            if (((1 << spellInfo->Dispel) & dispelMask) && i->second->IsPositive() && !i->second->IsPassive() && spellInfo->SchoolMask != SPELL_SCHOOL_MASK_NORMAL)
                             {
                                 buffs.push_back(spellInfo->Id);
                             }
                         }
                     }
 
-                    if(buffs.empty())
+                    if (buffs.empty())
                     {
                         return SPELL_FAILED_NOTHING_TO_DISPEL;
                     }
