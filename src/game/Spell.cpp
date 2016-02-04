@@ -3794,6 +3794,9 @@ SpellCastResult Spell::CheckCast(bool strict)
 //         if (ct && m_spellInfo->SpellFamilyFlags != SPELLFAMILY_GENERIC)
 //             return SPELL_FAILED_MOVING;
 
+        if (GetSpellEntry()->Category == SPELL_CATEGORY_FOOD || GetSpellEntry()->Category == SPELL_CATEGORY_DRINK)
+            return SPELL_FAILED_MOVING;
+
         if (!m_caster->HasUnitMovementFlag(MOVEFLAG_FALLINGFAR) && IsAutoRepeat())
             return SPELL_FAILED_MOVING;
     }
