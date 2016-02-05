@@ -4547,6 +4547,17 @@ SpellCastResult Spell::CheckCast(bool strict)
                     if (m_caster->GetCharmGUID())
                         return SPELL_FAILED_ALREADY_HAVE_CHARM;
                 }
+                else if (GetSpellEntry()->Id == 37851)  // Tag Greater Felfire Diemetradon - Quest: Frankly, It Makes No Sense...
+                {
+                    if (Unit* target = m_targets.getUnitTarget())
+                    {
+                        if (target->GetEntry() != 21462)
+                            return SPELL_FAILED_BAD_TARGETS;
+
+                        if (target->HasAura(GetSpellEntry()->Id, 0))
+                            return SPELL_FAILED_BAD_TARGETS;
+                    }
+                }
             }break;
             case SPELL_AURA_MOD_POSSESS:
             case SPELL_AURA_MOD_CHARM:

@@ -20,7 +20,7 @@
 /* ScriptData
 SDName: Shadowmoon_Valley
 SD%Complete: 100
-SDComment: Quest support: 10519, 10583, 10601, 10814, 10804, 10854, 10458, 10481, 10480, 11082, 10781, 10451. Vendor Drake Dealer Hurlunk.
+SDComment: Quest support: 10519, 10583, 10601, 10672, 10814, 10804, 10854, 10458, 10481, 10480, 11082, 10781, 10451. Vendor Drake Dealer Hurlunk.
 SDCategory: Shadowmoon Valley
 EndScriptData */
 
@@ -42,6 +42,7 @@ go_crystal_prison
 npc_enraged_spirit
 npc_overlord_orbarokh
 npc_thane_yoregar
+go_arcanocontroller
 EndContentData */
 
 #include "precompiled.h"
@@ -3534,6 +3535,53 @@ bool GOUse_go_forged_illidari_bane(Player *pPlayer, GameObject *pGo)
     return true;
 }
 
+/*######
+## GO_ARCANO_CONTROL
+######*/
+
+bool GOHello_go_arcanocontroller(Player* player, GameObject* go)
+{
+    player->CastSpell(player, 37895, false);
+    return true;
+}
+
+/*######
+## npc_greater_felfire_diemetradon
+######*/
+
+struct npc_greater_felfire_diemetradonAI : public ScriptedAI
+{
+    npc_greater_felfire_diemetradonAI(Creature* creature) : ScriptedAI(creature) {}
+
+    void Reset() {}
+
+    void AttackedBy(Unit* who) {}
+    void AttackStart(Unit* who) 
+    {
+        // To prevent start attack Arcano Scrop 
+        if (who->GetTypeId() == TYPEID_UNIT && who->GetEntry() == 21909)
+            return;
+    }
+
+    void EnterCombat(Unit* who)
+    {
+        // To prevent start attack Arcano Scrop 
+        if (who->GetTypeId() == TYPEID_UNIT && who->GetEntry() == 21909)
+            return;
+    }
+
+    void MoveInLineOfSight(Unit* who)
+    {
+        // To prevent start attack Arcano Scrop 
+        if (who->GetTypeId() == TYPEID_UNIT && who->GetEntry() == 21909)
+            return;
+    }
+};
+
+CreatureAI* GetAI_npc_greater_felfire_diemetradon(Creature* creature)
+{
+    return new npc_greater_felfire_diemetradonAI(creature);
+}
 void AddSC_shadowmoon_valley()
 {
     Script *newscript;
@@ -3714,5 +3762,15 @@ void AddSC_shadowmoon_valley()
     newscript = new Script;
     newscript->Name="go_forged_illidari_bane";
     newscript->pGOUse = &GOUse_go_forged_illidari_bane;
+    newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name = "go_arcanocontroller";
+    newscript->pGOUse = &GOHello_go_arcanocontroller;
+    newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name="npc_greater_felfire_diemetradon";
+    newscript->GetAI = &GetAI_npc_greater_felfire_diemetradon;
     newscript->RegisterSelf();
 }

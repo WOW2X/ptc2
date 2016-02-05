@@ -150,7 +150,7 @@ void CharmInfo::InitEmptyActionBar(bool withAttack)
 
 void CharmInfo::InitPossessCreateSpells()
 {
-    uint32 SpiritSpellID[7] =   //Vengeful Spirit's spells
+    uint32 SpiritSpellID[7] =   // Vengeful Spirit's spells
     {
         40325,
         60000,  //to make empty slot
@@ -161,7 +161,7 @@ void CharmInfo::InitPossessCreateSpells()
         40322
     };
 
-    uint32 BlueDrakeID[5] =   //Power of the Blue Flight spells (Kij'jaeden fight)
+    uint32 BlueDrakeID[5] =   // Power of the Blue Flight spells (Kij'jaeden fight)
     {
         45862,
         45856,
@@ -170,7 +170,17 @@ void CharmInfo::InitPossessCreateSpells()
         45848
     };
 
-    if (m_unit->GetEntry() == 23109)     //HACK to allow proper spells for Vengeful Spirit
+    uint32 ArcanoScorp[7] =   // Arcano Scorp spells (Kij'jaeden fight)
+    {
+        60000,  //to make empty slot
+        60000,  //to make empty slot
+        37851,
+        60000,  //to make empty slot
+        37918,
+        37919
+    };
+
+    if (m_unit->GetEntry() == 23109)     // HACK to allow proper spells for Vengeful Spirit
     {
         InitEmptyActionBar(false);
 
@@ -182,13 +192,25 @@ void CharmInfo::InitPossessCreateSpells()
         return;
     }
 
-    if (m_unit->GetEntry() == 25653)     //HACK to allow proper spells for the Power of the Blue Flight
+    if (m_unit->GetEntry() == 25653)     // HACK to allow proper spells for the Power of the Blue Flight
     {
         InitEmptyActionBar(false);
 
         for (uint32 i = 0; i < 5; ++i)
         {
             uint32 spellid = BlueDrakeID[i];
+            AddSpellToActionBar(0, spellid, ACT_CAST);
+        }
+        return;
+    }
+
+    if (m_unit->GetEntry() == 21909)     // HACK to allow proper spells for the Arcano Scorp
+    {
+        InitEmptyActionBar(true);
+
+        for (uint32 i = 0; i < 7; ++i)
+        {
+            uint32 spellid = ArcanoScorp[i];
             AddSpellToActionBar(0, spellid, ACT_CAST);
         }
         return;

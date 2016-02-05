@@ -2475,6 +2475,13 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
     {
         switch (GetId())
         {
+            case 37851:  // Tag Greater Felfire Diemetradon - Quest: Frankly, It Makes No Sense...
+            {
+                if (caster && m_target->GetEntry() == 21462)
+                    caster->CastSpell(caster, 37907, true, NULL, this);
+
+                return;
+            }
             case 38297:
             {
                 if (!caster)
