@@ -146,7 +146,10 @@ bool Pet::LoadPetFromDB(Unit* owner, uint32 petentry, uint32 petnumber, bool cur
         result = RealmDataDatabase.PQuery("SELECT id, entry, owner, modelid, level, exp, Reactstate, loyaltypoints, loyalty, trainpoint, slot, name, renamed, curhealth, curmana, curhappiness, abdata, TeachSpelldata, savetime, resettalents_cost, resettalents_time, CreatedBySpell, PetType FROM character_pet WHERE owner = '%u' AND (slot = '0' OR slot = '3') ",ownerid);
 
     if (!result)
+    {
+        m_loading = false;
         return false;
+    }
 
     Field *fields = result->Fetch();
 
@@ -1630,9 +1633,12 @@ bool Pet::learnSpell(uint16 spell_id)
     if (!addSpell(spell_id))
         return false;
 
-    Unit* owner = GetOwner();
-    if (owner->GetTypeId()==TYPEID_PLAYER)
-        ((Player*)owner)->PetSpellInitialize();
+    if (!m_loading)
+    {
+        Unit* owner = GetOwner();
+        if (owner->GetTypeId()==TYPEID_PLAYER)
+            ((Player*)owner)->PetSpellInitialize();
+    }
     return true;
 }
 
