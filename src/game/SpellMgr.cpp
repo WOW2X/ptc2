@@ -3402,8 +3402,8 @@ void SpellMgr::LoadSpellCustomAttr()
             case 39093: // Negative Charge
             case 39968: // Needle Spine Explosion
             case 39692: // Cannon
-            case 37918: // Arcano-pince - Quest: Frankly, It Makes No Sense...
-            case 37919: // Arcano-dismantle - Quest: Frankly, It Makes No Sense...
+            case 37918: // Arcano-pince
+            case 37919: // Arcano-dismantle
                 spellInfo->AttributesEx |= SPELL_ATTR_EX_CANT_TARGET_SELF;
                 break;
             case 42992: //ram - neutral
@@ -3463,7 +3463,7 @@ void SpellMgr::LoadSpellCustomAttr()
                 spellInfo->EffectImplicitTargetA[0] = TARGET_UNIT_CASTER;
                 spellInfo->EffectImplicitTargetA[1] = TARGET_UNIT_CASTER;
                 break;
-            case 37907: // Kill Credit Greater Diemetradon - Quest: Frankly, It Makes No Sense...
+            case 37907: // Kill Credit Greater Diemetradon
             case 29200: // Purify Helboar Meat
                 spellInfo->EffectImplicitTargetA[0] = TARGET_UNIT_CASTER;
                 break;

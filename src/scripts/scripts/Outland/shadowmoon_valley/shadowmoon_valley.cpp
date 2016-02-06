@@ -3541,33 +3541,30 @@ bool GOUse_go_forged_illidari_bane(Player *pPlayer, GameObject *pGo)
 
 bool GOHello_go_arcanocontroller(Player* player, GameObject* go)
 {
-    player->CastSpell(player, 37895, false);
+    if (Unit* ArcanoScorp = GetClosestCreatureWithEntry(player, 21909, 50.0f))
+        if (ArcanoScorp->isAlive() && !ArcanoScorp->isCharmed())
+            player->CastSpell(player, 37895, false);
+
     return true;
 }
 
 /*######
-## npc_greater_felfire_diemetradon
+## npc_greater_felfire
 ######*/
 
-struct npc_greater_felfire_diemetradonAI : public ScriptedAI
+struct npc_greater_felfireAI : public ScriptedAI
 {
-    npc_greater_felfire_diemetradonAI(Creature* creature) : ScriptedAI(creature) {}
+    npc_greater_felfireAI(Creature* creature) : ScriptedAI(creature) {}
 
     void Reset() {}
 
-    void AttackedBy(Unit* who) {}
-    void AttackStart(Unit* who) 
+    void AttackStart(Unit* who)
     {
         // To prevent start attack Arcano Scrop 
         if (who->GetTypeId() == TYPEID_UNIT && who->GetEntry() == 21909)
             return;
-    }
 
-    void EnterCombat(Unit* who)
-    {
-        // To prevent start attack Arcano Scrop 
-        if (who->GetTypeId() == TYPEID_UNIT && who->GetEntry() == 21909)
-            return;
+        ScriptedAI::AttackStart(who);
     }
 
     void MoveInLineOfSight(Unit* who)
@@ -3575,13 +3572,16 @@ struct npc_greater_felfire_diemetradonAI : public ScriptedAI
         // To prevent start attack Arcano Scrop 
         if (who->GetTypeId() == TYPEID_UNIT && who->GetEntry() == 21909)
             return;
+
+        ScriptedAI::MoveInLineOfSight(who);
     }
 };
 
-CreatureAI* GetAI_npc_greater_felfire_diemetradon(Creature* creature)
+CreatureAI* GetAI_npc_greater_felfire(Creature* creature)
 {
-    return new npc_greater_felfire_diemetradonAI(creature);
+    return new npc_greater_felfireAI(creature);
 }
+
 void AddSC_shadowmoon_valley()
 {
     Script *newscript;
@@ -3770,7 +3770,7 @@ void AddSC_shadowmoon_valley()
     newscript->RegisterSelf();
 
     newscript = new Script;
-    newscript->Name="npc_greater_felfire_diemetradon";
-    newscript->GetAI = &GetAI_npc_greater_felfire_diemetradon;
+    newscript->Name="npc_greater_felfire";
+    newscript->GetAI = &GetAI_npc_greater_felfire;
     newscript->RegisterSelf();
 }

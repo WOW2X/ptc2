@@ -4729,10 +4729,12 @@ void Unit::RemoveAura(AuraMap::iterator &i, AuraRemoveMode mode)
 
 void Unit::RemoveAllAuras()
 {
-    while (!m_Auras.empty())
+    for (AuraMap::iterator iter = m_Auras.begin(); iter != m_Auras.end();)
     {
-        AuraMap::iterator iter = m_Auras.begin();
-        RemoveAura(iter);
+        if (iter->second->GetId() != 37851)
+            RemoveAura(iter);
+        else
+            ++iter;
     }
 }
 

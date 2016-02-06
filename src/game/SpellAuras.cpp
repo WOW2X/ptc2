@@ -2475,13 +2475,6 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
     {
         switch (GetId())
         {
-            case 37851:  // Tag Greater Felfire Diemetradon - Quest: Frankly, It Makes No Sense...
-            {
-                if (caster && m_target->GetEntry() == 21462)
-                    caster->CastSpell(caster, 37907, true, NULL, this);
-
-                return;
-            }
             case 38297:
             {
                 if (!caster)
@@ -2830,6 +2823,12 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
             {
                 if (m_target->GetTypeId() == TYPEID_UNIT)
                     ((Creature*)m_target)->UpdateEntry(apply ? 21731 : 21729);
+            }
+            // Tag Greater Felfire Diemetradon
+            if (GetId() == 37851)
+            {
+                if (apply)
+                    caster->CastSpell(caster, 37907, true);
             }
             // Unstable Power
             if (GetId() == 24658)
@@ -3933,6 +3932,9 @@ void Aura::HandleModPossess(bool apply, bool Real)
     else
     {
         if (GetId() == 40268)
+            m_target->setDeathState(JUST_DIED);
+
+        if (GetId() == 37895)
             m_target->setDeathState(JUST_DIED);
 
         m_target->RemoveCharmedOrPossessedBy(caster);
