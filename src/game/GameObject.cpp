@@ -563,7 +563,17 @@ void GameObject::SaveToDB(uint32 mapid, uint8 spawnMask)
         return;
 
     if (!m_DBTableGuid)
-        m_DBTableGuid = GetGUIDLow();
+    {
+        QueryResultAutoPtr result = GameDataDatabase.PQuery("SELECT MAX(guid) FROM gameobject;");
+
+        if (!result)
+            return;
+
+        Field *fields = result->Fetch();
+        m_DBTableGuid = fields[0].GetUInt32();
+        m_DBTableGuid++;
+    }
+
     // update in loaded data (changing data only in this place)
     GameObjectData& data = sObjectMgr.NewGOData(m_DBTableGuid);
 
