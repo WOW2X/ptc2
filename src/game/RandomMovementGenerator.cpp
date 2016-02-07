@@ -39,13 +39,33 @@ void RandomMovementGenerator<Creature>::_setRandomLocation(Creature &creature)
 
     creature.GetValidPointInAngle(dest, range, angle, false);
 
+    static_cast<MovementGenerator*>(this)->_recalculateTravel = false;
+
+    if (is_air_ok)
+        i_nextMoveTime.Reset(0);
+    else
+    {
+        switch (urand(0,1))
+        {
+            case 0:
+                i_nextMoveTime.Reset(0);
+                break;
+            case 1:
+                i_nextMoveTime.Reset(urand(0, 10000));
+                break;
+        }
+    }
+
+    creature.addUnitState(UNIT_STAT_ROAMING);
+
     Movement::MoveSplineInit init(creature);
     init.MoveTo(dest.x, dest.y, dest.z);
     init.SetWalk(true);
     init.Launch();
 
-    static_cast<MovementGenerator*>(this)->_recalculateTravel = false;
-    i_nextMoveTime.Reset(urand(500, 10000));
+    // Call for creature group update
+    if (creature.GetFormation() && creature.GetFormation()->getLeader() == &creature)
+        creature.GetFormation()->LeaderMoveTo(dest.x, dest.y, dest.z);
 }
 
 template<>
@@ -53,6 +73,9 @@ void RandomMovementGenerator<Creature>::Initialize(Creature &creature)
 {
     if (!creature.isAlive())
         return;
+
+    if (!wander_distance)
+        wander_distance = creature.GetRespawnRadius();
 
     creature.addUnitState(UNIT_STAT_ROAMING);
     _setRandomLocation(creature);
@@ -81,6 +104,13 @@ void RandomMovementGenerator<Creature>::Finalize(Creature &creature)
 template<>
 bool RandomMovementGenerator<Creature>::Update(Creature &creature, const uint32 &diff)
 {
+    if (creature.hasUnitState(UNIT_STAT_ROOT | UNIT_STAT_STUNNED | UNIT_STAT_DISTRACTED))
+    {
+        i_nextMoveTime.Reset(0);  // Expire the timer
+        creature.clearUnitState(UNIT_STAT_ROAMING);
+        return true;
+    }
+
     if (creature.IsStopped() || static_cast<MovementGenerator*>(this)->_recalculateTravel)
     {
         i_nextMoveTime.Update(diff);
@@ -91,14 +121,14 @@ bool RandomMovementGenerator<Creature>::Update(Creature &creature, const uint32 
 }
 
 template<>
-bool RandomMovementGenerator<Creature>::GetResetPosition(Creature& c, float& x, float& y, float& z)
+bool RandomMovementGenerator<Creature>::GetResetPosition(Creature& creature, float& x, float& y, float& z)
 {
     float radius;
-    c.GetRespawnCoord(x, y, z, NULL, &radius);
+    creature.GetRespawnCoord(x, y, z, NULL, &radius);
 
     // use current if in range
-    if (c.IsInRange2d(x,y, 0, radius))
-        c.GetPosition(x,y,z);
+    if (creature.IsInRange2d(x,y, 0, radius))
+        creature.GetPosition(x,y,z);
 
     return true;
 }
