@@ -444,9 +444,6 @@ namespace Hellground
                         return false;
                 }
 
-                if (u->GetCreatureType() == CREATURE_TYPE_CRITTER)
-                    return false;
-
                 if (u->GetTypeId()==TYPEID_UNIT && ((Creature*)u)->isTotem())
                     return false;
 

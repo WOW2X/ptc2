@@ -9368,11 +9368,6 @@ void Unit::Unmount()
     if (GetTypeId() == TYPEID_PLAYER)
         ((Player*)this)->m_AC_timer = 5000;
 
-    // Dismounting while flying should reduce velocity to run speed while in air.
-    if (GetTypeId() == TYPEID_PLAYER)
-        if (((Player*)this)->IsFlying())
-            ((Player*)this)->UpdateSpeed(MOVE_FLIGHT, true);
-
     // only resummon old pet if the player is already added to a map
     // this prevents adding a pet to a not created map which would otherwise cause a crash
     // (it could probably happen when logging in after a previous crash)
