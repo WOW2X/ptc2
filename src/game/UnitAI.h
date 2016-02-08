@@ -24,6 +24,7 @@
 #include "Platform/Define.h"
 #include <list>
 #include "Unit.h"
+#include <string>
 
 class Unit;
 class Player;
@@ -53,6 +54,7 @@ class HELLGROUND_EXPORT UnitAI
 
         virtual void InitializeAI() { if (!me->isDead()) Reset(); }
 
+		virtual std::string GetName() { return "UnitAI"; };
         virtual void Reset() {};
 
         // Called when unit is charmed

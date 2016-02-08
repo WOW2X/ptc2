@@ -32,7 +32,7 @@ class TotemAI : public CreatureAI
     public:
 
         TotemAI(Creature *c);
-
+						virtual std::string GetName() { return "TotemAI"; };
         void MoveInLineOfSight(Unit *);
         void AttackStart(Unit *);
         void EnterEvadeMode();

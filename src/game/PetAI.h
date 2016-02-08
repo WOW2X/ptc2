@@ -32,7 +32,7 @@ class PetAI : public CreatureAI
     public:
 
         explicit PetAI(Creature *c);
-
+		virtual std::string GetName() { return "PetAI"; };
         void EnterEvadeMode();
         void JustDied(Unit *who) { _stopAttack(); }
         void MovementInform(uint32 type, uint32 data);

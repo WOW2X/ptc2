@@ -37,7 +37,7 @@ class GuardAI : public CreatureAI
     public:
 
         explicit GuardAI(Creature *c);
-
+				virtual std::string GetName() { return "GuardAI"; };
         void MoveInLineOfSight(Unit *);
         void EnterEvadeMode();
         void JustDied(Unit *);

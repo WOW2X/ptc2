@@ -30,7 +30,7 @@ class ReactorAI : public CreatureAI
     public:
 
         explicit ReactorAI(Creature *c) : CreatureAI(c) {}
-
+				virtual std::string GetName() { return "ReactorAI"; };
         void MoveInLineOfSight(Unit *);
 
         void UpdateAI(const uint32);

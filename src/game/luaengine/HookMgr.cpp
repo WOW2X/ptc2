@@ -1216,7 +1216,7 @@ struct ElunaCreatureAI : CreatureAI
 {
     ElunaCreatureAI(Creature* creature) : CreatureAI(creature) { }
     ~ElunaCreatureAI() { }
-
+      std::string GetName() { return "ElunaCreatureAI"; };
     //Called at World update tick
     void UpdateAI(const uint32 diff) override
     {

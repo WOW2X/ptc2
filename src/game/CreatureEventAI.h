@@ -607,6 +607,7 @@ class HELLGROUND_IMPORT_EXPORT CreatureEventAI : public CreatureAI
 {
 
     public:
+		virtual std::string GetName() { return "EventAI"; };
         explicit CreatureEventAI(Creature *c);
         ~CreatureEventAI()
         {
@@ -628,6 +629,7 @@ class HELLGROUND_IMPORT_EXPORT CreatureEventAI : public CreatureAI
         void ReceiveEmote(Player* pPlayer, uint32 text_emote);
         static int Permissible(const Creature *);
 
+		virtual std::string GetName() { return "CreatureEventAI"; };
         bool ProcessEvent(CreatureEventAIHolder& pHolder, Unit* pActionInvoker = NULL);
         void ProcessAction(CreatureEventAI_Action const& action, uint32 rnd, uint32 EventId, Unit* pActionInvoker);
         inline uint32 GetRandActionParam(uint32 rnd, uint32 param1, uint32 param2, uint32 param3);
