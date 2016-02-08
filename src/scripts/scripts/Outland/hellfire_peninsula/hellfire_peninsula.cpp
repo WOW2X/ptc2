@@ -2796,6 +2796,91 @@ CreatureAI* GetAI_npc_fel_cannon_mki(Creature* creature)
     return new npc_fel_cannon_mkiAI(creature);
 }
 
+/*######
+## npc_aggonis
+## Script based on sniffed data 
+######*/
+
+#define AGONIS_SPELL_CORRUPTION    21068
+#define AGONIS_SPELL_SPAWN_RED     24240
+#define AGGONIS_SAY_SUMMON         -1000007
+
+struct npc_aggonisAI : public ScriptedAI
+{
+    npc_aggonisAI(Creature* creature) : ScriptedAI(creature) {}
+
+    uint32 FlagTimer;
+    uint32 CorruptionTimer;
+    bool VictimFounded;
+
+    void Reset()
+    {
+        CorruptionTimer = urand(5000, 8000);
+    }
+
+    void JustRespawned()
+    {
+        FlagTimer       = 3000;
+        CorruptionTimer = urand(5000, 8000);
+
+        me->CastSpell(me, AGONIS_SPELL_SPAWN_RED, false);
+        me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_PASSIVE);
+        me->addUnitState(UNIT_STAT_IGNORE_PATHFINDING);
+
+        VictimFounded = false;
+    }
+	  
+    void UpdateAI(const uint32 diff)
+    {
+        if (FlagTimer)
+        {
+            if (FlagTimer <= diff)
+            {
+                DoScriptText(AGGONIS_SAY_SUMMON, me);
+                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_PASSIVE);
+                FindVictim();
+                
+                FlagTimer = 0;
+            } else FlagTimer -= diff;
+
+        }
+
+        if (!UpdateVictim())
+            return;
+
+        if (CorruptionTimer <= diff)
+        {
+            DoCast(me->getVictim(), AGONIS_SPELL_CORRUPTION);
+
+            CorruptionTimer = urand(15000, 20000);
+        }
+        else CorruptionTimer -= diff;
+
+        DoMeleeAttackIfReady();
+    }
+
+	void FindVictim()
+    {
+        if (!me->getVictim() && !VictimFounded)
+        {
+            // Set Aggro range same as (SelectNearestTarget) just to be sure that target gonna be found
+            me->SetAggroRange(40);
+
+            if (Unit *pTarget = me->SelectNearestTarget(40))
+            {
+                me->GetMotionMaster()->MoveChase(pTarget);
+                AttackStart(pTarget);
+                VictimFounded = true;
+            }
+        }
+    }
+};
+
+CreatureAI* GetAI_npc_aggonis(Creature* creature)
+{
+    return new npc_aggonisAI(creature);
+}
+
 void AddSC_hellfire_peninsula()
 {
     Script *newscript;
@@ -2974,5 +3059,10 @@ void AddSC_hellfire_peninsula()
     newscript = new Script;
     newscript->Name = "npc_fel_cannon_mki";
     newscript->GetAI = &GetAI_npc_fel_cannon_mki;
+    newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name = "npc_aggonis";
+    newscript->GetAI = &GetAI_npc_aggonis;
     newscript->RegisterSelf();
 }

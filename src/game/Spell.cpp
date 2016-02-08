@@ -2310,6 +2310,10 @@ void Spell::prepare(SpellCastTargets * targets, Aura* triggeredByAura)
             m_casttime = 0;
     }
 
+    // HACK for instant Cleansing Vial
+    if (GetSpellEntry()->Id == 29297)
+        m_casttime = 0;
+
     if (GetCastTime() && !SpellMgr::IsChanneledSpell(GetSpellEntry()) ? GetSpellEntry()->InterruptFlags & SPELL_INTERRUPT_FLAG_MOVEMENT : GetSpellEntry()->ChannelInterruptFlags & CHANNEL_INTERRUPT_FLAG_MOVEMENT)
     {
         // controlled state is delivered from idle movement so should be sufficient
