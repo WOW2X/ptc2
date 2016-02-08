@@ -1927,9 +1927,14 @@ void Creature::Respawn(bool force)
         else
             setDeathState(JUST_ALIVED);
 
+        GetMotionMaster()->Initialize();
+
         //Call AI respawn virtual function
-        AI()->Reset();
-        AI()->JustRespawned();
+        if (IsAIEnabled)
+        {
+            AI()->Reset();
+            AI()->JustRespawned();
+        }
 
         //GetMap()->Add(this);
         uint16 poolid = sPoolMgr.IsPartOfAPool<Creature>(GetGUIDLow());
