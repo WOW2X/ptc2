@@ -21,6 +21,9 @@
 #ifndef HELLGROUND_RANDOMMOVEMENTGENERATOR_H
 #define HELLGROUND_RANDOMMOVEMENTGENERATOR_H
 
+// define chance for creature to not stop after reaching a waypoint
+#define MOVEMENT_RANDOM_MMGEN_CHANCE_NO_BREAK 30
+
 #include "MovementGenerator.h"
 
 template<class T>
