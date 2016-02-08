@@ -811,7 +811,7 @@ class HELLGROUND_IMPORT_EXPORT Creature : public Unit
         //Formation var
         CreatureGroup *m_formation;
 
-        TriggerJustRespawned = false;
+        bool TriggerJustRespawned;
 
         GridReference<Creature> m_gridRef;
         CreatureInfo const* m_creatureInfo;                 // in heroic mode can different from sObjectMgr::GetCreatureTemplate(GetEntry())
