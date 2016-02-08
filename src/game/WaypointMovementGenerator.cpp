@@ -149,17 +149,14 @@ bool WaypointMovementGenerator<Creature>::Update(Creature &creature, const uint3
         if (!StopedByPlayer)
         {
             atNode(creature);
+            _nextMoveTime.Update(diff);
             return tryToMove(creature);
-        }
-        else
-        {
-            if (_nextMoveTime.Passed())
-            {
-                StopedByPlayer = false;
-            }
-        }
+        } else {
+            _nextMoveTime.Update(diff);
 
-        _nextMoveTime.Update(diff);
+            if (_nextMoveTime.Passed())
+                StopedByPlayer = false;
+        }
     }
     return true;
 }
