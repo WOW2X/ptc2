@@ -168,6 +168,8 @@ m_tempSummon(false), m_tempVisibility(false)
     m_CreatureCategoryCooldowns.clear();
 
     DisableReputationGain = false;
+
+    TriggerJustRespawned = false;
 }
 
 Creature::~Creature()
@@ -468,6 +470,12 @@ bool Creature::UpdateEntry(uint32 Entry, uint32 team, const CreatureData *data)
 
 void Creature::Update(uint32 update_diff, uint32 diff)
 {
+    if (IsAIEnabled && TriggerJustRespawned)
+    {
+        TriggerJustRespawned = false;
+        AI()->JustRespawned();
+    }
+
     switch (m_deathState)
     {
         case JUST_ALIVED:
@@ -1933,7 +1941,7 @@ void Creature::Respawn(bool force)
         if (IsAIEnabled)
         {
             AI()->Reset();
-            AI()->JustRespawned();
+            TriggerJustRespawned = true;  //delay event to next tick so all creatures are created on the map before processing
         }
 
         //GetMap()->Add(this);
