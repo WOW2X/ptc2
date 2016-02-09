@@ -30,7 +30,9 @@ class AggressorAI : public CreatureAI
 {
     public:
         explicit AggressorAI(Creature *c) : CreatureAI(c) {}
-					virtual std::string GetName() { return "AggressorAI"; };
+
+        virtual std::string GetClassNameAI() { return "AggressorAI"; };
+
         void UpdateAI(const uint32);
         static int Permissible(const Creature *);
 };
@@ -41,7 +43,9 @@ class HELLGROUND_IMPORT_EXPORT CombatAI : public CreatureAI
 {
     public:
         explicit CombatAI(Creature *c) : CreatureAI(c) {}
-				virtual std::string GetName() { return "CombatAI"; };
+
+        virtual std::string GetClassNameAI() { return "CombatAI"; };
+
         void InitializeAI();
         void Reset();
         void EnterCombat(Unit* who);

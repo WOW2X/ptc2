@@ -87,8 +87,9 @@ class HELLGROUND_IMPORT_EXPORT CreatureAI : public UnitAI
     public:
         explicit CreatureAI(Creature *c) : UnitAI((Unit*)c), me(c), m_creature(c), m_MoveInLineOfSight_locked(false) {}
 
+        virtual std::string GetClassNameAI() { return "CreatureAI"; };
+
         virtual ~CreatureAI() {}
-		virtual std::string GetName() { return "CreatureAI"; };
 
         ///== Reactions At =================================
 

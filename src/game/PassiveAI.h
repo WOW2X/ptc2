@@ -29,7 +29,7 @@ class HELLGROUND_IMPORT_EXPORT PassiveAI : public CreatureAI
     public:
         explicit PassiveAI(Creature *c);
 
-		virtual std::string GetName() { return "PassiveAI"; };
+        virtual std::string GetClassNameAI() { return "PassiveAI"; };
 
         void MoveInLineOfSight(Unit *) {}
         void AttackStart(Unit *) {}
@@ -42,7 +42,9 @@ class PossessedAI : public CreatureAI
 {
     public:
         explicit PossessedAI(Creature *c);
-						virtual std::string GetName() { return "PossessedAI"; };
+
+        virtual std::string GetClassNameAI() { return "PossessedAI"; };
+
         void MoveInLineOfSight(Unit *) {}
         void AttackStart(Unit *target);
         void UpdateAI(const uint32);
@@ -59,7 +61,8 @@ class HELLGROUND_IMPORT_EXPORT NullCreatureAI : public CreatureAI
     public:
         explicit NullCreatureAI(Creature *c);
 
-		virtual std::string GetName() { return "NullCreatureAI"; };
+        virtual std::string GetClassNameAI() { return "NullCreatureAI"; };
+
         void MoveInLineOfSight(Unit *) {}
         void AttackStart(Unit *) {}
         void UpdateAI(const uint32) {}

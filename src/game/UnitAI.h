@@ -48,13 +48,15 @@ class HELLGROUND_EXPORT UnitAI
         Unit * const me;
     public:
         explicit UnitAI(Unit *u) : me(u) {}
+
+        virtual std::string GetClassNameAI() { return "UnitAI"; };
+
         virtual bool CanAIAttack(const Unit *who) const { return true; }
         virtual void AttackStart(Unit *);
         virtual void UpdateAI(const uint32 diff) = 0;
 
         virtual void InitializeAI() { if (!me->isDead()) Reset(); }
 
-		virtual std::string GetName() { return "UnitAI"; };
         virtual void Reset() {};
 
         // Called when unit is charmed
