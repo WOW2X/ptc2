@@ -2859,7 +2859,7 @@ struct npc_aggonisAI : public ScriptedAI
         DoMeleeAttackIfReady();
     }
 
-	void FindVictim()
+    void FindVictim()
     {
         if (!me->getVictim() && !VictimFounded)
         {
