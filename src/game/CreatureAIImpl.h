@@ -599,6 +599,9 @@ inline bool CreatureAI::_EnterEvadeMode()
     if (me->IsInEvadeMode())
         return false;
 
+    if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == IDLE_MOTION_TYPE)
+        me->GetMotionMaster()->Initialize();
+
     me->RemoveAllAuras();
     me->LoadCreaturesAddon();
     me->SetLootRecipient(NULL);

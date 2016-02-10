@@ -678,7 +678,7 @@ void CreatureEventAI::ProcessAction(CreatureEventAI_Action const& action, uint32
             break;
         case ACTION_T_COMBAT_MOVEMENT:
             // ignore no affect case
-            if (CombatMovementEnabled==(action.combat_movement.state!=0))
+            if (CombatMovementEnabled == (action.combat_movement.state != 0))
                 return;
 
             CombatMovementEnabled = action.combat_movement.state != 0;
@@ -687,19 +687,23 @@ void CreatureEventAI::ProcessAction(CreatureEventAI_Action const& action, uint32
             if (CombatMovementEnabled)
             {
                 if (action.combat_movement.melee && m_creature->isInCombat())
+                {
                     if (Unit* victim = m_creature->getVictim())
                         m_creature->SendMeleeAttackStart(victim->GetGUID());
 
-                m_creature->GetMotionMaster()->MoveChase(m_creature->getVictim(), AttackDistance, AttackAngle);
+                    m_creature->GetMotionMaster()->MoveChase(m_creature->getVictim(), AttackDistance, AttackAngle);
+                }
             }
             else
             {
                 if (action.combat_movement.melee && m_creature->isInCombat())
+                {
                     if (Unit* victim = m_creature->getVictim())
                         m_creature->SendMeleeAttackStop(victim->GetGUID());
 
-                if (!m_creature->hasUnitState(UNIT_STAT_LOST_CONTROL))
-                    m_creature->GetMotionMaster()->MoveIdle();
+                    if (!m_creature->hasUnitState(UNIT_STAT_LOST_CONTROL))
+                        m_creature->GetMotionMaster()->MoveIdle();
+                }
             }
             break;
         case ACTION_T_COMBAT_STOP:
@@ -1132,6 +1136,8 @@ void CreatureEventAI::AttackStart(Unit *who)
     {
         if (CombatMovementEnabled)
             m_creature->GetMotionMaster()->MoveChase(who, AttackDistance, AttackAngle);
+        else
+            m_creature->GetMotionMaster()->MoveIdle();
     }
 }
 
