@@ -42,13 +42,13 @@ void RandomMovementGenerator<Creature>::_setRandomLocation(Creature &creature)
     static_cast<MovementGenerator*>(this)->_recalculateTravel = false;
 
     if (is_air_ok)
-        i_nextMoveTime.Reset(50);
+        i_nextMoveTime.Reset(0);
     else
     {
         if (roll_chance_i(MOVEMENT_RANDOM_MMGEN_CHANCE_NO_BREAK))
-            i_nextMoveTime.Reset(50);
+            i_nextMoveTime.Reset(0);
         else
-            i_nextMoveTime.Reset(urand(1500, 10000));
+            i_nextMoveTime.Reset(urand(500, 10000));
     }
 
     creature.addUnitState(UNIT_STAT_ROAMING);
