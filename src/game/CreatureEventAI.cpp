@@ -57,6 +57,8 @@ int CreatureEventAI::Permissible(const Creature *creature)
 
 CreatureEventAI::CreatureEventAI(Creature *c) : CreatureAI(c)
 {
+    hasLosEvents = false;
+
     // Need make copy for filter unneeded steps and safe in case table reload
     CreatureEventAI_Event_Map::const_iterator CreatureEvents = sCreatureEAIMgr.GetCreatureEventAIMap().find(int64(me->GetEntry()));
     if (CreatureEvents != sCreatureEAIMgr.GetCreatureEventAIMap().end())
@@ -76,10 +78,16 @@ CreatureEventAI::CreatureEventAI(Creature *c) : CreatureAI(c)
                 {
                     //event flagged for instance mode
                     CreatureEventAIList.push_back(CreatureEventAIHolder(*i));
+					
+                    if ((*i).event_type == EVENT_T_OOC_LOS)
+                        hasLosEvents = true;
                 }
                 continue;
             }
             CreatureEventAIList.push_back(CreatureEventAIHolder(*i));
+			
+            if ((*i).event_type == EVENT_T_OOC_LOS)
+                hasLosEvents = true;
         }
     }
 
@@ -1129,26 +1137,41 @@ void CreatureEventAI::AttackStart(Unit *who)
 
 void CreatureEventAI::MoveInLineOfSight(Unit *who)
 {
-    if (me->getVictim())
-        return;
-
     //Check for OOC LOS Event
-    if (!bEmptyList)
+    if (hasLosEvents)
     {
-        for (std::list<CreatureEventAIHolder>::iterator itr = CreatureEventAIList.begin(); itr != CreatureEventAIList.end(); ++itr)
-        {
-            if ((*itr).Event.event_type == EVENT_T_OOC_LOS)
-            {
-                //can trigger if closer than fMaxAllowedRange
-                float fMaxAllowedRange = (*itr).Event.ooc_los.maxRange;
+        //those checks are done in CreatureAI::MoveInLineOfSight as well,
+        //for this reason moved into this if
 
-                //if range is ok and we are actually in LOS
-                if (m_creature->IsWithinDistInMap(who, fMaxAllowedRange) && m_creature->IsWithinLOSInMap(who))
+        if (!who)
+            return;
+
+        if (me->getVictim())
+            return;
+
+        if (!bEmptyList)
+        {
+            for (std::list<CreatureEventAIHolder>::iterator itr = CreatureEventAIList.begin(); itr != CreatureEventAIList.end(); ++itr)
+            {
+                CreatureEventAI_Event aiEvent = (*itr).Event;
+
+                if (aiEvent.event_type == EVENT_T_OOC_LOS)
                 {
-                    //if friendly event&&who is not hostile OR hostile event&&who is hostile
-                    if (((*itr).Event.ooc_los.noHostile && !m_creature->IsHostileTo(who)) ||
-                        ((!(*itr).Event.ooc_los.noHostile) && (me->IsHostileTo(who) || who->IsHostileTo(me))))
-                        ProcessEvent(*itr, who);
+                    bool isHostile = me->IsHostileTo(who);
+
+                    //if friendly event && who is not hostile OR hostile event && who is hostile
+                    if ((aiEvent.ooc_los.noHostile && !isHostile) ||
+                        (!aiEvent.ooc_los.noHostile && isHostile))
+                    {
+                        //can trigger if closer than fMaxAllowedRange
+                        float fMaxAllowedRange = aiEvent.ooc_los.maxRange;
+
+                        //if range is ok and we are actually in LOS
+                        if (me->IsWithinDistInMap(who, fMaxAllowedRange) && me->IsWithinLOSInMap(who))
+                        {
+                            ProcessEvent(*itr, who);
+                        }
+                    }
                 }
             }
         }

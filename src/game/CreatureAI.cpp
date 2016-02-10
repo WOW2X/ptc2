@@ -85,6 +85,9 @@ void CreatureAI::MoveInLineOfSight_Safe(Unit *who)
 
 void CreatureAI::MoveInLineOfSight(Unit *who)
 {
+    if (!who)
+       return;
+		
     if (me->getVictim())
         return;
 
