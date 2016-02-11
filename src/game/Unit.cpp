@@ -12626,11 +12626,13 @@ void Unit::Kill(Unit *pVictim, bool durabilityLoss)
 
         // Call creature just died function
         if (creatureVictim->IsAIEnabled)
+        {
             creatureVictim->AI()->JustDied(this);
 
-        // Force creature formation to attack victim even if member has died on one shot - this works like linked aggro
-        if (CreatureGroup *formation = creatureVictim->GetFormation())
-            formation->MemberAttackStart(creatureVictim, this);
+            // Force creature formation to attack victim even if member has died on one shot - this works like linked aggro
+            if (CreatureGroup *formation = creatureVictim->GetFormation())
+                formation->MemberAttackStart(creatureVictim, this);
+        }
 
         if (InstanceData* instance = creatureVictim->GetInstanceData())
             instance->OnCreatureDeath(creatureVictim);
