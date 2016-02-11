@@ -1900,11 +1900,15 @@ void Unit::CalcAbsorbResist(Unit *pVictim, SpellSchoolMask schoolMask, DamageEff
         if (victimResistance < 0.0f || schoolMask & SPELL_SCHOOL_MASK_HOLY)
             victimResistance = 0.0f;
 
-        if (Creature* pCre = pVictim->ToCreature())
+        // Check only if victim has resistance otherwise ignore
+        if (victimResistance > 0)
         {
-            int32 leveldiff = int32(pCre->getLevelForTarget(this)) - int32(getLevelForTarget(pCre));
-            if (leveldiff > 0)
-                victimResistance += leveldiff * 5;
+            if (Creature* pCre = pVictim->ToCreature())
+            {
+                int32 leveldiff = int32(pCre->getLevelForTarget(this)) - int32(getLevelForTarget(pCre));
+                if (leveldiff > 0)
+                    victimResistance += leveldiff * 5;
+            }
         }
 
         victimResistance *= (float)(0.15f / getLevel());
