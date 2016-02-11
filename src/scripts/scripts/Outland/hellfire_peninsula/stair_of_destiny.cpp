@@ -1067,6 +1067,91 @@ CreatureAI* GetAI_npc_infernal_siegebreaker(Creature* creature)
     return new npc_infernal_siegebreakerAI(creature);
 }
 
+#define THRALLMAR_GRUNT       16580
+#define THRALLMAR_MARKSMAN    16582
+
+struct npc_lieutenant_general_orionAI : public ScriptedAI
+{
+    npc_lieutenant_general_orionAI(Creature* c) : ScriptedAI(c) {}
+
+    bool FactionUpdated;
+
+    void Reset()
+    {
+        FactionUpdated = false;
+    }
+
+    void MoveInLineOfSight(Unit* who) 
+    {  
+        if (!FactionUpdated)
+        {
+            UpdateFaction();
+            FactionUpdated = true;
+        }
+    }
+
+    void UpdateFaction()
+    {
+        std::list<Creature*> npc = FindAllCreaturesWithEntry(THRALLMAR_GRUNT, 5);
+        for (std::list<Creature*>::iterator it = npc.begin(); it != npc.end(); it++)
+            if ((*it)->isAlive())
+                (*it)->setFaction(me->getFaction());
+
+        npc = FindAllCreaturesWithEntry(THRALLMAR_MARKSMAN, 5);
+        for (std::list<Creature*>::iterator it = npc.begin(); it != npc.end(); it++)
+            if ((*it)->isAlive())
+                (*it)->setFaction(me->getFaction());
+    }
+};
+
+CreatureAI* GetAI_npc_lieutenant_general_orion(Creature* creature)
+{ 
+    return new npc_lieutenant_general_orionAI(creature);
+}
+
+#define NETHERGARDE_INFANTRY    16831
+#define STORMWIND_INFANTRY      16864
+
+struct npc_commander_duronAI : public ScriptedAI
+{
+    npc_commander_duronAI(Creature* c) : ScriptedAI(c) {}
+
+    bool FactionUpdated;
+
+    void Reset()
+    {
+        FactionUpdated = false;
+    }
+
+    void MoveInLineOfSight(Unit* who) 
+    {  
+        if (!FactionUpdated)
+        {
+            UpdateFaction();
+            FactionUpdated = true;
+        }
+    }
+
+    void UpdateFaction()
+    {
+        std::list<Creature*> npc = FindAllCreaturesWithEntry(NETHERGARDE_INFANTRY, 5);
+        for (std::list<Creature*>::iterator it = npc.begin(); it != npc.end(); it++)
+            if ((*it)->isAlive())
+                (*it)->setFaction(me->getFaction());
+
+        npc = FindAllCreaturesWithEntry(STORMWIND_INFANTRY, 5);
+        for (std::list<Creature*>::iterator it = npc.begin(); it != npc.end(); it++)
+            if ((*it)->isAlive())
+                (*it)->setFaction(me->getFaction());
+    } 
+};
+
+CreatureAI* GetAI_npc_commander_duron(Creature* creature)
+{ 
+    return new npc_commander_duronAI(creature);
+}
+
+
 void AddSC_stair_of_destiny()
 {
     Script *newscript;
@@ -1134,5 +1219,15 @@ void AddSC_stair_of_destiny()
     newscript = new Script;
     newscript->Name = "npc_infernal_siegebreaker";
     newscript->GetAI = &GetAI_npc_infernal_siegebreaker;
+    newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name = "npc_lieutenant_general_orion";
+    newscript->GetAI = &GetAI_npc_lieutenant_general_orion;
+    newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name = "npc_commander_duron";
+    newscript->GetAI = &GetAI_npc_commander_duron;
     newscript->RegisterSelf();
 }
