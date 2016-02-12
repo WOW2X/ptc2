@@ -28,6 +28,14 @@ NullCreatureAI::NullCreatureAI(Creature *c) : CreatureAI(c) { me->SetReactState(
 
 void PassiveAI::UpdateAI(const uint32)
 {
+    if (me->GetCreatureType() == CREATURE_TYPE_CRITTER)
+    {
+        if (me->isFeared())
+		    me->SetRooted(true);
+        else
+            me->SetRooted(false);
+    }
+
     if (me->isInCombat() && me->getAttackers().empty())
         EnterEvadeMode();
 }
@@ -69,7 +77,7 @@ void CritterAI::DamageTaken(Unit *done_by, uint32 &)
 
 void CritterAI::EnterEvadeMode()
 {
-    if (me->hasUnitState(UNIT_STAT_FLEEING))
+    if (me->hasUnitState(UNIT_STAT_FLEEING) && !me->isFeared())
         me->SetFeared(false, NULL);
 
     CreatureAI::EnterEvadeMode();
