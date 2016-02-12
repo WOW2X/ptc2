@@ -2201,6 +2201,7 @@ void Spell::SetTargetMap(uint32 i, uint32 cur)
                 case 43550:     // Mind Control - Priest (Hex)
                     unitList.remove_if(Hellground::ObjectGUIDCheck(m_caster->getVictimGUID()));
                     break;
+                case 30659:     // Fel Infusion
                 case 45248:     // Shadow Blades
                     unitList.remove_if([=](Unit* unit)->bool {return abs(m_caster->GetPositionZ()-unit->GetPositionZ()) > 5.0;});
                     break;
