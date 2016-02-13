@@ -928,28 +928,6 @@ uint32 Unit::DealDamage(DamageLog *damageInfo, DamageEffectType damagetype, cons
         if (damageInfo->damage)
             ((Creature*)this)->AI()->DamageMade(pVictim, damageInfo->damage, damagetype == DIRECT_DAMAGE, damageInfo->schoolMask);
 
-    // Rage from Damage made (only from direct weapon damage)
-    if (damageInfo->damage && damagetype == DIRECT_DAMAGE && this != pVictim && GetTypeId() == TYPEID_PLAYER && (getPowerType() == POWER_RAGE))
-    {
-        switch (damageInfo->attackType)
-        {
-            default:
-            {
-                float factor = damageInfo->attackType == OFF_ATTACK ? 1.75f : 3.5f;
-
-                if (damageInfo->opcode == SMSG_ATTACKERSTATEUPDATE)
-                    if (((MeleeDamageLog *)damageInfo)->procEx & PROC_EX_CRITICAL_HIT)
-                        factor *= 2.0f;
-
-                uint32 weaponSpeedHitFactor = uint32(GetAttackTime(damageInfo->attackType)/1000.0f * factor);
-                ((Player*)this)->RewardRage(damageInfo->damage, weaponSpeedHitFactor, true);
-            }
-            break;
-            case RANGED_ATTACK:
-                break;
-        }
-    }
-
     if (damageInfo->damage || damageInfo->absorb)
     {
         if (!spellProto || !(spellProto->AttributesEx4 & SPELL_ATTR_EX4_DAMAGE_DOESNT_BREAK_AURAS))
@@ -1012,6 +990,28 @@ uint32 Unit::DealDamage(DamageLog *damageInfo, DamageEffectType damagetype, cons
                 damageInfo->damage = health-1;
 
             duel_hasEnded = true;
+        }
+
+        // Rage from Damage made (only from direct weapon damage)
+        if (damageInfo->damage && damagetype == DIRECT_DAMAGE && this != pVictim && GetTypeId() == TYPEID_PLAYER && (getPowerType() == POWER_RAGE))
+        {
+            switch (damageInfo->attackType)
+            {
+                default:
+                {
+                    float factor = damageInfo->attackType == OFF_ATTACK ? 1.75f : 3.5f;
+
+                    if (damageInfo->opcode == SMSG_ATTACKERSTATEUPDATE)
+                        if (((MeleeDamageLog *)damageInfo)->procEx & PROC_EX_CRITICAL_HIT)
+                            factor *= 2.0f;
+
+                    uint32 weaponSpeedHitFactor = uint32(GetAttackTime(damageInfo->attackType)/1000.0f * factor);
+                    ((Player*)this)->RewardRage(damageInfo->damage, weaponSpeedHitFactor, true);
+                }
+                break;
+                case RANGED_ATTACK:
+                    break;
+            }
         }
 
         if (pVictim->GetTypeId() == TYPEID_PLAYER && GetTypeId() == TYPEID_PLAYER)
@@ -4733,25 +4733,12 @@ void Unit::RemoveAura(AuraMap::iterator &i, AuraRemoveMode mode)
 
 void Unit::RemoveAllAuras()
 {
-    if (GetCreatureType() != CREATURE_TYPE_CRITTER)
+    for (AuraMap::iterator iter = m_Auras.begin(); iter != m_Auras.end();)
     {
-        for (AuraMap::iterator iter = m_Auras.begin(); iter != m_Auras.end();)
-        {
-            if (iter->second->GetId() != 37851)
-                RemoveAura(iter);
-            else
-                ++iter;
-        }
-    } 
-    else
-    {
-        for (AuraMap::iterator iter = m_Auras.begin(); iter != m_Auras.end();)
-        {
-            if (!iter->second->IsPeriodic() && iter->second->GetSpellProto()->Mechanic != MECHANIC_FEAR)
-                RemoveAura(iter);
-            else
-                ++iter;
-        }
+        if (iter->second->GetId() != 37851)
+            RemoveAura(iter);
+        else
+            ++iter;
     }
 }
 
