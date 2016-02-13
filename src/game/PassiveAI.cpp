@@ -28,6 +28,12 @@ NullCreatureAI::NullCreatureAI(Creature *c) : CreatureAI(c) { me->SetReactState(
 
 void PassiveAI::UpdateAI(const uint32)
 {
+    if (me->HasAuraType(SPELL_AURA_PERIODIC_DAMAGE) || me->HasAuraType(SPELL_AURA_MOD_FEAR) || me->HasAura(20511))
+    {
+        me->SetRooted(true);
+        return;
+    }
+
     if (me->isInCombat() && me->getAttackers().empty())
         EnterEvadeMode();
 }
@@ -63,12 +69,24 @@ void PossessedAI::KilledUnit(Unit* victim)
 
 void CritterAI::DamageTaken(Unit *done_by, uint32 &)
 {
+    if (me->HasAuraType(SPELL_AURA_PERIODIC_DAMAGE) || me->HasAuraType(SPELL_AURA_MOD_FEAR) || me->HasAura(20511))
+    {
+        me->SetRooted(true);
+        return;
+    }
+
     if (!me->hasUnitState(UNIT_STAT_FLEEING))
         me->SetFeared(true, done_by, 10000);
 }
 
 void CritterAI::EnterEvadeMode()
 {
+    if (me->HasAuraType(SPELL_AURA_PERIODIC_DAMAGE) || me->HasAuraType(SPELL_AURA_MOD_FEAR) || me->HasAura(20511))
+    {
+        me->SetRooted(true);
+        return;
+    }
+
     if (me->hasUnitState(UNIT_STAT_FLEEING))
         me->SetFeared(false, NULL);
 
