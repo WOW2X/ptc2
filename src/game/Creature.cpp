@@ -1962,6 +1962,9 @@ void Creature::ForcedDespawn(uint32 timeMSToDespawn)
         return;
     }
 
+    m_tempVisibility = true;
+    SetVisibility(VISIBILITY_OFF);
+
     if (isAlive())
         setDeathState(JUST_DIED);
 
