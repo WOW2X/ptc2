@@ -7,5 +7,6 @@ UPDATE `creature_template` SET `speed` = '1.1' WHERE `creature_template`.`entry`
 UPDATE `creature_template` SET `speed` = '1.1' WHERE `creature_template`.`entry` = 17280; -- speed correction
  
 UPDATE `waypoint_data` SET `delay` = '1000' WHERE `waypoint_data`.`id` = 1411 AND `waypoint_data`.`point` = 6; -- 1 sec stop at 6 point
+UPDATE `waypoint_data` SET `delay` = '0' WHERE `waypoint_data`.`id` = 1410 AND `waypoint_data`.`point` = 1;  -- no stop at all
 
 UPDATE `creature` SET `spawndist`=2,`MovementType`=1 WHERE `guid`= 200941; -- random movement
