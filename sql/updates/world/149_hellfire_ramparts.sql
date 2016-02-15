@@ -382,7 +382,7 @@ INSERT INTO `creature_ai_scripts` (`id`, `entryOrGUID`, `event_type`, `event_inv
 UPDATE `creature_template` SET `equipment_id` = '4001' WHERE `creature_template`.`entry` = 17478;
 DELETE FROM `creature_equip_template` WHERE `creature_equip_template`.`entry` = 4001;
 INSERT INTO `creature_equip_template` (`entry`, `equipmodel1`, `equipmodel2`, `equipmodel3`, `equipinfo1`, `equipinfo2`, `equipinfo3`, `equipslot1`, `equipslot2`, `equipslot3`) VALUES
-(4001, 43817, 0, 0, 50268674, 0, 0, 529, 0, 0);
+(4001, 45947, 0, 0, 50268674, 0, 0, 529, 0, 0);
 
 -- Bonechewer Ripper: Emote Cheer set as on Retail
 DELETE FROM `creature_ai_scripts` WHERE `creature_ai_scripts`.`id` = 1728102;
