@@ -1876,8 +1876,6 @@ void Creature::setDeathState(DeathState s)
         CreatureInfo const *cinfo = GetCreatureInfo();
         RemoveFlag (UNIT_FIELD_FLAGS, UNIT_FLAG_SKINNABLE);
 
-        SetWalk(true);
-
         SetUInt32Value(UNIT_NPC_FLAGS, cinfo->npcflag);
 
         clearUnitState(UNIT_STAT_ALL_STATE);
