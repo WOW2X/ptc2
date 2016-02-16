@@ -1252,6 +1252,8 @@ void CreatureEventAI::UpdateAI(const uint32 diff)
                             {
                                 if (m_creature->IsInRange(m_creature->getVictim(),(float)(*i).Event.range.minDist,(float)(*i).Event.range.maxDist))
                                     ProcessEvent(*i);
+                                else if ((*i).Event.action[0].type == ACTION_T_CAST)
+                                    ProcessEvent(*i);
                             }
                         }
                         break;
