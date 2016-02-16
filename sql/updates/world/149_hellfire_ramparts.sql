@@ -354,29 +354,29 @@ INSERT INTO `creature_ai_scripts` (`id`, `entryOrGUID`, `event_type`, `event_inv
 -- Bleeding Hollow Scryer: Missing spell cast on Bonechewer Ripper (Fel Infusion) set as on Retail
 DELETE FROM `creature_ai_scripts` WHERE `creature_ai_scripts`.`id` = 1747816;
 INSERT INTO `creature_ai_scripts` (`id`, `entryOrGUID`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_type`, `action1_param1`, `action1_param2`, `action1_param3`, `action2_type`, `action2_param1`, `action2_param2`, `action2_param3`, `action3_type`, `action3_param1`, `action3_param2`, `action3_param3`, `comment`) VALUES
-(1747816, -85637, 6, 0, 100, 0, 0, 0, 0, 0, 44, 30659, 85642, 1, 0, 0, 0, 0, 0, 0, 0, 0, 'Bleeding Hollow Scryer - Cast Fel Infusion on Bonechewer Ripper at death');
+(1747816, -85637, 6, 0, 100, 0, 0, 0, 0, 0, 44, 30659, 85642, 5, 0, 0, 0, 0, 0, 0, 0, 0, 'Bleeding Hollow Scryer - Cast Fel Infusion on Bonechewer Ripper at death');
 DELETE FROM `creature_ai_scripts` WHERE `creature_ai_scripts`.`id` = 1747817;
 INSERT INTO `creature_ai_scripts` (`id`, `entryOrGUID`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_type`, `action1_param1`, `action1_param2`, `action1_param3`, `action2_type`, `action2_param1`, `action2_param2`, `action2_param3`, `action3_type`, `action3_param1`, `action3_param2`, `action3_param3`, `comment`) VALUES
-(1747817, -85639, 6, 0, 100, 0, 0, 0, 0, 0, 44, 30659, 85642, 1, 0, 0, 0, 0, 0, 0, 0, 0, 'Bleeding Hollow Scryer - Cast Fel Infusion on Bonechewer Ripper at death');
+(1747817, -85639, 6, 0, 100, 0, 0, 0, 0, 0, 44, 30659, 85642, 5, 0, 0, 0, 0, 0, 0, 0, 0, 'Bleeding Hollow Scryer - Cast Fel Infusion on Bonechewer Ripper at death');
 DELETE FROM `creature_ai_scripts` WHERE `creature_ai_scripts`.`id` = 1747818;
 INSERT INTO `creature_ai_scripts` (`id`, `entryOrGUID`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_type`, `action1_param1`, `action1_param2`, `action1_param3`, `action2_type`, `action2_param1`, `action2_param2`, `action2_param3`, `action3_type`, `action3_param1`, `action3_param2`, `action3_param3`, `comment`) VALUES
-(1747818, -85641, 6, 0, 100, 0, 0, 0, 0, 0, 44, 30659, 85642, 1, 0, 0, 0, 0, 0, 0, 0, 0, 'Bleeding Hollow Scryer - Cast Fel Infusion on Bonechewer Ripper at death');
+(1747818, -85641, 6, 0, 100, 0, 0, 0, 0, 0, 44, 30659, 85642, 5, 0, 0, 0, 0, 0, 0, 0, 0, 'Bleeding Hollow Scryer - Cast Fel Infusion on Bonechewer Ripper at death');
 
 DELETE FROM `creature_ai_scripts` WHERE `creature_ai_scripts`.`id` = 1747819;
 INSERT INTO `creature_ai_scripts` (`id`, `entryOrGUID`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_type`, `action1_param1`, `action1_param2`, `action1_param3`, `action2_type`, `action2_param1`, `action2_param2`, `action2_param3`, `action3_type`, `action3_param1`, `action3_param2`, `action3_param3`, `comment`) VALUES
-(1747819, -85646, 6, 0, 100, 0, 0, 0, 0, 0, 44, 30659, 85652, 1, 0, 0, 0, 0, 0, 0, 0, 0, 'Bleeding Hollow Scryer - Cast Fel Infusion on Bonechewer Ripper at death');
+(1747819, -85646, 6, 0, 100, 0, 0, 0, 0, 0, 44, 30659, 85652, 5, 0, 0, 0, 0, 0, 0, 0, 0, 'Bleeding Hollow Scryer - Cast Fel Infusion on Bonechewer Ripper at death');
 
 DELETE FROM `creature_ai_scripts` WHERE `creature_ai_scripts`.`id` = 1747820;
 INSERT INTO `creature_ai_scripts` (`id`, `entryOrGUID`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_type`, `action1_param1`, `action1_param2`, `action1_param3`, `action2_type`, `action2_param1`, `action2_param2`, `action2_param3`, `action3_type`, `action3_param1`, `action3_param2`, `action3_param3`, `comment`) VALUES
-(1747820, -85650, 6, 0, 100, 0, 0, 0, 0, 0, 44, 30659, 85652, 1, 0, 0, 0, 0, 0, 0, 0, 0, 'Bleeding Hollow Scryer - Cast Fel Infusion on Bonechewer Ripper at death');
+(1747820, -85650, 6, 0, 100, 0, 0, 0, 0, 0, 44, 30659, 85652, 5, 0, 0, 0, 0, 0, 0, 0, 0, 'Bleeding Hollow Scryer - Cast Fel Infusion on Bonechewer Ripper at death');
 
 DELETE FROM `creature_ai_scripts` WHERE `creature_ai_scripts`.`id` = 1747821;
 INSERT INTO `creature_ai_scripts` (`id`, `entryOrGUID`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_type`, `action1_param1`, `action1_param2`, `action1_param3`, `action2_type`, `action2_param1`, `action2_param2`, `action2_param3`, `action3_type`, `action3_param1`, `action3_param2`, `action3_param3`, `comment`) VALUES
-(1747821, -85649, 6, 0, 100, 0, 0, 0, 0, 0, 44, 30659, 85652, 1, 0, 0, 0, 0, 0, 0, 0, 0, 'Bleeding Hollow Scryer - Cast Fel Infusion on Bonechewer Ripper at death');
+(1747821, -85649, 6, 0, 100, 0, 0, 0, 0, 0, 44, 30659, 85652, 5, 0, 0, 0, 0, 0, 0, 0, 0, 'Bleeding Hollow Scryer - Cast Fel Infusion on Bonechewer Ripper at death');
 
 DELETE FROM `creature_ai_scripts` WHERE `creature_ai_scripts`.`id` = 1747822;
 INSERT INTO `creature_ai_scripts` (`id`, `entryOrGUID`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_type`, `action1_param1`, `action1_param2`, `action1_param3`, `action2_type`, `action2_param1`, `action2_param2`, `action2_param3`, `action3_type`, `action3_param1`, `action3_param2`, `action3_param3`, `comment`) VALUES
-(1747822, -85648, 6, 0, 100, 0, 0, 0, 0, 0, 44, 30659, 85652, 1, 0, 0, 0, 0, 0, 0, 0, 0, 'Bleeding Hollow Scryer - Cast Fel Infusion on Bonechewer Ripper at death');
+(1747822, -85648, 6, 0, 100, 0, 0, 0, 0, 0, 44, 30659, 85652, 5, 0, 0, 0, 0, 0, 0, 0, 0, 'Bleeding Hollow Scryer - Cast Fel Infusion on Bonechewer Ripper at death');
 
 -- Bleeding Hollow Scryer: Missing weapon set as on Retail
 UPDATE `creature_template` SET `equipment_id` = '4001' WHERE `creature_template`.`entry` = 17478;
