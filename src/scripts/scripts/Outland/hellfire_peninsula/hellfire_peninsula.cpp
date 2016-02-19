@@ -282,6 +282,29 @@ bool GossipSelect_npc_wing_commander_brack(Player *player, Creature *creature, u
 }
 
 /*######
+## npc_gryphoneer_leafbeard
+######*/
+
+#define GOSSIP_ITEM1_LEAF "Send me to Shatter Point!"
+
+bool GossipHello_npc_gryphoneer_leafbeard(Player *player, Creature *creature)
+{
+    player->ADD_GOSSIP_ITEM(2, GOSSIP_ITEM1_LEAF, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+    player->SEND_GOSSIP_MENU(creature->GetNpcTextId(), creature->GetGUID());
+    return true;
+}
+
+bool GossipSelect_npc_gryphoneer_leafbeard(Player *player, Creature *creature, uint32 sender, uint32 action)
+{
+    if (action == GOSSIP_ACTION_INFO_DEF + 1)
+    {
+        player->CLOSE_GOSSIP_MENU();
+        player->CastSpell(player, 35066, true);               //TaxiPath 609  (Taxi - Hellfire Peninsula - Beach Head to Shatter Point)
+    }
+    return true; 
+}
+
+/*######
 ## npc_wounded_blood_elf
 ######*/
 
@@ -2916,6 +2939,12 @@ void AddSC_hellfire_peninsula()
     newscript->Name="npc_wing_commander_brack";
     newscript->pGossipHello =   &GossipHello_npc_wing_commander_brack;
     newscript->pGossipSelect =  &GossipSelect_npc_wing_commander_brack;
+    newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name="npc_gryphoneer_leafbeard";
+    newscript->pGossipHello =   &GossipHello_npc_gryphoneer_leafbeard;
+    newscript->pGossipSelect =  &GossipSelect_npc_gryphoneer_leafbeard;
     newscript->RegisterSelf();
 
     newscript = new Script;
