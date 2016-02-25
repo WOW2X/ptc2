@@ -4048,6 +4048,23 @@ SpellCastResult Spell::CheckCast(bool strict)
             return castResult;
     }
 
+    if (!IsTriggeredSpell())
+    {
+        switch (GetSpellEntry()->Id)
+        {
+            // Rina's Diminution Powder
+            case 36310: 
+            {
+                if (Unit *unit = m_targets.getUnitTarget())
+                {
+                    if (unit->GetEntry() != 20058 || unit->HasAura(36310))
+                        return SPELL_FAILED_BAD_TARGETS;
+                }
+            } break;
+            default: break;
+        }
+    }
+
     for (int i = 0; i < 3; i++)
     {
         // for effects of spells that have only one target
