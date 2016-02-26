@@ -107,6 +107,11 @@ void WorldSession::HandleQuestgiverHelloOpcode(WorldPacket & recv_data)
     // Stop the npc if moving
     pCreature->StopMoving();
 
+    if (pCreature->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
+    {
+        pCreature->GetMotionMaster()->top()->Stop();
+    }
+
     if (sScriptMgr.OnGossipHello(_player, pCreature))
         return;
 
