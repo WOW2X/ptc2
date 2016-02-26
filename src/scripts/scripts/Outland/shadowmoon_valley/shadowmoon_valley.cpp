@@ -58,8 +58,8 @@ EndContentData */
 #define SPELL_RAIN_OF_FIRE             38741
 #define SPELL_WARSTOMP                 38750
 #define SPELL_BANISH                   37833
+#define SPELL_UBANISH                  37834
 #define TIME_TO_BANISH                 60000
-#define SPELL_VISUAL_BANISH            38722
 
 struct mob_azalothAI : public ScriptedAI
 {
@@ -71,19 +71,15 @@ struct mob_azalothAI : public ScriptedAI
     uint32 warstomp_timer;
     uint64 banish_timer;
 
-
     void JustRespawned()
     {
-        DoCast(m_creature,SPELL_BANISH);
-        std::list<Creature*> warlocks = FindAllCreaturesWithEntry(21503, 30.0f);
-        for (std::list<Creature*>::iterator itr = warlocks.begin(); itr != warlocks.end(); ++itr)
-            (*itr)->CastSpell(me,SPELL_VISUAL_BANISH, false);
+        DoCast(m_creature, SPELL_BANISH);
     }
 
     void EnterCombat()
     {
-        DoCast(m_creature->getVictim(),SPELL_CRIPPLE);
-        banish_timer  = TIME_TO_BANISH;
+        DoCast(m_creature->getVictim(), SPELL_CRIPPLE);
+        banish_timer = TIME_TO_BANISH;
     }
 
     void Reset()
@@ -92,68 +88,84 @@ struct mob_azalothAI : public ScriptedAI
         cripple_timer = 18000;
         rain_timer    = 15000;
         warstomp_timer= 10000;
-        banish_timer  = TIME_TO_BANISH;
+        banish_timer  = 0;
+    }
+
+    void SpellHit(Unit *caster, const SpellEntry *spell)
+    {
+        if (spell->Id == SPELL_UBANISH)
+        {
+            if (caster->GetTypeId() == TYPEID_PLAYER)
+            {
+                if (Player* plr = caster->ToPlayer())
+                {
+                    // The Aldor
+                    if (plr->hasQuest(10637))
+                    {
+                        if (plr->GetQuestStatus(10637) == QUEST_STATUS_INCOMPLETE)
+                            plr->SetQuestStatus(10637, QUEST_STATUS_COMPLETE);
+					}
+                    // The Scryers
+                    else if (plr->hasQuest(10688)) 
+                    {
+                        if (plr->GetQuestStatus(10688) == QUEST_STATUS_INCOMPLETE)
+                            plr->SetQuestStatus(10688, QUEST_STATUS_COMPLETE);
+                    }
+                }
+            }
+        }
     }
 
     void UpdateAI(const uint32 diff)
     {
-        if (banish_timer < diff)
+        if (banish_timer <= diff)
         {
-            DoCast(m_creature,SPELL_BANISH);
+            DoCast(m_creature, SPELL_BANISH);
             banish_timer  = TIME_TO_BANISH;
-        }
-
-        std::list<Creature*> warlocks = FindAllCreaturesWithEntry(21503, 20.0f);
-        for (std::list<Creature*>::iterator itr = warlocks.begin(); itr != warlocks.end(); ++itr)
-        {
-            (*itr)->GetMotionMaster()->Clear(false);
-            (*itr)->StopMoving();
-            (*itr)->CastSpell(me,SPELL_VISUAL_BANISH, false);
         }
 
         if (!UpdateVictim())
         {
-            banish_timer-=diff;
+            banish_timer -= diff;
             return;
         }
 
-        //spell cleave
-        if (cleave_timer<diff)
+        if (cleave_timer <= diff)
         {
             DoCast(m_creature->getVictim(), SPELL_CLEAVE);
-            cleave_timer  = 6000;
+            cleave_timer = 6000;
         }
         else
-            cleave_timer-=diff;
+            cleave_timer -= diff;
 
-        //spell cripple
-        if (cripple_timer<diff)
+        if (cripple_timer <= diff)
         {
             DoCast(m_creature->getVictim(), SPELL_CRIPPLE);
-           cripple_timer = 40000;
+            cripple_timer = 40000;
         }
         else
-            cripple_timer-=diff;
-/* This spell has been disabled due to HUGE spam in logs: 
-2013-11-10 09:41:01 ERROR: SPELL: no destination for spell ID 38741
-x 20 0000 000 times... or more
-        //spell rain of fire
-        if (rain_timer<diff)
+            cripple_timer -= diff;
+
+        /* This spell has been disabled due to HUGE spam in logs: 
+           2013-11-10 09:41:01 ERROR: SPELL: no destination for spell ID 38741
+           x 20 0000 000 times... or more
+
+        if (rain_timer <= diff)
         {
             DoCast(m_creature->getVictim(), SPELL_RAIN_OF_FIRE);
-            rain_timer    = 15000;
+            rain_timer = 15000;
         }
         else
-            rain_timer-=diff;
-*/
-        //spell warstomp
-        if (warstomp_timer<diff)
+            rain_timer -= diff;
+        */
+
+        if (warstomp_timer <= diff)
         {
             DoCast(m_creature->getVictim(), SPELL_WARSTOMP);
-            warstomp_timer= 10000;
+            warstomp_timer = 10000;
         }
         else
-            warstomp_timer-=diff;
+            warstomp_timer -= diff;
 
         DoMeleeAttackIfReady();
     }
@@ -164,6 +176,87 @@ CreatureAI* GetAI_mob_azaloth(Creature *_creature)
     return new mob_azalothAI(_creature);
 }
 
+/*#####
+# mob_sunfury_warlock
+#####*/
+
+#define SPELL_SHADOWBOLT       9613
+#define SPELL_INCINERATE       32707
+#define SPELL_VISUAL_BANISH    38722
+
+struct mob_sunfury_warlockAI : public ScriptedAI
+{
+    mob_sunfury_warlockAI(Creature* c) : ScriptedAI(c)   {}
+
+    uint32 ReadyToCast;
+    uint32 CheckChanneling;
+
+    void Reset()
+    {
+        ReadyToCast = 3000;
+        CheckChanneling = 5000;
+    }
+
+    void EnterCombat(Unit* who)
+    {
+        me->InterruptNonMeleeSpells(false);
+        me->clearUnitState(UNIT_STAT_CASTING);
+        ScriptedAI::EnterCombat(who);
+    }
+
+    void UpdateAI(const uint32 diff)
+    {
+        if (!me->isInCombat())
+        {
+            if (CheckChanneling <= diff)
+            {
+                VisualCast();
+                CheckChanneling = 5000;
+            }
+            else CheckChanneling -= diff;
+        }
+
+        if (!UpdateVictim())
+            return;
+
+        if (ReadyToCast <= diff)
+        {
+            switch (urand(0,1))
+            {
+                case 0:
+                    DoCast(me->getVictim(), SPELL_SHADOWBOLT);
+                    break;
+                case 1:
+                    DoCast(me->getVictim(), SPELL_INCINERATE);
+                    break;
+            }
+            ReadyToCast = 3000 + urand(0, 2000);
+        }
+        else ReadyToCast -= diff;
+
+        DoMeleeAttackIfReady(); 
+    }
+
+	void VisualCast()
+    {
+        if (Unit* Azaloth = GetClosestCreatureWithEntry(me, 21506, 20.0f, true))
+        {
+            if (Azaloth->isAlive() && Azaloth->HasAura(SPELL_BANISH))
+            {
+                if (!me->hasUnitState(UNIT_STAT_CASTING))
+                {
+                    me->CastSpell(Azaloth, SPELL_VISUAL_BANISH, false);
+                    me->addUnitState(UNIT_STAT_CASTING);
+                }
+            }
+        }
+    }
+};
+
+CreatureAI* GetAI_mob_sunfury_warlock(Creature *_creature)
+{
+    return new mob_sunfury_warlockAI(_creature);
+}
 
 /*#####
 # mob_mature_netherwing_drake
@@ -3591,6 +3684,11 @@ void AddSC_shadowmoon_valley()
     newscript->GetAI = &GetAI_mob_azaloth;
     newscript->RegisterSelf();
 
+    newscript = new Script;
+    newscript->Name = "mob_sunfury_warlock";
+    newscript->GetAI = &GetAI_mob_sunfury_warlock;
+    newscript->RegisterSelf();
+	
     newscript = new Script;
     newscript->Name = "mob_mature_netherwing_drake";
     newscript->GetAI = &GetAI_mob_mature_netherwing_drake;
