@@ -185,6 +185,7 @@ struct mobs_nether_drakeAI : public ScriptedAI
                             me->SetLevitate(true);
                             //then take off to random location. creature is initially summoned, so don't bother do anything else.
                             me->GetMotionMaster()->MovePoint(0, me->GetPositionX()+100, me->GetPositionY(), me->GetPositionZ()+100);
+                            me->ForcedDespawn(10000);
                             NihilSpeech_Phase = 0;
                             break;
                     }
