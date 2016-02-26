@@ -253,7 +253,8 @@ struct mob_arcane_protectorAI : public ScriptedAI
     
     void EnterCombat(Unit *who)
     {
-        me->CastSpell(me, RAND(SPELL_RETURN_FIRE1, SPELL_RETURN_FIRE2, SPELL_RETURN_FIRE3), false); 
+        if (who->GetTypeId() == TYPEID_PLAYER)
+            me->CastSpell(me, RAND(SPELL_RETURN_FIRE1, SPELL_RETURN_FIRE2, SPELL_RETURN_FIRE3), false); 
     }
 
     void JustSummoned(Creature *c)
