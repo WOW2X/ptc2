@@ -3285,6 +3285,7 @@ void SpellMgr::LoadSpellCustomAttr()
             case 40594: // Fel Rage
                 spellInfo->EffectBasePoints[1] = 99;
                 break;
+            case 33924: // Bleeding Hollow Tormentor: Fear
             case 40855: // Akama Soul Expel
                 spellInfo->EffectImplicitTargetA[0] = TARGET_UNIT_TARGET_ENEMY;
                 break;

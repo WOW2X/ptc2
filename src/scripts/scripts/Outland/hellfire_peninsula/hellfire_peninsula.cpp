@@ -2904,6 +2904,74 @@ CreatureAI* GetAI_npc_aggonis(Creature* creature)
     return new npc_aggonisAI(creature);
 }
 
+/*######
+## mob_bleeding_hollow_tormentor
+######*/
+
+#define SPELL_FEAR                  33924
+#define SPELL_HAMSTRING             31553
+#define SPELL_SUMMON_RIDING_WORG    34368
+
+struct mob_bleeding_hollow_tormentorAI : public ScriptedAI
+{
+    mob_bleeding_hollow_tormentorAI(Creature* creature) : ScriptedAI(creature) {}
+
+    uint32 FearTimer;
+    bool IsFleeing;
+
+    void Reset()
+    {
+        FearTimer = 5000;
+        IsFleeing = false;
+        me->SetWalk(true);
+    }
+
+    void EnterCombat(Unit* who)
+    {
+        me->Unmount();
+        me->SetWalk(false);
+
+        if (Unit* wolf = me->SummonCreature(19640, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), me->GetOrientation(), TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 0))
+            wolf->ToCreature()->AI()->AttackStart(who);
+		
+        ScriptedAI::EnterCombat(who);
+    }
+
+    void UpdateAI(const uint32 diff)
+    {
+        if (!UpdateVictim())
+            return;
+
+        if (HealthBelowPct(15) && !IsFleeing)
+        {
+            IsFleeing = true;
+            me->InterruptNonMeleeSpells(false);
+            DoCast(me->getVictim(), SPELL_HAMSTRING, true);
+            GetAssistance();
+        }
+
+        if (FearTimer <= diff)
+        {
+            DoCast(me->getVictim(), SPELL_FEAR);
+            FearTimer = 10000;
+        }
+        else FearTimer -= diff;
+
+        DoMeleeAttackIfReady();
+    }
+
+    void GetAssistance()
+    {
+        DoScriptText(-1000008, me);
+        me->DoFleeToGetAssistance();
+    }
+};
+
+CreatureAI* GetAI_mob_bleeding_hollow_tormentor(Creature* creature)
+{
+    return new mob_bleeding_hollow_tormentorAI(creature);
+}
+
 void AddSC_hellfire_peninsula()
 {
     Script *newscript;
@@ -3093,5 +3161,10 @@ void AddSC_hellfire_peninsula()
     newscript = new Script;
     newscript->Name = "npc_aggonis";
     newscript->GetAI = &GetAI_npc_aggonis;
+    newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name = "mob_bleeding_hollow_tormentor";
+    newscript->GetAI = &GetAI_mob_bleeding_hollow_tormentor;
     newscript->RegisterSelf();
 }
