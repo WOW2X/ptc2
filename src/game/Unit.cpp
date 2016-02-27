@@ -11666,6 +11666,9 @@ void Unit::StopMoving()
 
     DisableSpline();
 
+    if (GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
+        GetMotionMaster()->top()->Stop();
+
     Movement::MoveSplineInit init(*this);
     init.SetFacing(GetOrientation());
     init.Launch();
