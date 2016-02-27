@@ -3431,6 +3431,7 @@ void SpellMgr::LoadSpellCustomAttr()
             case 40214: // Dragonmaw illusion
                 spellInfo->AttributesEx3 |= SPELL_ATTR_EX3_DEATH_PERSISTENT;
                 break;
+            case 34446: // Arcane Missiles (Cabal Abjurist)
             case 29955: // Arcane Missiles (Shade of Aran)
                 spellInfo->EffectImplicitTargetA[0] = TARGET_UNIT_CASTER;
                 spellInfo->EffectImplicitTargetA[1] = TARGET_UNIT_CASTER;
