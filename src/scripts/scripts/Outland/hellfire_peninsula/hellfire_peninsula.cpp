@@ -2805,6 +2805,9 @@ struct npc_fel_cannon_mkiAI : public ScriptedAI
 
     void UpdateAI(const uint32 diff)
     {
+        if (!UpdateVictim())
+            return;
+
         if (CastTimer <= diff)
         {
             DoCast(me->getVictim(), SPELL_FEL_CANNON_BLAST);
