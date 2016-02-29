@@ -3645,11 +3645,21 @@ bool GOHello_go_arcanocontroller(Player* player, GameObject* go)
 ## npc_greater_felfire
 ######*/
 
+#define FEL_FLAMING_WOUND    37941
+#define FEL_FIREBALL         37945
+
 struct npc_greater_felfireAI : public ScriptedAI
 {
     npc_greater_felfireAI(Creature* creature) : ScriptedAI(creature) {}
 
-    void Reset() {}
+    uint32 FlamingWoundTimer;
+    uint32 FireballTimer;
+
+    void Reset() 
+    {
+        FlamingWoundTimer = urand(1500, 3000);
+        FireballTimer     = urand(4500, 5000);
+    }
 
     void AttackStart(Unit* who)
     {
@@ -3667,6 +3677,28 @@ struct npc_greater_felfireAI : public ScriptedAI
             return;
 
         ScriptedAI::MoveInLineOfSight(who);
+    }
+
+    void UpdateAI(const uint32 diff)
+    {
+        if (!UpdateVictim())
+            return;
+
+        if (FlamingWoundTimer <= diff)
+        {
+            DoCast(me->getVictim(), FEL_FLAMING_WOUND);
+            FlamingWoundTimer = urand(15000, 17000);
+        }
+        else FlamingWoundTimer -= diff;
+
+        if (FireballTimer <= diff)
+        {
+            DoCast(me->getVictim(), FEL_FIREBALL);
+            FireballTimer = urand(5000, 7000);
+        }
+        else FireballTimer -= diff;
+
+        DoMeleeAttackIfReady();
     }
 };
 
