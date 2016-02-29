@@ -471,6 +471,7 @@
     <ClCompile Include="..\..\src\scripts\scripts\boss\boss_ysondre.cpp" />
     <ClCompile Include="..\..\src\scripts\scripts\Outland\hellfire_peninsula\stair_of_destiny.cpp" />
     <ClCompile Include="..\..\src\scripts\scripts\special\mob_generic_creature.cpp" />
+    <ClCompile Include="..\..\src\scripts\scripts\special\npcs_boost60.cpp" />
     <ClCompile Include="..\..\src\scripts\scripts\special\simple_ai.cpp" />
     <ClCompile Include="..\..\src\scripts\scripts\special\guard_ai.cpp" />
     <ClCompile Include="..\..\src\scripts\scripts\special\guards.cpp" />

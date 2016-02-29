@@ -55,6 +55,7 @@ extern void AddSC_item_test();
 extern void AddSC_npc_professions();
 extern void AddSC_npcs_special();
 extern void AddSC_npc_innkeeper();
+extern void AddSC_npcs_boost60();
 
 // -- Servers --
 
@@ -678,6 +679,7 @@ void AddScripts()
     AddSC_npc_professions();
     AddSC_npcs_special();
     AddSC_npc_innkeeper();
+    AddSC_npcs_boost60();
 
     // -- Servers --
 

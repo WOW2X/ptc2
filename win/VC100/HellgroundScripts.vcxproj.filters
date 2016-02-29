@@ -1567,6 +1567,9 @@
     <ClCompile Include="..\..\src\scripts\scripts\Outland\hellfire_peninsula\stair_of_destiny.cpp">
       <Filter>Scripts\Outland\Hellfire Peninsula</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\scripts\scripts\special\npcs_boost60.cpp">
+      <Filter>Scripts\special</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\scripts\scripts\Eastern Kingdoms\deadmines\def_deadmines.h">
