@@ -1,0 +1,1 @@
+UPDATE `creature_template` SET `ScriptName` = 'mob_legion_hold_fel_reaver', `flags_extra` = '2' WHERE `creature_template`.`entry` = 21404;

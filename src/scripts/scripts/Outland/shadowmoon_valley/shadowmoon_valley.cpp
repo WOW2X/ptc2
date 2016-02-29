@@ -3780,6 +3780,48 @@ CreatureAI* GetAI_mob_shadow_council_warlock(Creature* creature)
     return new mob_shadow_council_warlockAI(creature);
 }
 
+/*######
+## mob_legion_hold_fel_reaver
+######*/
+
+#define SPELL_ELECTRICAL_SHOCK    36804
+
+struct mob_legion_hold_fel_reaverAI : public ScriptedAI
+{
+    mob_legion_hold_fel_reaverAI(Creature* creature) : ScriptedAI(creature) {}
+
+    uint32 ElectricalShockTimer;
+
+    void Reset()
+    {
+        ElectricalShockTimer = 1000;
+
+        me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+        me->SetSelection(0);
+    }
+
+    void UpdateAI(const uint32 diff)
+    {
+        if (!me->isInCombat())
+        {
+            if (ElectricalShockTimer <= diff)
+            {
+                DoCast(me, SPELL_ELECTRICAL_SHOCK);
+                ElectricalShockTimer = 1000 + urand(0, 500);
+            }
+            else ElectricalShockTimer -= diff;
+        }
+
+        if (!UpdateVictim())
+            return;
+    }
+};
+
+CreatureAI* GetAI_mob_legion_hold_fel_reaver(Creature* creature)
+{
+    return new mob_legion_hold_fel_reaverAI(creature);
+}
+
 void AddSC_shadowmoon_valley()
 {
     Script *newscript;
@@ -3980,6 +4022,11 @@ void AddSC_shadowmoon_valley()
     newscript = new Script;
     newscript->Name="mob_shadow_council_warlock";
     newscript->GetAI = &GetAI_mob_shadow_council_warlock;
+    newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name="mob_legion_hold_fel_reaver";
+    newscript->GetAI = &GetAI_mob_legion_hold_fel_reaver;
     newscript->RegisterSelf();
 }
  
