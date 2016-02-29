@@ -3789,12 +3789,7 @@ struct mob_legion_hold_fel_reaverAI : public ScriptedAI
 {
     mob_legion_hold_fel_reaverAI(Creature* creature) : ScriptedAI(creature) {}
 
-    void Reset()
-    {
-        me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-        me->SetSelection(0);
-        me->SetRooted(true);
-    }
+    void Reset() { me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PASSIVE | UNIT_FLAG_DISABLE_MOVE); }
 };
 
 CreatureAI* GetAI_mob_legion_hold_fel_reaver(Creature* creature)
