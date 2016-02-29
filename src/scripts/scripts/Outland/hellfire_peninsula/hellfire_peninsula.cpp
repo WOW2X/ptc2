@@ -289,7 +289,7 @@ bool GossipSelect_npc_wing_commander_brack(Player *player, Creature *creature, u
 
 bool GossipHello_npc_gryphoneer_leafbeard(Player *player, Creature *creature)
 {
-    player->ADD_GOSSIP_ITEM(2, GOSSIP_ITEM1_LEAF, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+    player->ADD_GOSSIP_ITEM(0, GOSSIP_ITEM1_LEAF, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
     player->SEND_GOSSIP_MENU(creature->GetNpcTextId(), creature->GetGUID());
     return true;
 }
