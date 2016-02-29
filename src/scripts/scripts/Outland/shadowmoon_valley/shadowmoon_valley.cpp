@@ -180,9 +180,9 @@ CreatureAI* GetAI_mob_azaloth(Creature *_creature)
 # mob_sunfury_warlock
 #####*/
 
-#define SPELL_SHADOWBOLT       9613
-#define SPELL_INCINERATE       32707
-#define SPELL_VISUAL_BANISH    38722
+#define SPELL_SUNFURY_SHADOWBOLT       9613
+#define SPELL_SUNFURY_INCINERATE       32707
+#define SPELL_SUNFURY_VISUAL_BANISH    38722
 
 struct mob_sunfury_warlockAI : public ScriptedAI
 {
@@ -224,10 +224,10 @@ struct mob_sunfury_warlockAI : public ScriptedAI
             switch (urand(0,1))
             {
                 case 0:
-                    DoCast(me->getVictim(), SPELL_SHADOWBOLT);
+                    DoCast(me->getVictim(), SPELL_SUNFURY_SHADOWBOLT);
                     break;
                 case 1:
-                    DoCast(me->getVictim(), SPELL_INCINERATE);
+                    DoCast(me->getVictim(), SPELL_SUNFURY_INCINERATE);
                     break;
             }
             ReadyToCast = 3000 + urand(0, 2000);
@@ -245,7 +245,7 @@ struct mob_sunfury_warlockAI : public ScriptedAI
             {
                 if (!me->hasUnitState(UNIT_STAT_CASTING))
                 {
-                    me->CastSpell(Azaloth, SPELL_VISUAL_BANISH, false);
+                    me->CastSpell(Azaloth, SPELL_SUNFURY_VISUAL_BANISH, false);
                     me->addUnitState(UNIT_STAT_CASTING);
                 }
             }
