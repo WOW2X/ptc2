@@ -3675,6 +3675,79 @@ CreatureAI* GetAI_npc_greater_felfire(Creature* creature)
     return new npc_greater_felfireAI(creature);
 }
 
+/*######
+## mob_shadow_council_warlock
+######*/
+
+#define SPELL_COUNCIL_SHADOW_BOLT      9613
+#define SPELL_COUNCIL_GREEN_BEAM       33346
+#define SPELL_COUNCIL_DRAIN_LIFE       37992
+#define CREATURE_SHADOWMOON_TRIGGER    21348
+
+struct mob_shadow_council_warlockAI : public ScriptedAI
+{
+    mob_shadow_council_warlockAI(Creature* creature) : ScriptedAI(creature) {}
+
+    uint32 ShadowBoltTimer;
+    uint32 DrainLifeTimer;
+
+    bool BeamCasted;
+
+    void Reset()
+    {
+        ShadowBoltTimer = urand(1000, 2000);
+        DrainLifeTimer  = urand(6000, 8000);
+
+        BeamCasted = false;
+    }
+
+    void EnterCombat(Unit* who)
+    {
+        // Interrupt Beam
+        me->InterruptNonMeleeSpells(false);
+
+        ScriptedAI::EnterCombat(who);
+    }
+
+    void UpdateAI(const uint32 diff)
+    {
+        if (!me->isInCombat())
+        {
+            if (!BeamCasted)
+            {
+                BeamCasted = true;
+
+                if (Unit* Trigger = GetClosestCreatureWithEntry(me, CREATURE_SHADOWMOON_TRIGGER, 25.0f, true))
+                    DoCast(Trigger, SPELL_COUNCIL_GREEN_BEAM);
+            }
+        }
+
+        if (!UpdateVictim())
+            return;
+
+        if (ShadowBoltTimer <= diff)
+        {
+            DoCast(me->getVictim(), SPELL_COUNCIL_SHADOW_BOLT);
+            ShadowBoltTimer = urand(5000, 7000);
+        }
+        else ShadowBoltTimer -= diff;
+
+        if (DrainLifeTimer <= diff)
+        {
+            DoCast(me->getVictim(), SPELL_COUNCIL_DRAIN_LIFE);
+            DrainLifeTimer = urand(10000, 12000);
+        }
+        else DrainLifeTimer -= diff;
+
+        DoMeleeAttackIfReady();
+    }
+};
+
+CreatureAI* GetAI_mob_shadow_council_warlock(Creature* creature)
+{
+    return new mob_shadow_council_warlockAI(creature);
+}
+
 void AddSC_shadowmoon_valley()
 {
     Script *newscript;
@@ -3871,4 +3944,10 @@ void AddSC_shadowmoon_valley()
     newscript->Name="npc_greater_felfire";
     newscript->GetAI = &GetAI_npc_greater_felfire;
     newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name="mob_shadow_council_warlock";
+    newscript->GetAI = &GetAI_mob_shadow_council_warlock;
+    newscript->RegisterSelf();
 }
+ 
