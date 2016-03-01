@@ -514,7 +514,7 @@ struct npc_journey_headmasterAI : public ScriptedAI
 
     void MoveInLineOfSight(Unit* who) 
     {
-        if (who->IsInRange2d(me->GetPositionX(), me->GetPositionY(), 0, 0))
+        if (who->GetTypeId() == TYPEID_PLAYER && who->IsInRange2d(me->GetPositionX(), me->GetPositionY(), 0, 0))
         {
             DoCast(who, SPELL_KNOCKBACK);
             me->Say("Get off my face $N!", 0, who->GetGUID());
@@ -574,7 +574,7 @@ struct npc_journey_quartermasterAI : public ScriptedAI
 
     void MoveInLineOfSight(Unit* who) 
     {
-        if (who->IsInRange2d(me->GetPositionX(), me->GetPositionY(), 0, 0))
+        if (who->GetTypeId() == TYPEID_PLAYER && who->IsInRange2d(me->GetPositionX(), me->GetPositionY(), 0, 0))
         {
             DoCast(who, SPELL_KNOCKBACK);
             me->Say("Get off my face $N!", 0, who->GetGUID());
