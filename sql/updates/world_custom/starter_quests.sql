@@ -309,6 +309,9 @@ UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_templ
 UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18318;
 UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18683;
 UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 15806;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18375;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 13944;
+   
 UPDATE `quest_template` SET `RewItemId2` = '19316' WHERE `quest_template`.`entry` = 91004;
 UPDATE `quest_template` SET `RewItemId4` = '19316' WHERE `quest_template`.`entry` = 91005;
 UPDATE `quest_template` SET `RewItemId3` = '19316' WHERE `quest_template`.`entry` = 92002;

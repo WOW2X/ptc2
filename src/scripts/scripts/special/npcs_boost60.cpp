@@ -170,6 +170,7 @@ const int HunterSpells[] =
     6691,     // Spell ID: 6691 (Feed Pet)
     13544,    // Spell ID: 13544 (Mend Pet, R7)
     982,      // Spell ID: 982 (Revive Pet)
+    1513,    // Spell ID: 1513 (Scare Beast, R1)
     14327,    // Spell ID: 14327 (Scare Beast, R3)
     1515,     // Spell ID: 1515 (Tame Beast)
     14287,    // Spell ID: 14287 (Arcane Shot, R8)
@@ -274,7 +275,7 @@ const int PriestSpells[] =
     15261,    // Spell ID: 15261 (Holy Fire R8)
     2053,     // Spell ID: 2053 (Lesser Heal R3)
     25316,    // Spell ID: 25316 (Prayer of Healing R5)
-    10929,    // Spell ID: 10929 (Renew R10)
+    25315,    // Spell ID: 25315 (Renew R10)
     20770,    // Spell ID: 20770 (Resurrection R5)
     10934,    // Spell ID: 10934 (Smite R8)
     10942,    // Spell ID: 10942 (Fade R6)
@@ -492,6 +493,7 @@ const int DruidSpells[] =
     9858,     // Spell ID: 9858 (Regrowth R9)
     25299,    // Spell ID: 25299 (Rejuvenation R11)
     2782,     // Spell ID: 2782 (Remove Curse)
+    29166,     // Spell ID: 29166 (Innervate)
     9863      // Spell ID: 9863 (Tranquility R4)
 };
 
@@ -662,7 +664,7 @@ bool GossipSelect_npc_journey_quartermaster(Player *player, Creature *creature, 
                 case CLASS_HUNTER: // Hunter
                 {
                     // Learn spells
-                    for (int i = 0 ; i < 63; i++)
+                    for (int i = 0 ; i < 64; i++)
                     {
                         if (!player->HasSpell(HunterSpells[i]))
                             player->learnSpell(HunterSpells[i]);
@@ -758,7 +760,7 @@ bool GossipSelect_npc_journey_quartermaster(Player *player, Creature *creature, 
                 case CLASS_DRUID: // Druid
                 {
                     // Learn spells
-                    for (int i = 0 ; i < 53; i++)
+                    for (int i = 0 ; i < 54; i++)
                     {
                         if (!player->HasSpell(DruidSpells[i]))
                             player->learnSpell(DruidSpells[i]);
