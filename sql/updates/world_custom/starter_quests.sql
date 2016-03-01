@@ -216,3 +216,120 @@ INSERT INTO `quest_template` (`entry`, `Method`, `ZoneOrSort`, `SkillOrClass`, `
 
 UPDATE `creature_template` SET `scale` = '1.5', `ScriptName` = 'npc_journey_headmaster' WHERE `creature_template`.`entry` = 90000;
 UPDATE `creature_template` SET `scale` = '1.5', `ScriptName` = 'npc_journey_quartermaster' WHERE `creature_template`.`entry` = 90001;
+
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 23852;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22411;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 11926;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18380;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 11746;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 13405;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 13394;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22328;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 13400;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 12637;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 13959;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22270;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18754;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18383;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 11703;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 20710;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18738;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18376;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18499;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 13404;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 16708;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 12603;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 16709;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18375;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 13395;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 14636;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 13210;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18484;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 12651;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18727;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22412;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 11924;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 13170;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 12626;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22256;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 11662;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 11822;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 13964;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22329;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22408;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22243;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18490;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22405;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 13346;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 11841;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22407;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22409;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 11823;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 11735;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 12554;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18327;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22275;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 11686;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 14641;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18523;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22348;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 12604;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22254;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 13349;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 13359;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22016;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18530;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18524;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 13211;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 11730;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22207;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 11731;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18759;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 3605;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 19316;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 12960;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 11722;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22272;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18386;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 13969;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18527;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 11783;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 20265;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18520;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 11923;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22336;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18686;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 12964;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18807;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 11842;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18378;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22095;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 13344;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18721;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18318;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18683;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 15806;
+UPDATE `quest_template` SET `RewItemId2` = '19316' WHERE `quest_template`.`entry` = 91004;
+UPDATE `quest_template` SET `RewItemId4` = '19316' WHERE `quest_template`.`entry` = 91005;
+UPDATE `quest_template` SET `RewItemId3` = '19316' WHERE `quest_template`.`entry` = 92002;
+
+
+DELETE FROM `creature` WHERE `creature`.`id` = 90000;
+DELETE FROM `creature` WHERE `creature`.`id` = 90001;
+INSERT INTO `creature` (`guid`, `id`, `map`, `spawnMask`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`) VALUES
+(NULL, 90000, 1, 1, 0, 0, 10325.6, 837.986, 1326.35, 4.30621, 300, 0, 0, 1337, 1337, 0, 0),
+(NULL, 90000, 530, 1, 0, 0, -3963.3, -13910.4, 100.429, 3.17355, 300, 0, 0, 1337, 1337, 0, 0),
+(NULL, 90000, 0, 1, 0, 0, 1656.52, 1682.24, 120.719, 6.27843, 300, 0, 0, 1337, 1337, 0, 0),
+(NULL, 90000, 1, 1, 0, 0, -2907.65, -266.377, 53.2495, 1.17643, 300, 0, 0, 1337, 1337, 0, 0),
+(NULL, 90000, 0, 1, 0, 0, -6229.56, 348.376, 383.868, 4.76975, 300, 0, 0, 1337, 1337, 0, 0),
+(NULL, 90000, 530, 1, 0, 0, 10360.4, -6366.82, 35.8027, 2.32186, 300, 0, 0, 1337, 1337, 0, 0),
+(NULL, 90000, 0, 1, 0, 0, -8926.46, -140.879, 81.5718, 2.66456, 300, 0, 0, 1337, 1337, 0, 0),
+(NULL, 90000, 1, 1, 0, 0, -600.502, -4246.47, 38.9562, 2.59293, 300, 0, 0, 1337, 1337, 0, 0),
+(NULL, 90001, 1, 1, 0, 0, 10321.2, 839.903, 1326.47, 4.36118, 300, 0, 0, 1337, 1337, 0, 0),
+(NULL, 90001, 530, 1, 0, 0, -3963.82, -13906.1, 99.7494, 3.33849, 300, 0, 0, 1337, 1337, 0, 0),
+(NULL, 90001, 0, 1, 0, 0, -6233.85, 348.163, 383.955, 4.73362, 300, 0, 0, 1337, 1337, 0, 0),
+(NULL, 90001, 530, 1, 0, 0, 10362.9, -6363.43, 35.0979, 2.37291, 300, 0, 0, 1337, 1337, 0, 0),
+(NULL, 90001, 0, 1, 0, 0, -8924.54, -136.194, 81.1246, 2.69991, 300, 0, 0, 1337, 1337, 0, 0),
+(NULL, 90001, 0, 1, 0, 0, 1656.5, 1686.99, 120.719, 6.2392, 300, 0, 0, 1337, 1337, 0, 0),
+(NULL, 90001, 1, 1, 0, 0, -597.039, -4243.3, 38.9563, 2.75394, 300, 0, 0, 1337, 1337, 0, 0),
+(NULL, 90001, 1, 1, 0, 0, -2902.57, -267.318, 53.2704, 1.65125, 300, 0, 0, 1337, 1337, 0, 0);
