@@ -27,7 +27,7 @@ EndScriptData
 
 #include "precompiled.h"
 
-const int WarriorSpells[48][1] =
+const int WarriorSpells[] =
 {
     {33388},    // Spell ID: 33388 (Riding 75)
     {198},      // Spell ID: 198 (1h mace)
@@ -46,7 +46,7 @@ const int WarriorSpells[48][1] =
     {750},      // Spell ID: 750 (plate)
     {71},       // Spell ID: 71 (Defensive Stance)
     {2458},     // Spell ID: 2458 (Berserker Stance)
-    {3124},     // Spell ID: 3124 (Parry)
+    {3127},     // Spell ID: 3127 (Parry)
     {674},      // Spell ID: 674 (Dual Wield)
     {11578},    // Spell ID: 11578 (Charge, R3)
     {7373},     // Spell ID: 7373 (Hamstring, R3)
@@ -79,7 +79,7 @@ const int WarriorSpells[48][1] =
     {1680}      // Spell ID: 1680 (Whirlwind)
 };
 
-const int PaladinSpells[54][1] =
+const int PaladinSpells[] =
 {
     {33388},    // Spell ID: 33388 (Riding 75)
     {198},      // Spell ID: 198 (1h mace)
@@ -90,7 +90,7 @@ const int PaladinSpells[54][1] =
     {197},      // Spell ID: 197 (2h axe)
     {200},      // Spell ID: 200 (polearm)
     {750},      // Spell ID: 750 (plate)
-    {3124},     // Spell ID: 3124 (Parry)
+    {3127},     // Spell ID: 3127 (Parry)
     {19979},    // Spell ID: 19979 (Blessing of Light, R3)
     {25290},    // Spell ID: 25290 (Blessing of Wisdom, R6)
     {4987},     // Spell ID: 4987 (Cleanse)
@@ -137,7 +137,7 @@ const int PaladinSpells[54][1] =
     {20308}     // Spell ID: 20308 (Seal of the Crusader, R6)
 };
 
-const int HunterSpells[61][1] =
+const int HunterSpells[] =
 {
     {33388},    // Spell ID: 33388 (Riding 75)
     {201},      // Spell ID: 201 (1h sword)
@@ -152,6 +152,8 @@ const int HunterSpells[61][1] =
     {5011},     // Spell ID: 5011 (xbows)
     {266},      // Spell ID: 266 (guns)
     {227},      // Spell ID: 227 (staves)
+    {3127},     // Spell ID: 3127 (Parry)
+    {674},      // Spell ID: 674 (Dual Wield)
     {8737},     // Spell ID: 8737 (mail)
     {5149},     // Spell ID: 5149 (Beast Training)
     {13161},    // Spell ID: 13161 (A. of the Beast)
@@ -202,7 +204,7 @@ const int HunterSpells[61][1] =
     {14268}     // Spell ID: 14268 (Wing Clip, R3)
 };
 
-const int RogueSpells[42][1] =
+const int RogueSpells[] =
 {
     {33388},    // Spell ID: 33388 (Riding 75)
     {198},      // Spell ID: 198 (1h mace)
@@ -217,6 +219,7 @@ const int RogueSpells[42][1] =
     {2842},     // Spell ID: 2842 (Poison Making)
     {674},      // Spell ID: 674 (Dual Wield)
     {1804},     // Spell ID: 1804 (Pick Lock)
+    {3127},     // Spell ID: 1804 (Parry)
     {11269},    // Spell ID: 11269 (Ambush R6)
     {1833},     // Spell ID: 1833 (Cheap shot)
     {31016},    // Spell ID: 31016 (Eviscerate R9)
@@ -248,7 +251,7 @@ const int RogueSpells[42][1] =
     {3421}      // Spell ID: 3421 (Crippling Poison R2)
 };
 
-const int PriestSpells[33][1] =
+const int PriestSpells[] =
 {
     {33388},    // Spell ID: 33388 (Riding 75)
     {198},      // Spell ID: 198 (1h mace)
@@ -285,7 +288,7 @@ const int PriestSpells[33][1] =
     {10894}     // Spell ID: 10894 (Shadow Word: Pain R8)
 };
 
-const int ShamanSpells[55][1] =
+const int ShamanSpells[] =
 {
     {33388},    // Spell ID: 33388 (Riding 75)
     {1180},     // Spell ID: 1180 (dagger)
@@ -344,12 +347,13 @@ const int ShamanSpells[55][1] =
     {8143}      // Spell ID: 8143 (Tremor T.)
 };
 
-const int MageSpells[37][1] =
+const int MageSpells[] =
 {
     {33388},    // Spell ID: 33388 (Riding 75)
     {201},      // Spell ID: 201 (1h sword)
     {1180},     // Spell ID: 1180 (dagger)
     {227},      // Spell ID: 227 (staff)
+    {130},      // Spell ID: 130 (Slow Fall)
     {10170},    // Spell ID: 10170 (Amplify Magic R4)
     {23028},    // Spell ID: 23028 (Arcane Brilliance R1)
     {10202},    // Spell ID: 10202 (Arcane Explosion R6)
@@ -369,7 +373,6 @@ const int MageSpells[37][1] =
     {10193},    // Spell ID: 10193 (Mana Shield R6)
     {12826},    // Spell ID: 12826 (Polymorph R4)
     {475},      // Spell ID: 475 (Remove Lesser Curse)
-    {31589},    // Spell ID: 31589 (Slow Fall)
     {10199},    // Spell ID: 10199 (Fire Blast R7)
     {10225},    // Spell ID: 10225 (Fire Ward R5)
     {10151},    // Spell ID: 10151 (Fireball R11)
@@ -385,7 +388,7 @@ const int MageSpells[37][1] =
     {45438}     // Spell ID: 45438 (Ice Block)
 };
 
-const int WarlockSpells[46][1] =
+const int WarlockSpells[] =
 {
     {33388},    // Spell ID: 33388 (Riding 75)
     {201},      // Spell ID: 201 (1h sword)
@@ -435,7 +438,7 @@ const int WarlockSpells[46][1] =
     {27211}     // Spell ID: 27211 (Soul Fire R2)
 };
 
-const int DruidSpells[53][1] =
+const int DruidSpells[] =
 {
     {33388},    // Spell ID: 33388 (Riding 75)
     {1180},     // Spell ID: 1180 (dagger)
@@ -492,11 +495,53 @@ const int DruidSpells[53][1] =
     {9863}      // Spell ID: 9863 (Tranquility R4)
 };
 
-#define BOOST_60_QUEST    90001
+#define BOOST_60_QUEST     90001
+#define SPELL_KNOCKBACK    10689
 
 /*######
 ## npc_journey_headmaster
 ######*/
+
+struct npc_journey_headmasterAI : public ScriptedAI
+{
+    npc_journey_headmasterAI(Creature* creature) : ScriptedAI(creature) {}
+
+    uint32 TalkTimer;
+
+    void Reset() { TalkTimer = urand(3000, 12000); }
+
+    void MoveInLineOfSight(Unit* who) 
+    {
+        if (who->IsInRange2d(me->GetPositionX(), me->GetPositionY(), 0, 0))
+        {
+            DoCast(who, SPELL_KNOCKBACK);
+            me->Say("Get off my face $N!", 0, who->GetGUID());
+        }
+    }
+
+    void UpdateAI(const uint32 diff)
+    {
+        if (!me->isInCombat())
+        {
+            if (TalkTimer <= diff)
+            {
+                me->Say("Talk to me to start your journey!" , 0, 0);
+                TalkTimer = urand(60000, 300000);
+            }
+            else TalkTimer -= diff;
+        }
+
+        if (!UpdateVictim())
+            return;
+
+        DoMeleeAttackIfReady();
+    }
+};
+
+CreatureAI* GetAI_npc_journey_headmaster(Creature* creature)
+{
+    return new npc_journey_headmasterAI(creature);
+}
 
 bool GossipHello_npc_journey_headmaster(Player *player, Creature *creature)
 {
@@ -508,7 +553,7 @@ bool GossipHello_npc_journey_headmaster(Player *player, Creature *creature)
         player->SEND_GOSSIP_MENU(creature->GetNpcTextId(), creature->GetGUID());
     }
     else
-        player->GetSession()->SendNotification("You can spoke with me only at level 1 of character or with active instant 60 feature.");
+        player->GetSession()->SendNotification("You can talk to this NPC only on level 1 or after activating instant level 60 feature.");
 
     return true;
 }
@@ -520,6 +565,25 @@ bool GossipHello_npc_journey_headmaster(Player *player, Creature *creature)
 #define GOSSIP_BOOST60_MENU_1      "Train me!"
 #define GOSSIP_BOOST60_MENU_2_A    "Take me to Nethergrade Keep!"
 #define GOSSIP_BOOST60_MENU_2_H    "Take me to Stonard!"
+
+struct npc_journey_quartermasterAI : public ScriptedAI
+{
+    npc_journey_quartermasterAI(Creature* creature) : ScriptedAI(creature) {}
+
+    void MoveInLineOfSight(Unit* who) 
+    {
+        if (who->IsInRange2d(me->GetPositionX(), me->GetPositionY(), 0, 0))
+        {
+            DoCast(who, SPELL_KNOCKBACK);
+            me->Say("Get off my face $N!", 0, who->GetGUID());
+        }
+    }
+};
+
+CreatureAI* GetAI_npc_journey_quartermaster(Creature* creature)
+{
+    return new npc_journey_quartermasterAI(creature);
+}
 
 bool GossipHello_npc_journey_quartermaster(Player *player, Creature *creature)
 {
@@ -546,10 +610,10 @@ bool GossipHello_npc_journey_quartermaster(Player *player, Creature *creature)
         } 
         // Above 60 level so only notification
         else 
-            player->GetSession()->SendNotification("Teleport option is available only for fresh 60 level characters.");
+            player->GetSession()->SendNotification("The teleport option is available only for level 60 characters.");
 	}
     else
-        player->GetSession()->SendNotification("You must choose instant 60 feature to spoke with me.");
+        player->GetSession()->SendNotification("You can talk to this NPC only after activating instant level 60 feature.");
 
     return true;
 }
@@ -565,109 +629,145 @@ bool GossipSelect_npc_journey_quartermaster(Player *player, Creature *creature, 
             {
                 case CLASS_WARRIOR: // Warrior
                 {
-                    // Set level
-                    player->SetLevel(60);
                     // Learn spells
                     for (int i = 0 ; i < 48; i++)
                     {
-                        player->learnSpell(WarriorSpells[i][0]);
+                        if (!player->HasSpell(WarriorSpells[i]))
+                            player->learnSpell(WarriorSpells[i]);
                     }
+                    // Set level
+                    player->SetDifficulty(DIFFICULTY_NORMAL);
+                    player->GiveLevel(60);
+                    player->InitTalentForLevel();
+                    player->SetUInt32Value(PLAYER_XP,0);
                     // Maxout skills
                     player->UpdateSkillsToMaxSkillsForLevel();
                 } break;
                 case CLASS_PALADIN: // Paladin
                 {
-                    // Set level
-                    player->SetLevel(60);
                     // Learn spells
                     for (int i = 0 ; i < 54; i++)
                     {
-                        player->learnSpell(PaladinSpells[i][0]);
+                        if (!player->HasSpell(PaladinSpells[i]))
+                            player->learnSpell(PaladinSpells[i]);
                     }
+                    // Set level
+                    player->SetDifficulty(DIFFICULTY_NORMAL);
+                    player->GiveLevel(60);
+                    player->InitTalentForLevel();
+                    player->SetUInt32Value(PLAYER_XP,0);
                     // Maxout skills
                     player->UpdateSkillsToMaxSkillsForLevel();
                 } break;
                 case CLASS_HUNTER: // Hunter
                 {
-                    // Set level
-                    player->SetLevel(60);
                     // Learn spells
-                    for (int i = 0 ; i < 61; i++)
+                    for (int i = 0 ; i < 63; i++)
                     {
-                        player->learnSpell(HunterSpells[i][0]);
+                        if (!player->HasSpell(HunterSpells[i]))
+                            player->learnSpell(HunterSpells[i]);
                     }
+                    // Set level
+                    player->SetDifficulty(DIFFICULTY_NORMAL);
+                    player->GiveLevel(60);
+                    player->InitTalentForLevel();
+                    player->SetUInt32Value(PLAYER_XP,0);
                     // Maxout skills
                     player->UpdateSkillsToMaxSkillsForLevel();
                 } break;
                 case CLASS_ROGUE: // Rogue
                 {
-                    // Set level
-                    player->SetLevel(60);
                     // Learn spells
-                    for (int i = 0 ; i < 42; i++)
+                    for (int i = 0 ; i < 43; i++)
                     {
-                        player->learnSpell(RogueSpells[i][0]);
+                        if (!player->HasSpell(RogueSpells[i]))
+                            player->learnSpell(RogueSpells[i]);
                     }
+                    // Set level
+                    player->SetDifficulty(DIFFICULTY_NORMAL);
+                    player->GiveLevel(60);
+                    player->InitTalentForLevel();
+                    player->SetUInt32Value(PLAYER_XP,0);
                     // Maxout skills
                     player->UpdateSkillsToMaxSkillsForLevel();
                 } break;
                 case CLASS_PRIEST: // Priest
                 {
-                    // Set level
-                    player->SetLevel(60);
                     // Learn spells
                     for (int i = 0 ; i < 33; i++)
                     {
-                        player->learnSpell(PriestSpells[i][0]);
+                        if (!player->HasSpell(PriestSpells[i]))
+                            player->learnSpell(PriestSpells[i]);
                     }
+                    // Set level
+                    player->SetDifficulty(DIFFICULTY_NORMAL);
+                    player->GiveLevel(60);
+                    player->InitTalentForLevel();
+                    player->SetUInt32Value(PLAYER_XP,0);
                     // Maxout skills
                     player->UpdateSkillsToMaxSkillsForLevel();
                 } break;
                 case CLASS_SHAMAN: // Shaman
                 {
-                    // Set level
-                    player->SetLevel(60);
                     // Learn spells
                     for (int i = 0 ; i < 55; i++)
                     {
-                        player->learnSpell(ShamanSpells[i][0]);
+                        if (!player->HasSpell(ShamanSpells[i]))
+                            player->learnSpell(ShamanSpells[i]);
                     }
+                    // Set level
+                    player->SetDifficulty(DIFFICULTY_NORMAL);
+                    player->GiveLevel(60);
+                    player->InitTalentForLevel();
+                    player->SetUInt32Value(PLAYER_XP,0);
                     // Maxout skills
                     player->UpdateSkillsToMaxSkillsForLevel();
                 } break;
                 case CLASS_MAGE: // Mage
                 {
-                    // Set level
-                    player->SetLevel(60);
                     // Learn spells
                     for (int i = 0 ; i < 37; i++)
                     {
-                        player->learnSpell(MageSpells[i][0]);
+                        if (!player->HasSpell(MageSpells[i]))
+                            player->learnSpell(MageSpells[i]);
                     }
+                    // Set level
+                    player->SetDifficulty(DIFFICULTY_NORMAL);
+                    player->GiveLevel(60);
+                    player->InitTalentForLevel();
+                    player->SetUInt32Value(PLAYER_XP,0);
                     // Maxout skills
                     player->UpdateSkillsToMaxSkillsForLevel();
                 } break;
                 case CLASS_WARLOCK: // Warlock
                 {
-                    // Set level
-                    player->SetLevel(60);
                     // Learn spells
                     for (int i = 0 ; i < 46; i++)
                     {
-                        player->learnSpell(WarlockSpells[i][0]);
+                        if (!player->HasSpell(WarlockSpells[i]))
+                            player->learnSpell(WarlockSpells[i]);
                     }
+                    // Set level
+                    player->SetDifficulty(DIFFICULTY_NORMAL);
+                    player->GiveLevel(60);
+                    player->InitTalentForLevel();
+                    player->SetUInt32Value(PLAYER_XP,0);
                     // Maxout skills
                     player->UpdateSkillsToMaxSkillsForLevel();
                 } break;
                 case CLASS_DRUID: // Druid
                 {
-                    // Set level
-                    player->SetLevel(60);
                     // Learn spells
                     for (int i = 0 ; i < 53; i++)
                     {
-                        player->learnSpell(DruidSpells[i][0]);
+                        if (!player->HasSpell(DruidSpells[i]))
+                            player->learnSpell(DruidSpells[i]);
                     }
+                    // Set level
+                    player->SetDifficulty(DIFFICULTY_NORMAL);
+                    player->GiveLevel(60);
+                    player->InitTalentForLevel();
+                    player->SetUInt32Value(PLAYER_XP,0);
                     // Maxout skills
                     player->UpdateSkillsToMaxSkillsForLevel();
                 }
@@ -699,14 +799,13 @@ void AddSC_npcs_boost60()
     newscript = new Script;
     newscript->Name="npc_journey_headmaster";
     newscript->pGossipHello =   &GossipHello_npc_journey_headmaster;
+    newscript->GetAI = &GetAI_npc_journey_headmaster;
     newscript->RegisterSelf();
 
     newscript = new Script;
     newscript->Name="npc_journey_quartermaster";
     newscript->pGossipHello =   &GossipHello_npc_journey_quartermaster;
     newscript->pGossipSelect =  &GossipSelect_npc_journey_quartermaster;
+    newscript->GetAI = &GetAI_npc_journey_quartermaster;
     newscript->RegisterSelf();
-
-
-
 }
