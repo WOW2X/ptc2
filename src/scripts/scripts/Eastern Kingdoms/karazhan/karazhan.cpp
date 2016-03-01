@@ -386,6 +386,29 @@ CreatureAI* GetAI_npc_image_of_medivh(Creature *_Creature)
     return new npc_image_of_medivhAI(_Creature);
 }
 
+/*######
+## npc_koren
+######*/
+
+bool GossipHello_npc_koren(Player *player, Creature *creature)
+{
+    if (creature->isVendor() && player->GetReputationMgr().GetRank(967) == REP_HONORED)
+        player->ADD_GOSSIP_ITEM(1, GOSSIP_TEXT_BROWSE_GOODS, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_TRADE);
+
+    player->SEND_GOSSIP_MENU(creature->GetNpcTextId(), creature->GetGUID());
+
+    return true;
+}
+
+bool GossipSelect_npc_koren(Player *player, Creature *creature, uint32 sender, uint32 action)
+{
+    if (action == GOSSIP_ACTION_TRADE)
+    {
+        player->SEND_VENDORLIST( creature->GetGUID() );
+    }
+    return true;
+}
+
 void AddSC_karazhan()
 {
     Script* newscript;
@@ -412,5 +435,11 @@ void AddSC_karazhan()
     newscript = new Script;
     newscript->Name = "npc_image_of_medivh";
     newscript->GetAI = &GetAI_npc_image_of_medivh;
+    newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name = "npc_koren";
+    newscript->pGossipHello = &GossipHello_npc_koren;
+    newscript->pGossipSelect = &GossipSelect_npc_koren;
     newscript->RegisterSelf();
 }
