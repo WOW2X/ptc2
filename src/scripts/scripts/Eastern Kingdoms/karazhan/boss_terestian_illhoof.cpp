@@ -332,7 +332,7 @@ struct boss_terestianAI : public ScriptedAI
             }
 
             uint32 random = rand()%2;
-            Creature* Imp = m_creature->SummonCreature(CREATURE_FIENDISHIMP, PortalLocations[random][0], PortalLocations[random][1], PORTAL_Z, 0, TEMPSUMMON_TIMED_OR_CORPSE_DESPAWN, 15000);
+            Creature* Imp = m_creature->SummonCreature(CREATURE_FIENDISHIMP, PortalLocations[random][0], PortalLocations[random][1], PORTAL_Z, 0, TEMPSUMMON_CORPSE_DESPAWN, 0);
 
             if(Imp)
             {
@@ -369,6 +369,7 @@ struct mob_fiendish_impAI : public ScriptedAI
     void Reset()
     {
         FireboltTimer = 2000;
+        FindVictim();
     }
 
     void EnterCombat(Unit *who) {}
@@ -376,7 +377,7 @@ struct mob_fiendish_impAI : public ScriptedAI
     void UpdateAI(const uint32 diff)
     {
         //Return since we have no target
-        if (!UpdateVictim() )
+        if (!UpdateVictim())
             return;
 
         if(FireboltTimer < diff)
@@ -388,6 +389,21 @@ struct mob_fiendish_impAI : public ScriptedAI
             FireboltTimer -= diff;
 
         DoMeleeAttackIfReady();
+    }
+
+    void FindVictim()
+    {
+        if (!me->getVictim())
+        {
+            // Set Aggro range same as (SelectNearestTarget) just to be sure that target gonna be found
+            me->SetAggroRange(25);
+
+            if (Unit *pTarget = me->SelectNearestTarget(25))
+            {
+                me->GetMotionMaster()->MoveChase(pTarget);
+                AttackStart(pTarget);
+            }
+        }
     }
 };
 

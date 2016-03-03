@@ -184,14 +184,28 @@ struct mob_astral_flareAI : public ScriptedAI
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_ATTACK_ME, true);
         me->ApplySpellImmune(0, IMMUNITY_SCHOOL, SPELL_SCHOOL_MASK_ARCANE, true);
 
-        me->SetAggroRange(100.0f);
-        me->SelectVictim();
+        FindVictim();
     }
 
     void UpdateAI(const uint32 diff)
     {
         if (!UpdateVictim())
             return;
+    }
+
+    void FindVictim()
+    {
+        if (!me->getVictim())
+        {
+            // Set Aggro range same as (SelectNearestTarget) just to be sure that target gonna be found
+            me->SetAggroRange(100);
+
+            if (Unit *pTarget = me->SelectNearestTarget(25))
+            {
+                me->GetMotionMaster()->MoveChase(pTarget);
+                AttackStart(pTarget);
+            }
+        }
     }
 };
 
