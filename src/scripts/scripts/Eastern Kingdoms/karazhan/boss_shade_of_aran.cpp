@@ -115,7 +115,6 @@ struct boss_aranAI : public ScriptedAI
 
         me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CASTING_SPEED, true);
         me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_HASTE_SPELLS, true);
-        me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_SILENCE, true);
     }
 
     ScriptedInstance* pInstance;
@@ -166,6 +165,9 @@ struct boss_aranAI : public ScriptedAI
 
         ElementalsSpawned       = false;
         Drinking                = DRINKING_NO_DRINKING;
+
+        // Aran should NEVER move from the middle of the room under any circumstances.
+        me->SetRooted(true);
 
         if (pInstance)
             pInstance->SetData(DATA_SHADEOFARAN_EVENT, NOT_STARTED);
