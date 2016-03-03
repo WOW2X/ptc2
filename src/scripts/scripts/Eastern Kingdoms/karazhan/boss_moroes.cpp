@@ -139,17 +139,17 @@ struct boss_moroesAI : public ScriptedAI
     {
         std::list<Creature*> moroes_formation = FindAllCreaturesWithEntry(CREATURE_PHANTOM_GUEST, 65);
         for (std::list<Creature*>::iterator it = moroes_formation.begin(); it != moroes_formation.end(); it++)
-            if ((*it)->isAlive())
+            if ((*it)->isAlive() && (*it)->GetPositionZ() <= 83)
                 (*it)->ToCreature()->AI()->AttackStart(m_creature->getVictim());
 
         moroes_formation = FindAllCreaturesWithEntry(CREATURE_GHOSTLY_STEWARD, 65);
         for (std::list<Creature*>::iterator it = moroes_formation.begin(); it != moroes_formation.end(); it++)
-            if ((*it)->isAlive())
+            if ((*it)->isAlive() && (*it)->GetPositionZ() <= 83)
                 (*it)->ToCreature()->AI()->AttackStart(m_creature->getVictim());
 
         moroes_formation = FindAllCreaturesWithEntry(CREATURE_SKELETAL_WAITER, 65);
         for (std::list<Creature*>::iterator it = moroes_formation.begin(); it != moroes_formation.end(); it++)
-            if ((*it)->isAlive())
+            if ((*it)->isAlive() && (*it)->GetPositionZ() <= 83)
                 (*it)->ToCreature()->AI()->AttackStart(m_creature->getVictim());
     }
 
