@@ -3440,6 +3440,10 @@ void SpellMgr::LoadSpellCustomAttr()
                 spellInfo->EffectImplicitTargetA[1] = TARGET_UNIT_CASTER;
                 spellInfo->EffectImplicitTargetA[2] = TARGET_UNIT_TARGET_ENEMY;
                 break;
+            case 29973: // Arcane Explosion (Shade of Aran)
+                spellInfo->EffectRadiusIndex[0] = 9;   // effect radius from 21 to 20 yd
+                spellInfo->EffectRadiusIndex[1] = 9;   // effect radius from 21 to 20 yd
+                break;
             case 32785: // Infernal Rain
             case 30541: // Magtheridon's Blaze
                 spellInfo->EffectImplicitTargetA[0] = TARGET_UNIT_TARGET_ENEMY;
