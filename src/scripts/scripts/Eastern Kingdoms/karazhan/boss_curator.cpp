@@ -124,14 +124,6 @@ struct boss_curatorAI : public ScriptedAI
             {
                 //Summon Astral Flare
                 Creature* astralFlare = DoSpawnCreature(17096, rand()%37, rand()%37, 0, 0, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 5000);
-                Unit* target = SelectUnit(SELECT_TARGET_RANDOM, 0);
-
-                if (astralFlare && target)
-                {
-                    astralFlare->CastSpell(astralFlare, SPELL_ASTRAL_FLARE_PASSIVE, false);
-                    astralFlare->ApplySpellImmune(0, IMMUNITY_SCHOOL, SPELL_SCHOOL_MASK_ARCANE, true);
-                    astralFlare->AI()->AttackStart(target);
-                }
 
                 //Reduce Mana by 10%
                 int32 mana = (int32)(0.1f*(m_creature->GetMaxPower(POWER_MANA)));
@@ -177,11 +169,47 @@ CreatureAI* GetAI_boss_curator(Creature *_Creature)
     return new boss_curatorAI (_Creature);
 }
 
+/*######
+## mob_astral_flare
+######*/
+
+struct mob_astral_flareAI : public ScriptedAI
+{
+    mob_astral_flareAI(Creature* creature) : ScriptedAI(creature) {}
+
+    void Reset()
+    {
+        me->CastSpell(me, SPELL_ASTRAL_FLARE_PASSIVE, false);
+        me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, true);
+        me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_ATTACK_ME, true);
+        me->ApplySpellImmune(0, IMMUNITY_SCHOOL, SPELL_SCHOOL_MASK_ARCANE, true);
+
+        me->SetAggroRange(100.0f);
+        me->SelectVictim();
+    }
+
+    void UpdateAI(const uint32 diff)
+    {
+        if (!UpdateVictim())
+            return;
+    }
+};
+
+CreatureAI* GetAI_mob_astral_flare(Creature* creature)
+{
+    return new mob_astral_flareAI(creature);
+
+}
 void AddSC_boss_curator()
 {
     Script *newscript;
     newscript = new Script;
     newscript->Name="boss_curator";
     newscript->GetAI = &GetAI_boss_curator;
+    newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name="mob_astral_flare";
+    newscript->GetAI = &GetAI_mob_astral_flare;
     newscript->RegisterSelf();
 }
