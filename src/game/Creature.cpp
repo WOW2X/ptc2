@@ -459,6 +459,10 @@ bool Creature::UpdateEntry(uint32 Entry, uint32 team, const CreatureData *data)
     else
         SetReactState(REACT_AGGRESSIVE);
 
+    //  NO BOSSES should be able to be silenced.
+    if (isWorldBoss())
+        ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_SILENCE, true);
+
     if (GetCreatureInfo()->flags_extra & CREATURE_FLAG_EXTRA_NO_TAUNT)
     {
         ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, true);
