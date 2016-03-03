@@ -19,6 +19,10 @@
 #include "precompiled.h"
 #include "def_karazhan.h"
 
+/*######
+## mob_phantom_guest
+######*/
+
 #define SPELL_DANCE_VIBE            29521
 #define SPELL_SEARING_PAIN          29492
 #define SPELL_IMMOLATE              29928
@@ -31,9 +35,70 @@
 #define SPELL_HEAL                  29580
 #define SPELL_HOLY_NOVA             29514
 
-#define GO_CHAIR                    183776
+#define PHANTOM_OOC_TEXT_NO_DANCE_1 "And so then he says \"I was talking to the chicken!"
+#define PHANTOM_OOC_TEXT_NO_DANCE_2 "I'm positively stuffed; I can't eat another bite! Well, perhaps just one more..."
+#define PHANTOM_OOC_TEXT_NO_DANCE_3 "That joke kills me!"
+#define PHANTOM_OOC_TEXT_NO_DANCE_4 "Every dish is more delicious than the last!"
+#define PHANTOM_OOC_TEXT_NO_DANCE_5 "Ahh, life is good."
+#define PHANTOM_OOC_TEXT_NO_DANCE_6 "I've never been so happy! I wish this night would never end!"
+#define PHANTOM_OOC_TEXT_NO_DANCE_7 "A feast fit for royalty!"
+#define PHANTOM_OOC_TEXT_NO_DANCE_8 "Another meal, another triumph!"
+#define PHANTOM_OOC_TEXT_NO_DANCE_9 "That joke... I swear I laugh every time!"
+#define PHANTOM_OOC_TEXT_NO_DANCE_10 "Where did I live before this? I used to know. At least I thought I did..."
 
+#define PHANTOM_OOC_TEXT_DANCE_1 "This all seems so strange."
+#define PHANTOM_OOC_TEXT_DANCE_2 "I feel as though there's a task I have yet to complete...."
+#define PHANTOM_OOC_TEXT_DANCE_3 "This music never gets old, does it?"
+#define PHANTOM_OOC_TEXT_DANCE_4 "Perhaps just one more dance. Then I really must be leaving! I have to get back too... to..."
+#define PHANTOM_OOC_TEXT_DANCE_5 "It's so strange: I can't remember how I came to be here."
 
+#define PHANTOM_AGGRO_TEXT_1 "Leave us alone! Let us be!"
+#define PHANTOM_AGGRO_TEXT_2 "How dare you interfere?!"
+#define PHANTOM_DEATH_TEXT_1 "It's not my time, not yet!"
+
+const int chairID[] =
+{
+    183585,
+    183586,
+    183587,
+    183588,
+    183589,
+    183590,
+    183591,
+    183592,
+    183593,
+    183594,
+    183595,
+    183596,
+    183597,
+    183598,
+    183599,
+    183600,
+    183601,
+    183602,
+    183603,
+    183605,
+    183606,
+    183607,
+    183608,
+    183609,
+    183610,
+    183611,
+    183612,
+    183613,
+    183614,
+    183615,
+    183616,
+    183617,
+    183773,
+    183774,
+    183775,
+    183776,
+    183777,
+    183778,
+    183779,
+    183780
+};
 struct mob_phantom_guestAI : public ScriptedAI
 {
     mob_phantom_guestAI(Creature* c) : ScriptedAI(c) 
@@ -44,16 +109,40 @@ struct mob_phantom_guestAI : public ScriptedAI
     uint32 Type;
     uint32 MainTimer;
     uint32 SecondaryTimer;
+    uint32 TalkTimer;
+
+    bool TryToFoundChair;
+
+    void MoveInLineOfSight(Unit* who) 
+    {
+        if (who->GetTypeId() == TYPEID_PLAYER)
+        {
+            if (!TryToFoundChair)
+            {
+                TryToFoundChair = true;
+
+                for (int i = 0; i < 40 ; i++)
+                { 
+                    if (GameObject* chair = FindGameObject(chairID[i], 5.0, me))
+                        if (chair->IsInRange2d(me->GetPositionX(), me->GetPositionY(), 0, 0.1))
+                            chair->Use(me);
+                }
+            }
+        }
+
+        ScriptedAI::MoveInLineOfSight(who);
+    }
 
     void Reset()
     {
-        me->CastSpell(me, SPELL_DANCE_VIBE, true);
+        if (me->GetUInt32Value(UNIT_NPC_EMOTESTATE))
+            me->CastSpell(me, SPELL_DANCE_VIBE, true);
 
         MainTimer = 0;
         SecondaryTimer = urand(5000, 20000);
+        TalkTimer = urand(5000, 20000);
 
-        if(GameObject *chair = FindGameObject(GO_CHAIR, 5.0, me))
-            chair->Use(me);
+        TryToFoundChair = false;
     }
 
     void AttackStart(Unit *who)
@@ -64,8 +153,40 @@ struct mob_phantom_guestAI : public ScriptedAI
             ScriptedAI::AttackStart(who);
     }
 
+    void EnterCombat(Unit *who)
+    {
+        if(roll_chance_i(5))
+            me->Say(RAND<const char*>(PHANTOM_AGGRO_TEXT_1, PHANTOM_AGGRO_TEXT_2), 0, 0);
+    }
+
+    void JustDied(Unit *)
+    {
+        if(roll_chance_i(5))
+            me->Say(PHANTOM_DEATH_TEXT_1, 0, 0);
+    }
+
     void UpdateAI(const uint32 diff)
     {
+        if (!me->isInCombat())
+        {
+            if (TalkTimer <= diff)
+            {
+                if (!me->GetUInt32Value(UNIT_NPC_EMOTESTATE))
+                {
+                    if (roll_chance_i(3))
+                        me->Say(RAND<const char*>(PHANTOM_OOC_TEXT_NO_DANCE_1, PHANTOM_OOC_TEXT_NO_DANCE_2, PHANTOM_OOC_TEXT_NO_DANCE_3, PHANTOM_OOC_TEXT_NO_DANCE_4, PHANTOM_OOC_TEXT_NO_DANCE_5, 
+                        PHANTOM_OOC_TEXT_NO_DANCE_6, PHANTOM_OOC_TEXT_NO_DANCE_7, PHANTOM_OOC_TEXT_NO_DANCE_8 , PHANTOM_OOC_TEXT_NO_DANCE_9, PHANTOM_OOC_TEXT_NO_DANCE_10), 0, 0);
+                }
+                else if (me->GetUInt32Value(UNIT_NPC_EMOTESTATE))
+                    if (roll_chance_i(3))
+                        me->Say(RAND<const char*>(PHANTOM_OOC_TEXT_DANCE_1, PHANTOM_OOC_TEXT_DANCE_2, PHANTOM_OOC_TEXT_DANCE_3, PHANTOM_OOC_TEXT_DANCE_4, PHANTOM_OOC_TEXT_DANCE_5), 0, 0);
+
+                TalkTimer = urand(40000, 120000);
+            }
+            else 
+                TalkTimer -= diff;
+        }
+
         if(!UpdateVictim())
             return;
 
@@ -144,6 +265,84 @@ CreatureAI* GetAI_mob_phantom_guest(Creature *_Creature)
 {
     return new mob_phantom_guestAI(_Creature);
 }
+
+/*######
+## mob_skeletal_waiter
+######*/
+
+#define PHANTOM_TEXT_TO_WAITER_1 "Waiter, more wine!"
+#define PHANTOM_TEXT_TO_WAITER_2 "Waiter, another ale!"
+#define PHANTOM_TEXT_TO_WAITER_3 "Waiter, where is my hasenpfeffer?"
+#define PHANTOM_TEXT_TO_WAITER_4 "Waiter, another bottle, and be quick!"
+#define PHANTOM_TEXT_TO_WAITER_5 "Another drink!" // No support
+
+#define WAITER_TEXT_1 "Gladly."
+#define WAITER_TEXT_2 "Of course, sir."
+#define WAITER_TEXT_3 "No sooner said than done, sir."
+#define WAITER_TEXT_4 "I'll check on that right away!"
+#define WAITER_TEXT_5 "Right away!" // No support
+
+#define SPELL_BRITTLE_BONES    32441
+#define PHANTOM_GUEST          16409
+
+struct mob_skeletal_waiterAI : public ScriptedAI
+{
+    mob_skeletal_waiterAI(Creature* creature) : ScriptedAI(creature) {}
+
+    uint32 BrittleBonesTimer;
+    uint32 TalkTimer;
+    uint32 MoveTimer;
+
+    void Reset()
+    {
+        BrittleBonesTimer = 15000;
+        TalkTimer = urand(5000, 20000);
+    }
+
+    void UpdateAI(const uint32 diff)
+    {
+        if (!me->isInCombat())
+        {
+            if (TalkTimer <= diff)
+            {
+                if (Creature *guest = GetClosestCreatureWithEntry(me, PHANTOM_GUEST, 2.0, true))
+                {
+                    if (roll_chance_i(20))
+                    {
+                        guest->Say(RAND<const char*>(PHANTOM_TEXT_TO_WAITER_1, PHANTOM_TEXT_TO_WAITER_2, PHANTOM_TEXT_TO_WAITER_3, PHANTOM_TEXT_TO_WAITER_4), 0, 0);
+                        me->Say(RAND<const char*>(WAITER_TEXT_1, WAITER_TEXT_2, WAITER_TEXT_3, WAITER_TEXT_4), 0, 0);
+                    }
+                }
+                TalkTimer = urand(40000, 120000);
+            }
+            else 
+                TalkTimer -= diff;
+        }
+
+        if (!UpdateVictim())
+            return;
+
+        if (BrittleBonesTimer <= diff)
+        {
+            if (roll_chance_i(40))
+                DoCast(me->getVictim(), SPELL_BRITTLE_BONES);
+
+            BrittleBonesTimer = urand(120000, 120000);
+        }
+        else BrittleBonesTimer -= diff;
+
+        DoMeleeAttackIfReady();
+    }
+};
+
+CreatureAI* GetAI_mob_skeletal_waiter(Creature* creature)
+{
+    return new mob_skeletal_waiterAI(creature);
+}
+
+/*######
+## mob_spectral_sentry
+######*/
 
 #define SPELL_DUAL_WIELD    674
 #define SPELL_SHOT          29575
@@ -230,6 +429,10 @@ CreatureAI* GetAI_mob_spectral_sentry(Creature *_Creature)
 {
     return new mob_spectral_sentryAI(_Creature);
 }
+
+/*######
+## mob_arcane_protector
+######*/
 
 #define SPELL_RETURN_FIRE1  29793
 #define SPELL_RETURN_FIRE2  29794
@@ -319,6 +522,10 @@ CreatureAI* GetAI_mob_arcane_protector(Creature *_Creature)
 {
     return new mob_arcane_protectorAI(_Creature);
 }
+
+/*######
+## mob_mana_warp
+######*/
 
 #define SPELL_WARP_BREACH_AOE       29919
 #define SPELL_WARP_BREACH_VISUAL    37079
@@ -459,6 +666,11 @@ void AddSC_karazhan_trash()
     newscript = new Script;
     newscript->Name = "mob_phantom_guest";
     newscript->GetAI = &GetAI_mob_phantom_guest;
+    newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name = "mob_skeletal_waiter";
+    newscript->GetAI = &GetAI_mob_skeletal_waiter;
     newscript->RegisterSelf();
 
     newscript = new Script;
