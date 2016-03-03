@@ -575,6 +575,7 @@ struct circular_blizzardAI : public ScriptedAI
         currentWaypoint = 0;
         waypointTimer = 0;
         SetBlizzardWaypoints();
+        me->SetWalk(true);
     }
 
     void ChangeBlizzardWaypointsOrder(uint16 change)

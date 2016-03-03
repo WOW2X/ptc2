@@ -3088,6 +3088,9 @@ void SpellMgr::LoadSpellCustomAttr()
             case 40317: // Throw
                 spellInfo->EffectBasePoints[0] = 199;
                 break;
+            case 29956: // Arcane Missiles - Shade of Aran
+                spellInfo->EffectBasePoints[0] = spellInfo->EffectBasePoints[0] * 2.5;
+                break;
             case 40103: // Sludge Nova
                 spellInfo->EffectBasePoints[0] = urand(24, 29);
                 break;

@@ -2304,16 +2304,26 @@ void Spell::prepare(SpellCastTargets * targets, Aura* triggeredByAura)
     // calculate cast time (calculated after first CheckCast check to prevent charge counting for first CheckCast fail)
     m_casttime = SpellMgr::GetSpellCastTime(GetSpellEntry(), this);
 
-    // HACK for instant opening of Spectral Blast Portal
-    if (GetSpellEntry()->Id == 3365)
-    {
-        if(m_targets.getGOTarget()&& m_targets.getGOTarget()->GetEntry() == 187055)
-            m_casttime = 0;
-    }
 
-    // HACK for instant Cleansing Vial
-    if (GetSpellEntry()->Id == 29297)
-        m_casttime = 0;
+    // Hack cast corrections
+    switch (GetSpellEntry()->Id)
+    {
+        // Instant opening of Spectral Blast Portal
+        case 3365:
+        {
+            if (m_targets.getGOTarget()&& m_targets.getGOTarget()->GetEntry() == 187055)
+                m_casttime = 0;
+        }
+        break;
+        // Cleansing Vial
+        case 29297:
+            m_casttime = 0;
+        break;
+        // Frosbolt - Shade of Aran
+        case 29954:
+            m_casttime = 3000;
+        break;
+    }
 
     if (GetCastTime() && !SpellMgr::IsChanneledSpell(GetSpellEntry()) ? GetSpellEntry()->InterruptFlags & SPELL_INTERRUPT_FLAG_MOVEMENT : GetSpellEntry()->ChannelInterruptFlags & CHANNEL_INTERRUPT_FLAG_MOVEMENT)
     {
