@@ -3986,6 +3986,15 @@ bool Unit::AddAura(Aura *Aur)
                 return false;
             }
         }
+        case 29951:  // Blizzard - Shade of Aran
+        {
+            // 17176 is Center Trigger, blizzard shouldn't affect the center room
+            if (Aur->GetTarget()->FindNearestCreature(17176, 7.0f, true))
+            {
+                delete Aur;
+                return false;
+            }
+        }
     }
 
     // update single target auras list (before aura add to aura list, to prevent unexpected remove recently added aura)

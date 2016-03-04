@@ -167,7 +167,7 @@ struct boss_aranAI : public ScriptedAI
         Drinking                = DRINKING_NO_DRINKING;
 
         // Aran should NEVER move from the middle of the room under any circumstances.
-        me->SetRooted(true);
+        me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
 
         if (pInstance)
             pInstance->SetData(DATA_SHADEOFARAN_EVENT, NOT_STARTED);
@@ -575,6 +575,7 @@ struct circular_blizzardAI : public ScriptedAI
         currentWaypoint = 0;
         waypointTimer = 0;
         SetBlizzardWaypoints();
+        me->SetWalk(true);
     }
 
     void ChangeBlizzardWaypointsOrder(uint16 change)
