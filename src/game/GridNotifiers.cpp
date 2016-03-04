@@ -119,7 +119,7 @@ void DynamicObjectUpdater::VisitHelper(Unit* target)
     if (spellInfo->EffectImplicitTargetB[eff_index] == TARGET_DEST_DYNOBJ_ALLY
         || spellInfo->EffectImplicitTargetB[eff_index] == TARGET_UNIT_AREA_ALLY_DST)
     {
-        if (!i_check->IsFriendlyTo(target))
+        if (!i_check->IsFriendlyTo(target) && spellInfo->Id != 29683)
             return;
     }
     else if (i_check->GetTypeId() == TYPEID_PLAYER)
