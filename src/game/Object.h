@@ -578,9 +578,11 @@ class HELLGROUND_IMPORT_EXPORT WorldObject : public Object//, public WorldLocati
         void AddToClientUpdateList();
         void RemoveFromClientUpdateList();
 
-        Creature* SummonCreature(uint32 id, float x, float y, float z, float ang,TemporarySummonType spwtype,uint32 despwtime);
+        Creature*   SummonCreature(uint32 id, float x, float y, float z, float ang,TemporarySummonType spwtype,uint32 despwtime);
         GameObject* SummonGameObject(uint32 entry, float x, float y, float z, float ang, float rotation0, float rotation1, float rotation2, float rotation3, uint32 respawnTime);
-        Creature* SummonTrigger(float x, float y, float z, float ang, uint32 dur, CreatureAI* (*GetAI)(Creature*) = NULL);
+        Creature*   SummonTrigger(float x, float y, float z, float ang, uint32 dur, CreatureAI* (*GetAI)(Creature*) = NULL);
+        Creature*   FindNearestCreature(uint32 entry, float range, bool alive = true); 
+        GameObject* FindNearestGameObject(uint32 entry, float range);
 
         uint32 isActiveObject() const { return m_activeBy || m_viewPoint.hasViewers(); }
         void setActive(bool isActiveObject, ActiveObject activeBy = ACTIVE_BY_MANUAL);

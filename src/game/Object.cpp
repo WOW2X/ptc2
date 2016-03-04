@@ -1761,6 +1761,26 @@ Creature* WorldObject::SummonTrigger(float x, float y, float z, float ang, uint3
     return summon;
 }
 
+Creature* WorldObject::FindNearestCreature(uint32 entry, float range, bool alive)
+{
+       Creature *creature = NULL;
+       Hellground::NearestCreatureEntryWithLiveStateInObjectRangeCheck creature_check(*this, entry, alive, range, false);
+       Hellground::ObjectLastSearcher<Creature, Hellground::NearestCreatureEntryWithLiveStateInObjectRangeCheck>  searcher(creature, creature_check);
+       Cell::VisitGridObjects(this, searcher, range);
+
+       return creature;
+}
+
+GameObject* WorldObject::FindNearestGameObject(uint32 entry, float range)
+{
+       GameObject *go = NULL;
+       Hellground::NearestGameObjectEntryInObjectRangeCheck checker(*this, entry, range);
+       Hellground::ObjectLastSearcher<GameObject, Hellground::NearestGameObjectEntryInObjectRangeCheck> searcher(go, checker);
+       Cell::VisitGridObjects(this, searcher, range);
+
+       return go;
+}
+
 void WorldObject::GetNearPoint(float &x, float &y, float &z, float searcher_bounding_radius, float distance2d, float absAngle) const
 {
     absAngle -= GetOrientation();
