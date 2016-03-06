@@ -408,6 +408,10 @@ struct boss_malchezaarAI : public ScriptedAI
 
         if (Infernal)
         {
+            // Despawn old infenral from the same position
+            if (Unit* oldInfernal = Infernal->FindNearestCreature(Infernal->GetEntry(), 0.5f, true))
+                oldInfernal->ToCreature()->DisappearAndDie();
+
             Infernal->SetUInt32Value(UNIT_FIELD_DISPLAYID, INFERNAL_MODEL_INVISIBLE);
             Infernal->setFaction(m_creature->getFaction());
             if(point)
@@ -447,6 +451,10 @@ struct boss_malchezaarAI : public ScriptedAI
                 DoResetThreat();
             else
                 DoZoneInCombat();
+
+            //Let's be sure the Prince is within melee range
+            if(!m_creature->IsWithinMeleeRange(m_creature->getVictim()))
+                m_creature->GetMotionMaster()->MoveChase(m_creature);
 
             CheckTimer = 3000;
         }else CheckTimer -= diff;

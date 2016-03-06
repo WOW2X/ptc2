@@ -3129,6 +3129,7 @@ void SpellMgr::LoadSpellCustomAttr()
             case 45665:
                 spellInfo->AttributesCu &= ~SPELL_ATTR_CU_MOVEMENT_IMPAIR;
                 break;
+            case 39095: // Amplify Damage
             case 39042: // Rampant Infection
                 spellInfo->MaxAffectedTargets = 1;
                 break;
