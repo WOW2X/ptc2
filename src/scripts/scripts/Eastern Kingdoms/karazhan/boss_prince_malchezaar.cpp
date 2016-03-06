@@ -454,7 +454,7 @@ struct boss_malchezaarAI : public ScriptedAI
 
             //Let's be sure the Prince is within melee range
             if(!m_creature->IsWithinMeleeRange(m_creature->getVictim()))
-                m_creature->GetMotionMaster()->MoveChase(m_creature);
+                m_creature->GetMotionMaster()->MoveChase(m_creature->getVictim());
 
             CheckTimer = 3000;
         }else CheckTimer -= diff;
