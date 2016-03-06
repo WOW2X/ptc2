@@ -198,9 +198,9 @@ struct mob_astral_flareAI : public ScriptedAI
         if (!me->getVictim())
         {
             // Set Aggro range same as (SelectNearestTarget) just to be sure that target gonna be found
-            me->SetAggroRange(100);
+            me->SetAggroRange(150);
 
-            if (Unit *pTarget = me->SelectNearestTarget(25))
+            if (Unit *pTarget = me->SelectNearestTarget(150))
             {
                 me->GetMotionMaster()->MoveChase(pTarget);
                 AttackStart(pTarget);
