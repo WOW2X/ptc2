@@ -123,7 +123,16 @@ struct boss_curatorAI : public ScriptedAI
             if (addTimer < diff)
             {
                 //Summon Astral Flare
-                Creature* astralFlare = DoSpawnCreature(17096, rand()%37, rand()%37, 0, 0, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 5000);
+                if (Creature* astralFlare = DoSpawnCreature(17096, rand()%37, rand()%37, 0, 0, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 5000))
+                {
+                    if (Unit *target = SelectUnit(SELECT_TARGET_RANDOM, 0, 150, true, m_creature->getVictimGUID()))
+                        astralFlare->AI()->AttackStart(target);
+                    else
+                    {
+                        target = m_creature->getVictim();
+                        astralFlare->AI()->AttackStart(target);
+                    }
+                }
 
                 //Reduce Mana by 10%
                 int32 mana = (int32)(0.1f*(m_creature->GetMaxPower(POWER_MANA)));
@@ -183,29 +192,12 @@ struct mob_astral_flareAI : public ScriptedAI
         me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, true);
         me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_ATTACK_ME, true);
         me->ApplySpellImmune(0, IMMUNITY_SCHOOL, SPELL_SCHOOL_MASK_ARCANE, true);
-
-        FindVictim();
     }
 
     void UpdateAI(const uint32 diff)
     {
         if (!UpdateVictim())
             return;
-    }
-
-    void FindVictim()
-    {
-        if (!me->getVictim())
-        {
-            // Set Aggro range same as (SelectNearestTarget) just to be sure that target gonna be found
-            me->SetAggroRange(150);
-
-            if (Unit *pTarget = me->SelectNearestTarget(150))
-            {
-                me->GetMotionMaster()->MoveChase(pTarget);
-                AttackStart(pTarget);
-            }
-        }
     }
 };
 
