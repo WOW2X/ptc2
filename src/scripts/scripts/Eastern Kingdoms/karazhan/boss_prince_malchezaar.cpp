@@ -102,7 +102,7 @@ static InfernalPoint InfernalPoints[] =
 struct netherspite_infernalAI : public Scripted_NoMovementAI
 {
     netherspite_infernalAI(Creature *c) : Scripted_NoMovementAI(c) ,
-        malchezaarGUID(0), HellfireTimer(0), CleanupTimer(0), point(NULL)
+        malchezaarGUID(0), HellfireTimer(0), point(NULL)
     {
         me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CASTING_SPEED, true);
         me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_HASTE_SPELLS, true);
@@ -110,7 +110,6 @@ struct netherspite_infernalAI : public Scripted_NoMovementAI
     }
 
     uint32 HellfireTimer;
-    uint32 CleanupTimer;
     uint64 malchezaarGUID;
     InfernalPoint *point;
 
@@ -131,17 +130,6 @@ struct netherspite_infernalAI : public Scripted_NoMovementAI
             else
                HellfireTimer -= diff;
         }
-
-        if (CleanupTimer)
-        {
-            if (CleanupTimer <= diff)
-            {
-                Cleanup();
-                CleanupTimer = 0;
-            }
-            else
-                CleanupTimer -= diff;
-        }
     }
 
     void KilledUnit(Unit *who)
@@ -157,7 +145,6 @@ struct netherspite_infernalAI : public Scripted_NoMovementAI
             m_creature->SetUInt32Value(UNIT_FIELD_DISPLAYID, m_creature->GetUInt32Value(UNIT_FIELD_NATIVEDISPLAYID));
             m_creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
             HellfireTimer = 4000;
-            CleanupTimer = 170000;
         }
     }
 
@@ -166,8 +153,6 @@ struct netherspite_infernalAI : public Scripted_NoMovementAI
         if (done_by->GetGUID() != malchezaarGUID)
             damage = 0;
     }
-
-    void Cleanup();
 };
 
 struct boss_malchezaarAI : public ScriptedAI
@@ -412,8 +397,8 @@ struct boss_malchezaarAI : public ScriptedAI
             Infernal->setFaction(m_creature->getFaction());
             Infernal->SetFlag(UNIT_FIELD_FLAGS,UNIT_FLAG_DISABLE_ROTATE);
 
-            //if(point)
-                //((netherspite_infernalAI*)Infernal->AI())->point = point;
+            if (point)
+                ((netherspite_infernalAI*)Infernal->AI())->point = point;
 
             ((netherspite_infernalAI*)Infernal->AI())->malchezaarGUID = m_creature->GetGUID();
 
@@ -694,14 +679,6 @@ struct boss_malchezaarAI : public ScriptedAI
         positions.push_back(point);
     }
 };
-
-void netherspite_infernalAI::Cleanup()
-{
-    Unit *pMalchezaar = Unit::GetUnit(*m_creature, malchezaarGUID);
-
-    if(pMalchezaar && pMalchezaar->isAlive())
-        ((boss_malchezaarAI*)((Creature*)pMalchezaar)->AI())->Cleanup(m_creature, point);
-}
 
 CreatureAI* GetAI_netherspite_infernal(Creature *_Creature)
 {
