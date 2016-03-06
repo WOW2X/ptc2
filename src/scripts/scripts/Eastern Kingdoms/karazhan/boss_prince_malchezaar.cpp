@@ -410,7 +410,8 @@ struct boss_malchezaarAI : public ScriptedAI
         {
             // Despawn old infenral from the same position
             if (Unit* oldInfernal = Infernal->FindNearestCreature(Infernal->GetEntry(), 0.5f, true))
-                oldInfernal->ToCreature()->DisappearAndDie();
+                if (oldInfernal->GetGUID() != Infernal->GetGUID())
+                    oldInfernal->ToCreature()->DisappearAndDie();
 
             Infernal->SetUInt32Value(UNIT_FIELD_DISPLAYID, INFERNAL_MODEL_INVISIBLE);
             Infernal->setFaction(m_creature->getFaction());
