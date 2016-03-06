@@ -1057,7 +1057,9 @@ struct boss_julianneAI : public boss_operaAI
     void JustDied(Unit* killer)
     {
         DoScriptText(SAY_JULIANNE_DEATH02, m_creature);
-        pInstance->SetData(DATA_OPERA_EVENT, evade ? NOT_STARTED : DONE);
+
+        if (pInstance)
+            pInstance->SetData(DATA_OPERA_EVENT, evade ? NOT_STARTED : DONE);
     }
 
     void KilledUnit(Unit* victim)
@@ -1126,9 +1128,6 @@ struct boss_romuloAI : public boss_operaAI
     void JustDied(Unit* killer)
     {
         DoScriptText(SAY_ROMULO_DEATH, m_creature);
-
-        if (pInstance)
-            pInstance->SetData(DATA_OPERA_EVENT, evade ? NOT_STARTED : DONE);
     }
 
     void KilledUnit(Unit* victim)
@@ -1595,13 +1594,15 @@ struct npc_barnesAI : public ScriptedAI
         {
             Event = pInstance->GetData(DATA_OPERA_PERFORMANCE);
 
-            pInstance->HandleGameObject(pInstance->GetData64(DATA_GAMEOBJECT_STAGEDOORLEFT), true);
+            if (RaidWiped)
+                pInstance->HandleGameObject(pInstance->GetData64(DATA_GAMEOBJECT_STAGEDOORLEFT), true);
 
             if (GameObject* Curtain = GameObject::GetGameObject((*m_creature), pInstance->GetData64(DATA_GAMEOBJECT_CURTAINS)))
                 Curtain->SetGoState(pInstance->GetData(DATA_OPERA_EVENT) == DONE ? GO_STATE_ACTIVE : GO_STATE_READY);
         }
 
         me->RemoveAurasDueToSpell(SPELL_TUXEDO);
+        me->SetWalk(true);
     }
 
     void JustSummoned(Creature * summon)
