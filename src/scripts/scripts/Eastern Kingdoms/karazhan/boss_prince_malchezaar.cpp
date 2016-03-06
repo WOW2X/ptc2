@@ -408,16 +408,14 @@ struct boss_malchezaarAI : public ScriptedAI
 
         if (Infernal)
         {
-            // Despawn old infenral from the same position
-            if (Unit* oldInfernal = Infernal->FindNearestCreature(Infernal->GetEntry(), 0.5f, true))
-                if (oldInfernal->GetGUID() != Infernal->GetGUID())
-                    oldInfernal->ToCreature()->DisappearAndDie();
-
             Infernal->SetUInt32Value(UNIT_FIELD_DISPLAYID, INFERNAL_MODEL_INVISIBLE);
             Infernal->setFaction(m_creature->getFaction());
-            if(point)
-                ((netherspite_infernalAI*)Infernal->AI())->point=point;
-            ((netherspite_infernalAI*)Infernal->AI())->malchezaarGUID=m_creature->GetGUID();
+            Infernal->SetFlag(UNIT_FIELD_FLAGS,UNIT_FLAG_DISABLE_ROTATE);
+
+            //if(point)
+                //((netherspite_infernalAI*)Infernal->AI())->point = point;
+
+            ((netherspite_infernalAI*)Infernal->AI())->malchezaarGUID = m_creature->GetGUID();
 
             infernals.push_back(Infernal->GetGUID());
             DoCast(Infernal, SPELL_INFERNAL_RELAY);
