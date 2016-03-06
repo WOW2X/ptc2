@@ -246,7 +246,7 @@ struct boss_netherspiteAI : public ScriptedAI
 
     void HandleDoors(bool open) // Massive Door switcher
     {
-        if(GameObject *Door = GameObject::GetGameObject((*m_creature),pInstance->GetData64(DATA_GAMEOBJECT_MASSIVE_DOOR)))
+        if(GameObject *Door = GameObject::GetGameObject((*m_creature),pInstance ? pInstance->GetData64(DATA_GAMEOBJECT_MASSIVE_DOOR) : 0))
             Door->SetUInt32Value(GAMEOBJECT_STATE, open ? 0 : 1);
     }
 
