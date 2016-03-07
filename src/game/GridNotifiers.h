@@ -1013,6 +1013,39 @@ namespace Hellground
             WorldObject *_source;
             bool _within;
     };
+
+    class HasInArcCheck
+    {
+        public:
+            HasInArcCheck(WorldObject* source) : _source(source) {}
+            bool operator()(WorldObject* object)
+            {
+                if (_source->HasInArc(M_PI, object))
+                    return true;
+
+                return false;
+            }
+
+        private:
+            WorldObject *_source;
+    };
+
+    class NotHasInArcCheck
+    {
+        public:
+            NotHasInArcCheck(WorldObject* source) : _source(source) {}
+            bool operator()(WorldObject* object)
+            {
+                if (_source->HasInArc(M_PI, object))
+                    return false;
+
+                return true;
+            }
+
+        private:
+            WorldObject *_source;
+    };
+
 #pragma endregion Checks
 
 #pragma region Sorters

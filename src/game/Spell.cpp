@@ -2205,6 +2205,9 @@ void Spell::SetTargetMap(uint32 i, uint32 cur)
                 case 45248:     // Shadow Blades
                     unitList.remove_if([=](Unit* unit)->bool {return abs(m_caster->GetPositionZ()-unit->GetPositionZ()) > 5.0;});
                     break;
+                case 34290:     // Acid Spit
+                    unitList.remove_if(Hellground::NotHasInArcCheck(m_caster));
+                    break;
                 default:
                     break;
             }
