@@ -345,9 +345,8 @@ struct boss_nightbaneAI : public ScriptedAI
 
             if (TailSweepTimer < diff)
             {
-                if (Unit* target = SelectUnit(SELECT_TARGET_RANDOM, 0, GetSpellMaxRange(SPELL_TAIL_SWEEP), true))
-                    if (!m_creature->HasInArc( M_PI, target))
-                        DoCast(target,SPELL_TAIL_SWEEP);
+                if (Unit* target = SelectUnit(SELECT_TARGET_RANDOM, 0, GetSpellMaxRange(SPELL_TAIL_SWEEP), true, m_creature->getVictimGUID()))
+                    DoCast(target, SPELL_TAIL_SWEEP);
                 TailSweepTimer = 15000;//timer
             }else TailSweepTimer -= diff;
 
