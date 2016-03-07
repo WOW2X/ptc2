@@ -164,6 +164,7 @@ const int HunterSpells[] =
     20190,    // Spell ID: 20190 (A. of the Wild, R2)
     1462,     // Spell ID: 1462 (Beast Lore)
     883,      // Spell ID: 883 (Call Pet)
+    6991,     // Spell ID: 6991 (Feed Pet)
     2641,     // Spell ID: 2641 (Dismiss Pet)
     6197,     // Spell ID: 6197 (Eagle Eye)
     1002,     // Spell ID: 1002 (Eyes of the Beast)
@@ -664,7 +665,7 @@ bool GossipSelect_npc_journey_quartermaster(Player *player, Creature *creature, 
                 case CLASS_HUNTER: // Hunter
                 {
                     // Learn spells
-                    for (int i = 0 ; i < 64; i++)
+                    for (int i = 0 ; i < 65; i++)
                     {
                         if (!player->HasSpell(HunterSpells[i]))
                             player->learnSpell(HunterSpells[i]);

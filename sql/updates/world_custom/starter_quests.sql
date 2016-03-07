@@ -311,11 +311,17 @@ UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_templ
 UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 15806;
 UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 18375;
 UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 13944;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 16733;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 23129;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22247;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 22380;
+UPDATE `item_template` SET `BuyPrice` = '1', `SellPrice` = '1' WHERE `item_template`.`entry` = 14638;
    
 UPDATE `quest_template` SET `RewItemId2` = '19316' WHERE `quest_template`.`entry` = 91004;
 UPDATE `quest_template` SET `RewItemId4` = '19316' WHERE `quest_template`.`entry` = 91005;
 UPDATE `quest_template` SET `RewItemId3` = '19316' WHERE `quest_template`.`entry` = 92002;
-
+UPDATE `quest_template` SET `RewItemId4` = '22247' WHERE `quest_template`.`entry` = 96002;
+UPDATE `quest_template` SET `RewItemId4` = '5140', `RewItemCount4` = '5' WHERE `quest_template`.`entry` = 92002;
 
 DELETE FROM `creature` WHERE `creature`.`id` = 90000;
 DELETE FROM `creature` WHERE `creature`.`id` = 90001;
@@ -336,3 +342,6 @@ INSERT INTO `creature` (`guid`, `id`, `map`, `spawnMask`, `modelid`, `equipment_
 (NULL, 90001, 0, 1, 0, 0, 1656.5, 1686.99, 120.719, 6.2392, 300, 0, 0, 1337, 1337, 0, 0),
 (NULL, 90001, 1, 1, 0, 0, -597.039, -4243.3, 38.9563, 2.75394, 300, 0, 0, 1337, 1337, 0, 0),
 (NULL, 90001, 1, 1, 0, 0, -2902.57, -267.318, 53.2704, 1.65125, 300, 0, 0, 1337, 1337, 0, 0);
+
+
+
