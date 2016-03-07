@@ -153,9 +153,9 @@ struct boss_nightbaneAI : public ScriptedAI
 
     void HandleTerraceDoors(bool open)
     {
-        if(GameObject *Door = GameObject::GetGameObject((*m_creature),pInstance->GetData64(DATA_MASTERS_TERRACE_DOOR_1)))
+        if(GameObject *Door = GameObject::GetGameObject((*m_creature),pInstance ? pInstance->GetData64(DATA_MASTERS_TERRACE_DOOR_1) : 0))
             Door->SetUInt32Value(GAMEOBJECT_STATE, open ? 0 : 1);
-        if(GameObject *Door = GameObject::GetGameObject((*m_creature),pInstance->GetData64(DATA_MASTERS_TERRACE_DOOR_2)))
+        if(GameObject *Door = GameObject::GetGameObject((*m_creature),pInstance ? pInstance->GetData64(DATA_MASTERS_TERRACE_DOOR_2) : 0))
             Door->SetUInt32Value(GAMEOBJECT_STATE, open ? 0 : 1);
     }
 

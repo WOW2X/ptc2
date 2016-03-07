@@ -2208,6 +2208,9 @@ void Spell::SetTargetMap(uint32 i, uint32 cur)
                 case 34290:     // Acid Spit
                     unitList.remove_if(Hellground::NotHasInArcCheck(m_caster));
                     break;
+                case 25653:     // Tailsweep
+                    unitList.remove_if(Hellground::HasInArcCheck(m_caster));
+                    break;
                 default:
                     break;
             }
