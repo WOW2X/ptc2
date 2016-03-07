@@ -2210,6 +2210,7 @@ void Spell::SetTargetMap(uint32 i, uint32 cur)
                     break;
                 case 25653:     // Tailsweep
                     unitList.remove_if(Hellground::HasInArcCheck(m_caster));
+                    unitList.remove_if(Hellground::ObjectGUIDCheck(m_caster->getVictimGUID()));
                     break;
                 default:
                     break;
