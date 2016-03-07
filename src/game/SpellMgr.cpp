@@ -3466,6 +3466,7 @@ void SpellMgr::LoadSpellCustomAttr()
                 spellInfo->StackAmount = 5;
                 break;
             case 20814: // Collect Dire Water
+            case 38465: // Urdrak Lightning Bolt
                 spellInfo->InterruptFlags = SPELL_INTERRUPT_FLAG_MOVEMENT | SPELL_INTERRUPT_FLAG_DAMAGE | SPELL_INTERRUPT_FLAG_AUTOATTACK | SPELL_INTERRUPT_FLAG_PUSH_BACK | SPELL_INTERRUPT_FLAG_INTERRUPT;
                 break;
             case 30346: // Fel Iron Shells duplicated effect, weird
