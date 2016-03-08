@@ -7548,6 +7548,9 @@ bool Unit::IsFriendlyTo(Unit const* unit) const
     if (unit->GetTypeId()==TYPEID_PLAYER && ((Player const*)unit)->isGameMaster())
         return true;
 
+    if (this->getFaction() == 14 && unit->getFaction() == 16)
+        return true;
+
     // always non-friendly to enemy
     if (getVictim()==unit || unit->getVictim()==this)
         return false;
