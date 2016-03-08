@@ -7005,13 +7005,14 @@ void Spell::EffectInebriate(uint32 /*i*/)
     if (!unitTarget || unitTarget->GetTypeId() != TYPEID_PLAYER)
         return;
 
-    Player *player = (Player*)unitTarget;
-    uint16 currentDrunk = player->GetDrunkValue();
-    uint16 drunkMod = damage * 256;
-    if (currentDrunk + drunkMod > 0xFFFF)
-        currentDrunk = 0xFFFF;
+    Player* player = unitTarget->ToPlayer();
+    uint8 currentDrunk = player->GetDrunkValue();
+    uint8 drunkMod = damage;
+    if (currentDrunk + drunkMod > 100)
+        currentDrunk = 100;
     else
         currentDrunk += drunkMod;
+
     player->SetDrunkValue(currentDrunk, m_CastItem?m_CastItem->GetEntry():0);
 }
 
