@@ -269,7 +269,7 @@ struct boss_nightbaneAI : public ScriptedAI
     {
         DoYell(YELL_FLY_PHASE, LANG_UNIVERSAL, NULL);
 
-        m_creature->clearUnitState(UNIT_STAT_IGNORE_PATHFINDING);
+        m_creature->addUnitState(UNIT_STAT_IGNORE_PATHFINDING);
         m_creature->InterruptSpell(CURRENT_GENERIC_SPELL);
         m_creature->HandleEmoteCommand(EMOTE_ONESHOT_LIFTOFF);
         m_creature->SetLevitate(true);
@@ -343,8 +343,8 @@ struct boss_nightbaneAI : public ScriptedAI
             {
                 DoStartMovement(m_creature->getVictim());
                 DoResetThreat();
+                m_creature->clearUnitState(UNIT_STAT_IGNORE_PATHFINDING);
                 Movement = false;
-                m_creature->addUnitState(UNIT_STAT_IGNORE_PATHFINDING);
             }
 
             if (BellowingRoarTimer < diff)
@@ -419,7 +419,7 @@ struct boss_nightbaneAI : public ScriptedAI
             {
                 if (!Skeletons)
                 {
-                    for (uint8 i = 0; i <= 4; ++i)
+                    for (uint8 i = 0; i <= 5; ++i)
                     {
                         DoCast(m_creature->getVictim(), SPELL_SUMMON_SKELETON);
                         Skeletons = true;
