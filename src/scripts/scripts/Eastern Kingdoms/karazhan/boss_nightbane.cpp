@@ -261,6 +261,7 @@ struct boss_nightbaneAI : public ScriptedAI
         if (summoned)
         {
             summons.Summon(summoned);
+            summoned->addUnitState(UNIT_STAT_IGNORE_PATHFINDING);
             summoned->AI()->AttackStart(m_creature->getVictim());
         }
     }
@@ -343,7 +344,6 @@ struct boss_nightbaneAI : public ScriptedAI
             {
                 DoStartMovement(m_creature->getVictim());
                 DoResetThreat();
-                m_creature->clearUnitState(UNIT_STAT_IGNORE_PATHFINDING);
                 Movement = false;
             }
 
@@ -409,6 +409,7 @@ struct boss_nightbaneAI : public ScriptedAI
             if (Prozent < 25 && FlyCount == 2) // third take off 25%
                 TakeOff();
 
+            m_creature->clearUnitState(UNIT_STAT_IGNORE_PATHFINDING);
             DoMeleeAttackIfReady();
         }
 
@@ -419,7 +420,7 @@ struct boss_nightbaneAI : public ScriptedAI
             {
                 if (!Skeletons)
                 {
-                    for (uint8 i = 0; i <= 5; ++i)
+                    for (uint8 i = 0; i <= 4; ++i)
                     {
                         DoCast(m_creature->getVictim(), SPELL_SUMMON_SKELETON);
                         Skeletons = true;
