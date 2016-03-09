@@ -3342,6 +3342,12 @@ void SpellMgr::LoadSpellCustomAttr()
             case 46039:
                 spellInfo->AttributesEx2 |= SPELL_ATTR_EX2_IGNORE_LOS;
                 break;
+            case 21562: // Prayer of Fortitude - Rank 1
+            case 21564: // Prayer of Fortitude - Rank 2
+            case 27683: // Prayer of Shadow Protection - Rank 1
+            case 39374: // Prayer of Shadow Protection - Rank 2
+                spellInfo->AttributesEx2 |= SPELL_ATTR_EX2_IGNORE_LOS;
+                break;
             case 14537: // Six Demon Bag
             case 21358: // Aqual Quintessence / Eternal Quintessence
             case 47977: // Broom Broom
