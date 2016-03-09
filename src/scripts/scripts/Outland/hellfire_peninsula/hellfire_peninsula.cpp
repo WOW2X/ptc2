@@ -2975,6 +2975,63 @@ CreatureAI* GetAI_mob_bleeding_hollow_tormentor(Creature* creature)
     return new mob_bleeding_hollow_tormentorAI(creature);
 }
 
+/*######
+## npc_fel_guard_hound
+######*/
+
+enum eFelGuard
+{
+    Q_SHIZZ_WORK        = 10629,
+    DERANGED_HELBOAR    = 16863,
+    SPELL_SUMMON_POO    = 37688
+};
+
+struct  npc_fel_guard_houndAI : public ScriptedAI
+{
+    npc_fel_guard_houndAI(Creature* c) : ScriptedAI(c) {}
+
+    uint32 checkTimer;
+    uint64 lastHelboar; // store last helboar GUID to prevent multiple spawns of poo with the same mob
+
+    void Reset()
+    {
+        me->GetMotionMaster()->MoveFollow(me->GetOwner(), PET_FOLLOW_DIST, PET_FOLLOW_ANGLE);
+        checkTimer = 5000; // check for creature every 5 sec or that player complete the quest 
+    }
+
+    void Aggro(Unit* /*pWho*/) {}
+    
+    void UpdateAI(const uint32 diff)
+    {
+        if (checkTimer < diff)
+        {
+            Creature* pHelboar = me->FindNearestCreature(DERANGED_HELBOAR, 10, false);
+
+            if (pHelboar && pHelboar->GetGUID() != lastHelboar)
+            {
+                lastHelboar = pHelboar->GetGUID();
+                DoCast(me, SPELL_SUMMON_POO);
+                pHelboar->DisappearAndDie();
+                me->GetMotionMaster()->MoveFollow(me->GetOwner(), PET_FOLLOW_DIST, PET_FOLLOW_ANGLE);
+            }
+
+            if (Player* owner = me->GetCharmerOrOwnerPlayerOrPlayerItself())
+            {
+                if (owner->GetQuestRewardStatus((Q_SHIZZ_WORK)))
+                    me->Kill(me, false);
+            }
+            checkTimer = 5000;
+        }
+        else 
+            checkTimer -= diff;
+    }
+};
+
+CreatureAI* GetAI_npc_fel_guard_hound(Creature* pCreature)
+{
+    return new npc_fel_guard_houndAI(pCreature);
+}
+
 void AddSC_hellfire_peninsula()
 {
     Script *newscript;
@@ -3169,5 +3226,10 @@ void AddSC_hellfire_peninsula()
     newscript = new Script;
     newscript->Name = "mob_bleeding_hollow_tormentor";
     newscript->GetAI = &GetAI_mob_bleeding_hollow_tormentor;
+    newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name="npc_fel_guard_hound";
+    newscript->GetAI = &GetAI_npc_fel_guard_hound;
     newscript->RegisterSelf();
 }
