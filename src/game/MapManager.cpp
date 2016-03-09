@@ -141,32 +141,6 @@ bool MapManager::CanPlayerEnter(uint32 mapid, Player* player)
     const char *mapName = entry->name[player->GetSession()->GetSessionDbcLocale()];
     if (entry->map_type == MAP_INSTANCE || entry->map_type == MAP_RAID)
     {
-        if (entry->map_type == MAP_RAID)
-        {
-            // GMs can avoid raid limitations
-            if (!player->isGameMaster() && !sWorld.getConfig(CONFIG_INSTANCE_IGNORE_RAID))
-            {
-                // can only enter in a raid group
-                Group* group = player->GetGroup();
-                if (!group || !group->isRaidGroup())
-                {
-                    // probably there must be special opcode, because client has this string constant in GlobalStrings.lua
-                    // TODO: this is not a good place to send the message
-                    player->GetSession()->SendAreaTriggerMessage(player->GetSession()->GetHellgroundString(810), mapName);
-                    sLog.outDebug("MAP: Player '%s' must be in a raid group to enter instance of '%s'", player->GetName(), mapName);
-                    return false;
-                }
-            }
-        }
-
-        //The player has a heroic mode and tries to enter into instance which has no a heroic mode
-        if (!entry->SupportsHeroicMode() && player->GetDifficulty() == DIFFICULTY_HEROIC)
-        {
-            //Send aborted message
-            player->SendTransferAborted(mapid, TRANSFER_ABORT_DIFFICULTY2);
-            return false;
-        }
-
         if (!player->isAlive())
         {
             if (Corpse *corpse = player->GetCorpse())
@@ -197,6 +171,32 @@ bool MapManager::CanPlayerEnter(uint32 mapid, Player* player)
             {
                 sLog.outDebug("Map::CanEnter - player '%s' is dead but doesn't have a corpse!", player->GetName());
             }
+        }
+
+        if (entry->map_type == MAP_RAID)
+        {
+            // GMs can avoid raid limitations
+            if (!player->isGameMaster() && !sWorld.getConfig(CONFIG_INSTANCE_IGNORE_RAID))
+            {
+                // can only enter in a raid group
+                Group* group = player->GetGroup();
+                if (!group || !group->isRaidGroup())
+                {
+                    // probably there must be special opcode, because client has this string constant in GlobalStrings.lua
+                    // TODO: this is not a good place to send the message
+                    player->GetSession()->SendAreaTriggerMessage(player->GetSession()->GetHellgroundString(810), mapName);
+                    sLog.outDebug("MAP: Player '%s' must be in a raid group to enter instance of '%s'", player->GetName(), mapName);
+                    return false;
+                }
+            }
+        }
+
+        //The player has a heroic mode and tries to enter into instance which has no a heroic mode
+        if (!entry->SupportsHeroicMode() && player->GetDifficulty() == DIFFICULTY_HEROIC)
+        {
+            //Send aborted message
+            player->SendTransferAborted(mapid, TRANSFER_ABORT_DIFFICULTY2);
+            return false;
         }
 
         // Requirements
