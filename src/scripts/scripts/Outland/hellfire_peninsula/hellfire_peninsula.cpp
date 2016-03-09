@@ -554,7 +554,7 @@ struct npc_demoniac_scryerAI : public ScriptedAI
                     if(Unit* player = Unit::GetUnit(*me, (*i)))
                     {      
                         me->Whisper(FINISHED_WHISPER, (*i));
-                        //me->CastSpell(player, 38708, true);
+                        me->CastSpell(player, 38708, true);
                     }
                 }
                 me->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
