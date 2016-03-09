@@ -464,6 +464,10 @@ bool Creature::UpdateEntry(uint32 Entry, uint32 team, const CreatureData *data)
     {
         ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_SILENCE, true);
         ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_SILENCE, true);
+
+        // No Curse of Tongues at bosses
+        ApplySpellImmune(0, IMMUNITY_ID, 1714, true);  // Rank 1
+        ApplySpellImmune(0, IMMUNITY_ID, 11719, true); // Rank 2
     }
 
     if (GetCreatureInfo()->flags_extra & CREATURE_FLAG_EXTRA_NO_TAUNT)
