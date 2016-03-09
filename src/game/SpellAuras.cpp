@@ -3827,22 +3827,10 @@ void Aura::HandleChannelDeathItem(bool apply, bool Real)
         if (spellInfo->EffectItemType[m_effIndex] == 0)
             return;
 
-        // Drain Soul
-        if (spellInfo->EffectItemType[m_effIndex] == 6265)
-        {
-            // Remove isAllowedToLoot at Dungeon or Raid map  - this fix no soul shards from mobs killed by group mates
-            if (caster->GetMap()->IsDungeon() || caster->GetMap()->IsRaid())
-            {
-                if (victim->getLevel() <= Hellground::XP::GetGrayLevel(caster->getLevel()) || ((Creature*)victim)->isTotem())
-                    return;
-            }
-            else
-            {
-                if (victim->getLevel() <= Hellground::XP::GetGrayLevel(caster->getLevel()) ||
-                   (victim->GetTypeId()==TYPEID_UNIT && (!((Player*)caster)->isAllowedToLoot((Creature*)victim) || ((Creature*)victim)->isTotem())))
-                    return;
-            }
-        }
+        // Soul Shard only from non-grey units and non-totems
+        if (spellInfo->EffectItemType[m_effIndex] == 6265 &&
+            (victim->getLevel() <= Hellground::XP::GetGrayLevel(caster->getLevel()) || ((Creature*)victim)->isTotem()))))
+            return;
 
         ItemPosCountVec dest;
         uint8 msg = ((Player*)caster)->CanStoreNewItem(NULL_BAG, NULL_SLOT, dest, spellInfo->EffectItemType[m_effIndex], 1);
