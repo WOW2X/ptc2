@@ -552,6 +552,7 @@ extern void AddSC_boss_gatewatcher_gyro_kill();
 extern void AddSC_boss_nethermancer_sepethrea();
 extern void AddSC_boss_pathaleon_the_calculator();
 extern void AddSC_instance_mechanar();
+extern void AddSC_mechanar_trash();
 
 //Temple of ahn'qiraj
 extern void AddSC_boss_cthun();
@@ -1174,6 +1175,7 @@ void AddScripts()
     AddSC_boss_nethermancer_sepethrea();
     AddSC_boss_pathaleon_the_calculator();
     AddSC_instance_mechanar();
+    AddSC_mechanar_trash();
 
     //Temple of ahn'qiraj
     AddSC_boss_cthun();

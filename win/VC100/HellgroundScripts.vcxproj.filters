@@ -1570,6 +1570,9 @@
     <ClCompile Include="..\..\src\scripts\scripts\special\npcs_boost60.cpp">
       <Filter>Scripts\special</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\scripts\scripts\Outland\tempest_keep\the_mechanar\mechanar_trash.cpp">
+      <Filter>Scripts\Outland\Tempest Keep\The Mechanar</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\scripts\scripts\Eastern Kingdoms\deadmines\def_deadmines.h">
