@@ -3829,7 +3829,7 @@ void Aura::HandleChannelDeathItem(bool apply, bool Real)
 
         // Soul Shard only from non-grey units and non-totems
         if (spellInfo->EffectItemType[m_effIndex] == 6265 &&
-            (victim->getLevel() <= Hellground::XP::GetGrayLevel(caster->getLevel()) || ((Creature*)victim)->isTotem()))))
+            (victim->getLevel() <= Hellground::XP::GetGrayLevel(caster->getLevel()) || ((Creature*)victim)->isTotem()))
             return;
 
         ItemPosCountVec dest;
