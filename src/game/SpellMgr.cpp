@@ -730,6 +730,7 @@ bool SpellMgr::IsPositiveEffect(uint32 spellId, uint32 effIndex)
         case 47002:                                         // Noxious Fumes (not sure if needed, just in case)
         case 41350:                                         // Aura of Desire
         case 43501:                                         // Siphon Soul (Hexlord Spell)
+        case 34709:                                         // Shadow Sight
             return false;
         case 32375:
             if(effIndex == 0)                               // Mass Dispel on friendly targets
