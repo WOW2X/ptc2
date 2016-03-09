@@ -138,27 +138,6 @@ struct instance_dark_portal : public ScriptedInstance
         return NULL;
     }
 
-    void CompleteQuests()
-    {
-        Map::PlayerList const& players = instance->GetPlayers();
-
-        if (!players.isEmpty())
-        {
-            for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)
-            {
-                if (Player* plr = itr->getSource())
-                {
-                    if (plr->GetQuestStatus(QUEST_OPENING_PORTAL) == QUEST_STATUS_INCOMPLETE)
-						plr->CompleteQuest(QUEST_OPENING_PORTAL);
-                    if (plr->GetQuestStatus(QUEST_MASTER_TOUCH) == QUEST_STATUS_INCOMPLETE)
-                        plr->CompleteQuest(QUEST_MASTER_TOUCH);
-                }
-            }
-        }
-        else
-            debug_log("TSCR: Instance Black Portal: CompleteQuests, but PlayerList is empty!");
-    }
-
     void FailQuests()
     {
         Map::PlayerList const& players = instance->GetPlayers();
@@ -349,7 +328,14 @@ struct instance_dark_portal : public ScriptedInstance
 
                     if (data == DONE)
                     {
-                        CompleteQuests();
+                        //this may be completed further out in the post-event
+                        if (Unit *medivh = Unit::GetUnit(*player,MedivhGUID))
+                        {
+                            medivh->RemoveAurasDueToSpell(31556);
+                            medivh->SetUInt32Value(UNIT_NPC_EMOTESTATE, EMOTE_STATE_NONE);
+                            player->GroupEventHappens(QUEST_OPENING_PORTAL,medivh);
+                            player->GroupEventHappens(QUEST_MASTER_TOUCH,medivh);
+                        }
                     }
 
                     if (data == FAIL)

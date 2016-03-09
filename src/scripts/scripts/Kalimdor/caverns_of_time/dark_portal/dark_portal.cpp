@@ -266,8 +266,6 @@ struct npc_medivh_bmAI : public ScriptedAI
 
                 if (pInstance->GetData(TYPE_MEDIVH) == DONE)
                 {
-                    m_creature->RemoveAurasDueToSpell(31556);
-                    m_creature->UpdateObjectVisibility();
                     DoScriptText(SAY_WIN, m_creature);
                     Check_Timer = 0;
                     //TODO: start the post-event here
