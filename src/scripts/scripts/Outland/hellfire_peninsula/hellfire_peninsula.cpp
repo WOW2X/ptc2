@@ -2981,12 +2981,13 @@ CreatureAI* GetAI_mob_bleeding_hollow_tormentor(Creature* creature)
 
 enum eFelGuard
 {
-    Q_SHIZZ_WORK        = 10629,
-    DERANGED_HELBOAR    = 16863,
-    SPELL_SUMMON_POO    = 37688
+    Q_SHIZZ_WORK              = 10629,
+    DERANGED_HELBOAR          = 16863,
+    SPELL_SUMMON_POO          = 37688,
+    SPELL_SUMMON_FEL_GUARD    = 37690
 };
 
-struct  npc_fel_guard_houndAI : public ScriptedAI
+struct npc_fel_guard_houndAI : public ScriptedAI
 {
     npc_fel_guard_houndAI(Creature* c) : ScriptedAI(c) {}
 
@@ -3011,14 +3012,16 @@ struct  npc_fel_guard_houndAI : public ScriptedAI
             {
                 lastHelboar = pHelboar->GetGUID();
                 DoCast(me, SPELL_SUMMON_POO);
-                pHelboar->DisappearAndDie();
+                pHelboar->RemoveCorpse();
+                pHelboar->UpdateObjectVisibility();
                 me->GetMotionMaster()->MoveFollow(me->GetOwner(), PET_FOLLOW_DIST, PET_FOLLOW_ANGLE);
             }
 
             if (Player* owner = me->GetCharmerOrOwnerPlayerOrPlayerItself())
             {
+                // Unsummon pet
                 if (owner->GetQuestRewardStatus((Q_SHIZZ_WORK)))
-                    me->Kill(me, false);
+                    owner->CastSpell(owner, SPELL_SUMMON_FEL_GUARD, true);
             }
             checkTimer = 5000;
         }
