@@ -7195,9 +7195,8 @@ bool Unit::HandleProcTriggerSpell(Unit *pVictim, uint32 damage, Aura* triggeredB
             trigger_spell_id = 30824;
             break;
         }
-        case 12536:         // Clearcasting (trigger only from mana cost spells)
-        case 16166:         // Elemental Mastery (trigger only from mana cost spells)
-        case 35095:         // Enlightenment (trigger only from mana cost spells)
+        // Enlightenment (trigger only from mana cost spells)
+        case 35095:
         {
             if (!procSpell || procSpell->powerType!=POWER_MANA || procSpell->manaCost==0 && procSpell->ManaCostPercentage==0 && procSpell->manaCostPerlevel==0)
                 return false;
