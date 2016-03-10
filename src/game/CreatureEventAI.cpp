@@ -1188,6 +1188,14 @@ void CreatureEventAI::MoveInLineOfSight(Unit *who)
 
 void CreatureEventAI::SpellHit(Unit* pUnit, const SpellEntry* pSpell)
 {
+    // Xpearlis: Fix that polymorph won't put in combat players
+    // Only bugged with EventAI creatures, anyway this is fucking wrong and should be not here - TODO: Find proper solution.
+    if (pSpell->Id == 118 || pSpell->Id == 12824 || pSpell->Id == 12825 || pSpell->Id == 12826 ||  pSpell->Id == 28271 || pSpell->Id == 28272)
+    {
+        me->SetInCombatWith(pUnit);
+        pUnit->SetInCombatState(me);
+        me->AddThreat(pUnit, 0.0f);
+    }
 
     if (bEmptyList)
         return;
