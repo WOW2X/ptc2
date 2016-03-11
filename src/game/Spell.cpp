@@ -365,6 +365,10 @@ Spell::Spell(Unit* Caster, SpellEntry const *info, bool triggered, uint64 origin
                && !(GetSpellEntry()->AttributesEx & SPELL_ATTR_EX_CANT_BE_REFLECTED) && !(GetSpellEntry()->Attributes & SPELL_ATTR_UNAFFECTED_BY_INVULNERABILITY)
                && !SpellMgr::IsPassiveSpell(GetSpellEntry()) && !SpellMgr::IsPositiveSpell(GetSpellEntry()->Id);
 
+    m_isNeedSendToClient = m_spellInfo->SpellVisual != 0 || SpellMgr::IsChanneledSpell(m_spellInfo) ||
+                           m_spellInfo->speed > 0.0f || (!m_triggeredByAuraSpell && !m_IsTriggeredSpell);
+    m_isCastTimeHidden = m_spellInfo->Attributes & SPELL_ATTR_HIDDEN_CAST_TIME;
+
     CleanupTargetList();
 }
 
@@ -2746,7 +2750,7 @@ void Spell::_handle_immediate_phase()
     // handle some immediate features of the spell here
     HandleThreatSpells(GetSpellEntry()->Id);
 
-    m_needSpellLog = IsNeedSendToClient();
+    m_needSpellLog = m_isNeedSendToClient;
     for (uint32 j = 0;j<3;j++)
     {
         if (GetSpellEntry()->Effect[j]==0)
@@ -3153,7 +3157,7 @@ void Spell::SendCastResult(SpellCastResult result)
 
 void Spell::SendSpellStart()
 {
-    if (!IsNeedSendToClient())
+    if (!m_isNeedSendToClient && m_isCastTimeHidden)
         return;
 
     sLog.outDebug("Sending SMSG_SPELL_START id=%u", GetSpellEntry()->Id);
@@ -3186,7 +3190,7 @@ void Spell::SendSpellStart()
 void Spell::SendSpellGo()
 {
     // not send invisible spell casting
-    if (!IsNeedSendToClient())
+    if (!m_isNeedSendToClient)
         return;
 
     sLog.outDebug("Sending SMSG_SPELL_GO id=%u", GetSpellEntry()->Id);
@@ -3436,6 +3440,9 @@ void Spell::SendChannelUpdate(uint32 time)
         m_caster->SetUInt32Value(UNIT_CHANNEL_SPELL,0);
     }
 
+    if (!m_isNeedSendToClient || m_isCastTimeHidden)
+        return;
+
     WorldPacket data(MSG_CHANNEL_UPDATE, 8+4);
     data << m_caster->GetPackGUID();
     data << uint32(time);
@@ -3477,17 +3484,20 @@ void Spell::SendChannelStart(uint32 duration)
         }
     }
 
+    m_timer = duration;
+    if (target)
+        m_caster->SetUInt64Value(UNIT_FIELD_CHANNEL_OBJECT, target->GetGUID());
+
+    m_caster->SetUInt32Value(UNIT_CHANNEL_SPELL, m_spellInfo->Id);
+    
+    if (!m_isNeedSendToClient || m_isCastTimeHidden)
+        return;
+
     WorldPacket data(MSG_CHANNEL_START, (8+4+4));
     data << m_caster->GetPackGUID();
     data << uint32(GetSpellEntry()->Id);
     data << uint32(duration);
-
     m_caster->BroadcastPacket(&data, true);
-
-    m_timer = duration;
-    if (target)
-        m_caster->SetUInt64Value(UNIT_FIELD_CHANNEL_OBJECT, target->GetGUID());
-    m_caster->SetUInt32Value(UNIT_CHANNEL_SPELL, GetSpellEntry()->Id);
 }
 
 void Spell::SendResurrectRequest(Player* target)
@@ -5725,12 +5735,6 @@ Unit* Spell::SelectMagnetTarget()
         }
     }
     return target;
-}
-
-bool Spell::IsNeedSendToClient() const
-{
-    return GetSpellEntry()->SpellVisual!=0 || SpellMgr::IsChanneledSpell(GetSpellEntry()) ||
-        GetSpellEntry()->speed > 0.0f || !m_triggeredByAuraSpell && !IsTriggeredSpell();
 }
 
 bool Spell::HaveTargetsForEffect(uint8 effect) const
