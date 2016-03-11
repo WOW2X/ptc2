@@ -13191,6 +13191,8 @@ void Unit::KnockBackFrom(Unit* target, float horizontalSpeed, float verticalSpee
 
 void Unit::KnockBack(float angle, float horizontalSpeed, float verticalSpeed)
 {
+    Player* player = ToPlayer();
+
     float vsin = sin(angle);
     float vcos = cos(angle);
 
@@ -13199,14 +13201,14 @@ void Unit::KnockBack(float angle, float horizontalSpeed, float verticalSpeed)
     {
         WorldPacket data(SMSG_MOVE_KNOCK_BACK, 8+4+4+4+4+4);
         data << GetPackGUID();
-        data << uint32(0);                                  // Sequence
+        data << uint32(0);                                  // Counter
         data << float(vcos);                                // x direction
         data << float(vsin);                                // y direction
         data << float(horizontalSpeed);                     // Horizontal speed
         data << float(-verticalSpeed);                      // Z Movement speed (vertical)
-        ((Player*)this)->SendPacketToSelf(&data);
 
-        ((Player*)this)->m_AC_timer = 5 *IN_MILISECONDS;
+        player->GetSession()->SendPacket(&data);
+        player->m_AC_timer = 5 *IN_MILISECONDS;
     }
     else
     {
