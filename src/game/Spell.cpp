@@ -3175,7 +3175,7 @@ void Spell::SendSpellStart()
     data << uint8(m_cast_count);                            // pending spell cast?
     data << uint16(castFlags);                              // cast flags
     data << uint32(m_timer);                                // delay?
-    data << m_targets;
+    data << uint32(m_casttime);
 
     if (castFlags & CAST_FLAG_AMMO)                         // projectile info
         WriteAmmoToPacket(&data);
