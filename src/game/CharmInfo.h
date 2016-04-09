@@ -125,8 +125,6 @@ struct HELLGROUND_IMPORT_EXPORT CharmInfo
         void HandleFollowCommand();
         void HandleAttackCommand(uint64 targetGUID);
         void HandleSpellActCommand(uint64 targetGUID, uint32 spellId);
-        bool IsNeedReturn() { return NeedReturn; };
-        void SetNeedReturn(bool arg) { NeedReturn = arg; };
 
     private:
         Unit* m_unit;
@@ -140,7 +138,6 @@ struct HELLGROUND_IMPORT_EXPORT CharmInfo
 
         //for restoration after charmed
         ReactStates     m_oldReactState;
-        bool NeedReturn;
 
         CooldownMgr m_CooldownMgr;
 };

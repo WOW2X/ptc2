@@ -74,7 +74,6 @@ class PetAI : public CreatureAI
         std::vector<TargetSpellPair> m_targetSpellStore;
 
         Unit* m_owner;              // pointer updated every UpdateAI call
-        bool ShadowfiendInitialized;
 };
 
 class ImpAI : public PetAI

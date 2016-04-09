@@ -90,8 +90,6 @@ CharmInfo::CharmInfo(Unit* unit)
         m_charmspells[i].active = ACT_DISABLED;
     }
 
-    SetNeedReturn(false);
-
     if (m_unit->GetTypeId() == TYPEID_UNIT)
     {
         m_oldReactState = ((Creature*)m_unit)->GetReactState();
@@ -103,7 +101,6 @@ CharmInfo::~CharmInfo()
 {
     if (m_unit->GetTypeId() == TYPEID_UNIT)
     {
-        SetNeedReturn(false); 
         ((Creature*)m_unit)->SetReactState(m_oldReactState);
     }
 }
@@ -349,11 +346,6 @@ void CharmInfo::HandleFollowCommand()
 {
     if (m_unit->GetMotionMaster()->GetCurrentMovementGeneratorType() == FOLLOW_MOTION_TYPE)
         return;
-
-    if(m_unit->GetTypeId() == TYPEID_UNIT)
-    {
-        SetNeedReturn(true);
-    }
 
     SetCommandState(COMMAND_FOLLOW);
 
