@@ -344,4 +344,27 @@ INSERT INTO `creature` (`guid`, `id`, `map`, `spawnMask`, `modelid`, `equipment_
 (NULL, 90001, 1, 1, 0, 0, -2902.57, -267.318, 53.2704, 1.65125, 300, 0, 0, 1337, 1337, 0, 0);
 
 
+INSERT INTO `npc_vendor` (`entry`, `item`, `maxcount`, `incrtime`, `ExtendedCost`) VALUES ('90001', '16320', '0', '0', '0'), ('90001', '16325', '0', '0', '0'), ('90001', '16331', '0', '0', '0'), ('90001', '16330', '0', '0', '0'), ('90001', '16350', '0', '0', '0'), ('90001', '16356', '0', '0', '0'), ('90001', '16362', '0', '0', '0'), ('90001', '16366', '0', '0', '0'), ('90001', '16374', '0', '0', '0'), ('90001', '16378', '0', '0', '0'), ('90001', '16379', '0', '0', '0'), ('90001', '16380', '0', '0', '0'), ('90001', '16383', '0', '0', '0'), ('90001', '16387', '0', '0', '0'), ('90001', '16389', '0', '0', '0'), ('90001', '16390', '0', '0', '0'), ('90001', '23745', '0', '0', '0'), ('90001', '28072', '0', '0', '0'), ('90001', '23711', '0', '0', '0'), ('90001', '25900', '0', '0', '0'), ('90001', '25469', '0', '0', '0');
 
+-- Instant 60 Feature - Grimoires cost = 1
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 16320;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 16325;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 16331;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 16330;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 16350;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 16356;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 16362;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 16366;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 16374;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 16378;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 16379;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 16380;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 16383;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 16387;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 16389;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 16390;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 23745;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 28072;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 23711;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 25900;
+UPDATE `item_template` SET `BuyPrice` = '0', `SellPrice` = '0' WHERE `item_template`.`entry` = 25469;

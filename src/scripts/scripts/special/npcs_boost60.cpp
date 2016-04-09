@@ -203,7 +203,8 @@ const int HunterSpells[] =
     19885,    // Spell ID: 19885 (T. Hidden)
     19883,    // Spell ID: 19883 (T. Humanoids)
     19884,    // Spell ID: 19884 (T. Undeads)
-    14268     // Spell ID: 14268 (Wing Clip, R3)
+    14268,    // Spell ID: 14268 (Wing Clip, R3)
+    14927     // Spell ID: 14927 (Growl, R7)
 };
 
 const int RogueSpells[] =
@@ -568,6 +569,7 @@ bool GossipHello_npc_journey_headmaster(Player *player, Creature *creature)
 #define GOSSIP_BOOST60_MENU_1      "Train me!"
 #define GOSSIP_BOOST60_MENU_2_A    "Take me to Nethergrade Keep!"
 #define GOSSIP_BOOST60_MENU_2_H    "Take me to Stonard!"
+#define GOSSIP_SHOW_GRIMORIES      "Purchase grimoires."
 
 struct npc_journey_quartermasterAI : public ScriptedAI
 {
@@ -608,6 +610,9 @@ bool GossipHello_npc_journey_quartermaster(Player *player, Creature *creature)
                 player->ADD_GOSSIP_ITEM(0, GOSSIP_BOOST60_MENU_2_A, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
             else
                 player->ADD_GOSSIP_ITEM(0, GOSSIP_BOOST60_MENU_2_H, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
+
+            if (player->getClass() == CLASS_WARLOCK)
+                player->ADD_GOSSIP_ITEM(0, GOSSIP_SHOW_GRIMORIES, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
 
             player->SEND_GOSSIP_MENU(creature->GetNpcTextId(), creature->GetGUID());
         } 
@@ -665,7 +670,7 @@ bool GossipSelect_npc_journey_quartermaster(Player *player, Creature *creature, 
                 case CLASS_HUNTER: // Hunter
                 {
                     // Learn spells
-                    for (int i = 0 ; i < 65; i++)
+                    for (int i = 0 ; i < 66; i++)
                     {
                         if (!player->HasSpell(HunterSpells[i]))
                             player->learnSpell(HunterSpells[i]);
@@ -789,6 +794,12 @@ bool GossipSelect_npc_journey_quartermaster(Player *player, Creature *creature, 
         {
              player->CLOSE_GOSSIP_MENU();
              player->TeleportTo(0, -10438.488281, -3280.45008, 20.178223, 1.736098);
+        }
+        break;
+			// Warlock books
+        case GOSSIP_ACTION_INFO_DEF + 4:
+        {
+            player->SEND_VENDORLIST( creature->GetGUID() );
         }
         break;
 	}
