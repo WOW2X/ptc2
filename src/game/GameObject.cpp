@@ -673,7 +673,7 @@ bool GameObject::LoadFromDB(uint32 guid, Map *map)
         if (data->spawntimesecs >= 0)
         {
             m_spawnedByDefault = true;
-            m_respawnDelayTime = data->spawntimesecs;
+            m_respawnDelayTime = map->IsDungeon() ? data->spawntimesecs * sWorld.getConfig(RATE_CREATURE_AND_GAMEOBJECT_RESPAWN) : data->spawntimesecs;
             m_respawnTime = sObjectMgr.GetGORespawnTime(m_DBTableGuid, map->GetInstanceId());
 
             // ready to respawn

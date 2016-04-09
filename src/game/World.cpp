@@ -716,6 +716,7 @@ void World::LoadConfigSettings(bool reload)
     // Creature settings
     loadConfig(RATE_CREATURE_AGGRO, "Rate.Creature.Aggro", 1.0f);
     loadConfig(RATE_CREATURE_GUARD_AGGRO, "Rate.Creature.Guard.Aggro", 1.5f);
+    loadConfig(RATE_CREATURE_AND_GAMEOBJECT_RESPAWN, "Rate.CreatureAndGameObject.Respawn", 1.0f);
     loadConfig(RATE_CORPSE_DECAY_LOOTED, "Rate.Corpse.Decay.Looted",0.5f);
     loadConfig(RATE_CREATURE_NORMAL_DAMAGE, "Rate.Creature.Normal.Damage", 1.0f);
     loadConfig(RATE_CREATURE_ELITE_ELITE_DAMAGE, "Rate.Creature.Elite.Elite.Damage", 1.0f);

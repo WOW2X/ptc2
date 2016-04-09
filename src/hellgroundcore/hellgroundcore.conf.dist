@@ -1369,6 +1369,12 @@ Death.Bones.BattlegroundOrArena = 1
 #        Default: 1.5 - 150%
 #                 0   - off (0%)
 #
+#    Rate.CreatureAndGameObject.Respawn
+#        Controls how much increase or decrease the creature and gameobject respawn time (no affect dungeons map and no bosses)
+#                 0.5  - 50  % of Normal Time
+#                 1.5  - 150 % of Normal Time
+#        Default: 1.0  - Normal Time
+#
 #    Rate.Corpse.Decay.Looted
 #         Controls how long the creature corpse stays after it had been looted, as a multiplier of its Corpse.Decay.* config.
 #         Default: 0.5
@@ -1466,6 +1472,7 @@ Death.Bones.BattlegroundOrArena = 1
 
 Rate.Creature.Aggro = 1
 Rate.Creature.Guard.Aggro = 1.5
+Rate.CreatureAndGameObject.Respawn = 1.0
 Rate.Corpse.Decay.Looted = 0.5
 Rate.Creature.Normal.Damage = 1
 Rate.Creature.Elite.Elite.Damage = 1

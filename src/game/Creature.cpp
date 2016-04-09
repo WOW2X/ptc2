@@ -1565,7 +1565,7 @@ bool Creature::LoadFromDB(uint32 guid, Map *map)
 
     m_respawnradius = data->spawndist;
 
-    m_respawnDelay = data->spawntimesecs;
+    m_respawnDelay = (isWorldBoss() || map->IsDungeon()) ? data->spawntimesecs * sWorld.getConfig(RATE_CREATURE_AND_GAMEOBJECT_RESPAWN) : data->spawntimesecs;
     m_isDeadByDefault = data->is_dead;
     m_deathState = m_isDeadByDefault ? DEAD : ALIVE;
 
