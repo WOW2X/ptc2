@@ -45,6 +45,7 @@
 #include "SharedDefines.h"
 #include "Tools.h"
 #include "LootMgr.h"
+#include "MoveMap.h"
 #include "VMapFactory.h"
 #include "BattleGround.h"
 #include "Util.h"
@@ -273,7 +274,7 @@ void SpellCastTargets::write (ByteBuffer& data) const
 
 Spell::Spell(Unit* Caster, SpellEntry const *info, bool triggered, uint64 originalCasterGUID, Spell** triggeringContainer, bool skipCheck)
 : m_spellInfo(info), m_spellValue(new SpellValue(info))
-, m_caster(Caster), _path(PathFinder(m_caster))
+, m_caster(Caster)
 {
     m_spellState = SPELL_STATE_NULL;
     m_skipCheck = skipCheck;
@@ -347,6 +348,7 @@ Spell::Spell(Unit* Caster, SpellEntry const *info, bool triggered, uint64 origin
     focusObject = NULL;
     m_cast_count = 0;
     m_triggeredByAuraSpell  = NULL;
+    m_pathFinder = NULL; // pussywizard
 
     //Auto Shot & Shoot
     if (GetSpellEntry()->AttributesEx2 & SPELL_ATTR_EX2_AUTOREPEAT_FLAG && !triggered)
@@ -376,6 +378,7 @@ Spell::~Spell()
 {
     m_destroyed = true;
     delete m_spellValue;
+    delete m_pathFinder; // pussywizard
 }
 
 void Spell::FillTargetMap()
@@ -4238,30 +4241,40 @@ SpellCastResult Spell::CheckCast(bool strict)
                     return SPELL_FAILED_ROOTED;
 
                 if (m_caster->GetTypeId() == TYPEID_PLAYER)
-                {
-                    if (BattleGround const *bg = m_caster->ToPlayer()->GetBattleGround())
-                    {
-                        if (bg->GetStatus() != STATUS_IN_PROGRESS)
-                            return SPELL_FAILED_TRY_AGAIN;
-                    }
-                }
+                    if (Unit* target = m_targets.getUnitTarget())
+                        if (!target->isAlive())
+                            return SPELL_FAILED_BAD_TARGETS;
 
-                if (Unit* target = m_targets.getUnitTarget())
+                if (m_caster->GetTerrain()->IsPathFindingEnabled())
                 {
-                    if (!target->isAlive())
+                    Unit* target = m_targets.getUnitTarget();
+                    if (!target)
                         return SPELL_FAILED_BAD_TARGETS;
 
-                    Position dest;
-                    target->GetPosition(dest);
+                    Position pos;
+                    target->GetPosition(pos);
 
                     float angle = m_caster->GetAngle(target) - m_caster->GetOrientation() - M_PI;
-                    m_caster->GetValidPointInAngle(dest, 2.0f, angle, false);
-                    _path.setPathLengthLimit(SpellMgr::GetSpellMaxRange(GetSpellEntry()) * 1.5f);
-                    bool result = _path.calculate(dest.x, dest.y, dest.z);
+                    m_caster->GetValidPointInAngle(pos, 2.0f, angle, false);
 
-                    if (_path.getPathType() & PATHFIND_SHORT)
-                        return SPELL_FAILED_OUT_OF_RANGE;
-                    else if (!result)
+                    float maxdist = MELEE_RANGE + m_caster->GetMeleeReach() + target->GetMeleeReach();
+
+                    if (target->GetExactDistSq(pos.x, pos.y, pos.z) > maxdist * maxdist)
+                        return SPELL_FAILED_NOPATH;
+
+                    if (m_caster->GetMapId() == 572) // pussywizard: 572 Ruins of Lordaeron
+                    {
+                        if (pos.x < 1275.0f || m_caster->GetPositionX() < 1275.0f) // special case (acid)
+                            break; // can't force path because the way is around and the path is too long
+                    }
+
+                    if (m_caster->GetTypeId() == TYPEID_PLAYER && m_caster->ToPlayer()->GetTransport())
+                        break;
+
+                    m_pathFinder = new PathFinder(m_caster);
+                    m_pathFinder->calculate(pos.x, pos.y, pos.z + 0.15f, false);
+                    G3D::Vector3 endPos = m_pathFinder->getEndPosition(); // also check distance between target and the point calculated by mmaps
+                    if (m_pathFinder->getPathType() & PATHFIND_NOPATH || target->GetExactDistSq(endPos.x, endPos.y, endPos.z) > maxdist*maxdist || m_pathFinder->getPathLength() > 45.0f)
                         return SPELL_FAILED_NOPATH;
                 }
                 break;

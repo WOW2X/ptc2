@@ -329,10 +329,8 @@ struct boss_attumenAI : public ScriptedAI
             if (ChargeTimer < diff)
             {
                 if (Unit * target = SelectUnit(SELECT_TARGET_RANDOM, 0, 100.0f, true, 0, 5.0f))
-                {
                     AddSpellToCast(target, SPELL_BERSERKER_CHARGE);
-                    m_creature->GetMotionMaster()->MoveCharge(target->GetPositionX(), target->GetPositionY(), target->GetPositionZ());
-                }
+
                 ChargeTimer = 20000;
             }
             else

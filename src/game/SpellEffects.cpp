@@ -7339,21 +7339,26 @@ void Spell::EffectCharge(uint32 /*i*/)
     if (!target)
         return;
 
-
     if (m_caster->GetTypeId() == TYPEID_PLAYER)
         ((Player *)m_caster)->m_AC_timer = 3000;
 
-    if (_path.getPathType() & PATHFIND_NOPATH)
+    if (m_pathFinder)
     {
-        Position dest;
-        target->GetPosition(dest);
-
-        float angle = m_caster->GetAngle(target) - m_caster->GetOrientation() - M_PI;
-        m_caster->GetValidPointInAngle(dest, 2.0f, angle, false);
-        m_caster->GetMotionMaster()->MoveCharge(dest.x, dest.y, dest.z);
+        m_caster->GetMotionMaster()->MoveCharge(m_pathFinder->getEndPosition().x, m_pathFinder->getEndPosition().y, m_pathFinder->getEndPosition().z, 42.0f, EVENT_CHARGE, &m_pathFinder->getPath());
     }
     else
-        m_caster->GetMotionMaster()->MoveCharge(_path);
+    {
+        Position pos;
+        target->GetPosition(pos);
+
+        // assume that target is not in water - else should be always in los
+        if (!m_caster->IsWithinLOS(pos.x, pos.y, pos.z))
+        {
+            float angle = m_caster->GetAngle(target) - m_caster->GetOrientation() - M_PI;
+            m_caster->GetValidPointInAngle(pos, 2.0f, angle, false);
+        }
+        m_caster->GetMotionMaster()->MoveCharge(pos.x, pos.y, pos.z + 0.5f);
+    }
 
     // not all charge effects used in negative spells
     if (!SpellMgr::IsPositiveSpell(GetSpellEntry()->Id) && m_caster->GetTypeId() == TYPEID_PLAYER)
@@ -7366,27 +7371,18 @@ void Spell::EffectCharge2(uint32 /*i*/)
     if (!target && !(m_targets.m_targetMask & TARGET_FLAG_DEST_LOCATION))
         return;
 
-    if (_path.getPathType() & PATHFIND_NOPATH)
+    if (m_targets.HasDst())
     {
-        Position dest;
-        if (m_targets.m_targetMask & TARGET_FLAG_DEST_LOCATION)
-        {
-            dest.x = m_targets.m_destX;
-            dest.y = m_targets.m_destY;
-            dest.z = m_targets.m_destZ;
-        }
-        else
-        {
-            target->GetPosition(dest);
+        Position pos;
+        target->GetPosition(pos);
 
+        if (!m_caster->IsWithinLOS(m_targets.m_destX, m_targets.m_destY, m_targets.m_destZ))
+        {
             float angle = m_caster->GetAngle(target) - m_caster->GetOrientation() - M_PI;
-            m_caster->GetValidPointInAngle(dest, 2.0f, angle, false);
+            m_caster->GetValidPointInAngle(pos, 2.0f, angle, false);
         }
-
-        m_caster->GetMotionMaster()->MoveCharge(dest.x, dest.y, dest.z);
+        m_caster->GetMotionMaster()->MoveCharge(pos.x, pos.y, pos.z);
     }
-    else
-        m_caster->GetMotionMaster()->MoveCharge(_path);
 
     // not all charge effects used in negative spells
     if (!SpellMgr::IsPositiveSpell(GetSpellEntry()->Id))

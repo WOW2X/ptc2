@@ -276,27 +276,30 @@ void MotionMaster::MoveFall()
     if (fabs(m_owner->GetPositionZ() - tz) < 0.1f)
         return;
 
+    Mutate(new EffectMovementGenerator(0), UNIT_ACTION_EFFECT); // Xpearlis: 1st mutate then movement launch!
+
     Movement::MoveSplineInit init(*m_owner);
     init.MoveTo(m_owner->GetPositionX(),m_owner->GetPositionY(),tz);
     init.SetFall();
     init.Launch();
-    Mutate(new EffectMovementGenerator(0), UNIT_ACTION_EFFECT);
 }
 
 void MotionMaster::MoveCharge(float x, float y, float z, float speed /*= SPEED_CHARGE*/, uint32 id /*= EVENT_CHARGE*/, bool generatePath /*= false*/)
 {
+    Mutate(new EffectMovementGenerator(id), UNIT_ACTION_EFFECT); // Xpearlis: 1st mutate then movement launch!
+
     Movement::MoveSplineInit init(*m_owner);
-    init.MoveTo(x,y,z);
+    generatePath ? init.MoveTo(x, y, z, true) : init.MoveTo(x, y, z);
     init.SetVelocity(speed);
     init.Launch();
-    Mutate(new EffectMovementGenerator(id), UNIT_ACTION_EFFECT);
 }
 
 void MotionMaster::MoveCharge(PathFinder path, float speed /*= SPEED_CHARGE*/, uint32 id /*= EVENT_CHARGE*/)
 {
+    Mutate(new EffectMovementGenerator(id), UNIT_ACTION_EFFECT); // Xpearlis: 1st mutate then movement launch!
+
     Movement::MoveSplineInit init(*m_owner);
     init.MovebyPath(path.getPath());
     init.SetVelocity(speed);
     init.Launch();
-    Mutate(new EffectMovementGenerator(id), UNIT_ACTION_EFFECT);
 }

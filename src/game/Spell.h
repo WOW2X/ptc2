@@ -432,6 +432,8 @@ class Spell
         uint8 m_cast_count;
         SpellCastTargets m_targets;
 
+        PathFinder* m_pathFinder; // pussywizard: for precomputing path for charge
+
         int32 GetCastTime() const { return m_casttime; }
         bool IsAutoRepeat() const { return m_autoRepeat; }
         void SetAutoRepeat(bool rep) { m_autoRepeat = rep; }
@@ -647,8 +649,6 @@ class Spell
         SpellEntry const* m_spellInfo;
 
         bool m_skipCheck;
-
-        PathFinder _path;
 };
 
 namespace Hellground
