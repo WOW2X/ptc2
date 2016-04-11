@@ -1831,6 +1831,16 @@ bool Player::TeleportTo(uint32 mapid, float x, float y, float z, float orientati
             }
         }
 
+        //DKO 2016-04-10
+        if ((options & TELE_TO_RELOCATE_PET))
+        {
+            // relocate pet
+            if (pet)
+            {
+                pet->NearTeleportTo(GetPositionX(), GetPositionY(), GetPositionZ(), GetOrientation());
+            }
+        }
+
         // near teleport, triggering send MSG_MOVE_TELEPORT_ACK from client at landing
         if (!GetSession()->PlayerLogout())
         {

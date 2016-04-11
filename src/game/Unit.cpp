@@ -12331,7 +12331,7 @@ void Unit::NearTeleportTo(float x, float y, float z, float orientation, bool cas
     DisableSpline();
 
     if (Player *pThis = ToPlayer())
-        pThis->TeleportTo(GetMapId(), x, y, z, orientation, TELE_TO_NOT_LEAVE_TRANSPORT | TELE_TO_NOT_LEAVE_COMBAT | TELE_TO_NOT_UNSUMMON_PET | (casting ? TELE_TO_SPELL : 0));
+        pThis->TeleportTo(GetMapId(), x, y, z, orientation, TELE_TO_NOT_LEAVE_TRANSPORT | TELE_TO_NOT_LEAVE_COMBAT | TELE_TO_NOT_UNSUMMON_PET | TELE_TO_RELOCATE_PET | (casting ? TELE_TO_SPELL : 0));
     else
     {
         Relocate(x, y, z);
