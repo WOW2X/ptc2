@@ -110,6 +110,9 @@ void npc_escortAI::MoveInLineOfSight(Unit* pWho)
 {
     if (!me->hasUnitState(UNIT_STAT_STUNNED) && pWho->isTargetableForAttack() && pWho->isInAccessiblePlacefor(me))
     {
+        if (!HasEscortState(STATE_ESCORT_ESCORTING)) // Xpearlis: No escort state, so ignore enemy 
+            return;
+
         if (HasEscortState(STATE_ESCORT_ESCORTING) && AssistPlayerInCombat(pWho))
             return;
 
