@@ -127,3 +127,29 @@ void CreatureAI::EnterEvadeMode()
 
     me->SetLastDamagedTime(0);
 }
+
+void CreatureAI::SetCombatMovement(bool enable)
+{
+    if (CombatMovementEnabled == enable)
+        return;
+
+    CombatMovementEnabled = enable;
+
+    if (enable && me->getVictim())
+    {
+        if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == IDLE_MOTION_TYPE || ASSISTANCE_MOTION_TYPE)
+        {
+            me->GetMotionMaster()->MoveChase(me->getVictim());
+            me->CastStop();
+        }
+    }
+    else if (!enable && me->getVictim())
+    {
+        me->GetMotionMaster()->MovementExpired();
+        me->GetMotionMaster()->Clear(true);
+        me->StopMoving();
+        me->GetMotionMaster()->MoveIdle();
+    }
+    else
+        me->GetMotionMaster()->Initialize();
+}

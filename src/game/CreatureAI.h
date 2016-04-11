@@ -85,7 +85,15 @@ class HELLGROUND_IMPORT_EXPORT CreatureAI : public UnitAI
         Creature *DoSummonFlyer(uint32 uiEntry, WorldObject *obj, float fZ, float fRadius = 5.0f, uint32 uiDespawntime = 30000, TemporarySummonType uiType = TEMPSUMMON_CORPSE_TIMED_DESPAWN);
 
     public:
-        explicit CreatureAI(Creature *c) : UnitAI((Unit*)c), me(c), m_creature(c), m_MoveInLineOfSight_locked(false) {}
+        explicit CreatureAI(Creature *c) :
+            UnitAI((Unit*)c),
+            me(c),
+            m_creature(c),
+            m_MoveInLineOfSight_locked(false),
+            CombatMovementEnabled(true),
+            AttackDistance(0.0f),
+            AttackAngle(0.0f)
+        {}
 
         virtual std::string GetClassNameAI() { return "CreatureAI"; };
 
@@ -174,6 +182,10 @@ class HELLGROUND_IMPORT_EXPORT CreatureAI : public UnitAI
         // Called when victim entered water and creature can not enter water
         //virtual bool canReachByRangeAttack(Unit*) { return false; }
 
+        // Set combat movement (on/off)
+        void SetCombatMovement(bool enable);
+        bool IsCombatMovement() const { return CombatMovementEnabled; }
+
         ///== Fields =======================================
 
         // Pointer to controlled by AI creature
@@ -186,6 +198,12 @@ class HELLGROUND_IMPORT_EXPORT CreatureAI : public UnitAI
 
         virtual void PassengerBoarded(Unit *who, int8 seatId, bool apply) {}
         bool _EnterEvadeMode();
+
+        /// Combat movement currently enabled
+        bool CombatMovementEnabled;
+        /// How should an enemy be chased
+        float AttackDistance;
+        float AttackAngle;
 
     protected:
         virtual void MoveInLineOfSight(Unit *);
