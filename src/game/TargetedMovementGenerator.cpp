@@ -142,20 +142,24 @@ bool TargetedMovementGeneratorMedium<T,D>::Update(T &owner, const uint32 & time_
     {
         uint32 recheckTimer = sWorld.getConfig(CONFIG_TARGET_POS_RECHECK_TIMER);
         uint32 recalculateRange = sWorld.getConfig(CONFIG_TARGET_POS_RECALCULATION_RANGE);
+        G3D::Vector3 dest = owner.movespline->FinalDestination();
+        float allowed_dist = _offset + owner.GetObjectBoundingRadius() + recalculateRange;
+        bool targetMoved = !_target->IsWithinDist3d(dest.x, dest.y, dest.z, allowed_dist);
 
          if (owner.GetObjectGuid().IsPet())
          {
+             if (!targetMoved)
+             {
+                 _recheckDistance.Reset(recheckTimer);
+                 return true;
+             }
+
              recheckTimer /= 2;
              recalculateRange /= 2;
          }
 
         _recheckDistance.Reset(recheckTimer);
-
-        float allowed_dist = _offset + owner.GetObjectBoundingRadius() + recalculateRange;
-
-        G3D::Vector3 dest = owner.movespline->FinalDestination();
         
-        bool targetMoved = !_target->IsWithinDist3d(dest.x, dest.y, dest.z, allowed_dist);
         if (owner.getVictimGUID() == _target->GetGUID())
         {
             Unit* victim = owner.getVictim();
