@@ -150,6 +150,10 @@ void WorldSession::SendTaxiMenu(Creature* unit)
 
 void WorldSession::SendDoFlight(uint16 mountDisplayId, uint32 path, uint32 pathNode)
 {
+    // Xpearlis: Don't allow to flight to Isle of Quel Danas
+    if (path == 781 || path == 807)
+        return;
+
     if (path < sTaxiPathNodesByPath.size())
         GetPlayer()->GetUnitStateMgr().PushAction(UNIT_ACTION_TAXI, GetPlayer()->GetUnitStateMgr().CreateStandartState(UNIT_ACTION_TAXI, mountDisplayId, path, pathNode));
     else

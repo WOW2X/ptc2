@@ -6593,6 +6593,13 @@ class LocalChannelUpdate : public WorldEvent
 
 void Player::UpdateZone(uint32 newZone)
 {
+    // Xpearlis: Don't allow to be on Isle of Quel Danas
+    if (newZone == 4080 && !isGameMaster())
+    {
+        TeleportToHomebind();
+        return;
+    }
+
     uint32 oldZoneId  = m_zoneUpdateId;
     m_zoneUpdateId    = newZone;
     m_zoneUpdateTimer = ZONE_UPDATE_INTERVAL;
