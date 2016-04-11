@@ -3557,6 +3557,9 @@ void SpellMgr::LoadSpellCustomAttr()
             case 126:   // Eye of Kilrogg not usable at raids to prevent abusing like SWP trash pull
                 spellInfo->AttributesEx6 |= SPELL_ATTR_EX6_NOT_IN_RAID_INSTANCE;
                 break;
+            case 1953: // Blink
+                spellInfo->DurationIndex = 328; // 250ms
+                break;
             default:
                 break;
         }
