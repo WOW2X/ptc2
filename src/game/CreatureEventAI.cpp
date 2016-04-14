@@ -520,7 +520,7 @@ void CreatureEventAI::ProcessAction(CreatureEventAI_Action const& action, uint32
                     break;
                 }
                 case SPELL_CAST_OK:
-                    me->IsWithinMeleeRange(target) ? SetCombatMovement(false) : SetCombatMovement(true);
+                    //me->IsWithinMeleeRange(target) ? SetCombatMovement(false) : SetCombatMovement(true);
                 default:
                     break;
             }
@@ -565,7 +565,7 @@ void CreatureEventAI::ProcessAction(CreatureEventAI_Action const& action, uint32
                     break;
                 }
                 case SPELL_CAST_OK:
-                    me->IsWithinMeleeRange(target) ? SetCombatMovement(false) : SetCombatMovement(true);
+                    //me->IsWithinMeleeRange(target) ? SetCombatMovement(false) : SetCombatMovement(true);
                 default:
                     break;
             }
