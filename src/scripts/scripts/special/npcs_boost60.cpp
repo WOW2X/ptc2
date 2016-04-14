@@ -219,7 +219,6 @@ const int RogueSpells[] =
     264,      // Spell ID: 264 (bows)
     5011,     // Spell ID: 5011 (xbow)
     266,      // Spell ID: 266 (guns)
-    2842,     // Spell ID: 2842 (Poison Making)
     674,      // Spell ID: 674 (Dual Wield)
     1804,     // Spell ID: 1804 (Pick Lock)
     3127,     // Spell ID: 1804 (Parry)
@@ -686,7 +685,7 @@ bool GossipSelect_npc_journey_quartermaster(Player *player, Creature *creature, 
                 case CLASS_ROGUE: // Rogue
                 {
                     // Learn spells
-                    for (int i = 0 ; i < 43; i++)
+                    for (int i = 0 ; i < 42; i++)
                     {
                         if (!player->HasSpell(RogueSpells[i]))
                             player->learnSpell(RogueSpells[i]);
