@@ -1204,10 +1204,6 @@ void Player::Update(uint32 update_diff, uint32 p_time)
         if (LoginTimer <= p_time)
         {
             SetRooted(false);
-
-            if (!sMapMgr.CanPlayerEnter(GetMapId(), this))
-                TeleportToHomebind();
-
             LoginCheck = true;
         }
         else
