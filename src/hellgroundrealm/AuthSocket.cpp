@@ -418,7 +418,7 @@ bool AuthSocket::_HandleLogonChallenge()
     // No SQL injection possible (paste the IP address as passed by the socket)
     AccountsDatabase.Execute("DELETE FROM ip_banned WHERE unbandate<=UNIX_TIMESTAMP() AND unbandate<>bandate");
     AccountsDatabase.escape_string(address);
-    QueryResultAutoPtr result = AccountsDatabase.PQuery("SELECT * FROM ip_banned WHERE ip = '%s'", address.c_str());
+    /*QueryResultAutoPtr result = AccountsDatabase.PQuery("SELECT * FROM ip_banned WHERE ip = '%s'", address.c_str());
 
     if (result) // ip banned
     {
@@ -428,10 +428,11 @@ bool AuthSocket::_HandleLogonChallenge()
         return true;
     }
 
+    */
     ///- Get the account details from the account table
     // No SQL injection (escaped user name)
 
-    result = AccountsDatabase.PQuery("SELECT pass_hash, account.account_id, account_state_id, token_key, last_ip, permission_mask, email "
+    QueryResultAutoPtr result = AccountsDatabase.PQuery("SELECT pass_hash, account.account_id, account_state_id, token_key, last_ip, permission_mask, email "
                                      "FROM account JOIN account_permissions ON account.account_id = account_permissions.account_id "
                                      "WHERE username = '%s'", _safelogin.c_str());
 
