@@ -29,6 +29,7 @@
 #include "AuthCodes.h"
 #include "TOTP.h"
 #include "PatchHandler.h"
+#include <ace/INET_Addr.h>
 
 #include <openssl/md5.h>
 //#include "Util.h" -- for commented utf8ToUpperOnlyLatin
@@ -210,11 +211,26 @@ void AuthSocket::OnAccept()
 /// Read the packet from the client
 void AuthSocket::OnRead()
 {
+    #define MAX_AUTH_LOGON_CHALLENGES_IN_A_ROW 3
+    uint32 challengesInARow = 0;
     uint8 _cmd;
     while (1)
     {
         if(!recv_soft((char *)&_cmd, 1))
             return;
+
+        if(_cmd == CMD_AUTH_LOGON_CHALLENGE)
+        {
+            ++challengesInARow;
+            if(challengesInARow == MAX_AUTH_LOGON_CHALLENGES_IN_A_ROW)
+            {
+                ACE_INET_Addr addr;
+                peer().get_remote_addr(addr);
+                sLog.outString("Got %u AUTH_LOGON_CHALLENGE in a row from '%s', possible ongoing DoS", challengesInARow, addr.get_host_addr());
+                close_connection();
+                return;
+            }
+        }
 
         size_t i;
 
