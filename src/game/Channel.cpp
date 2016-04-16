@@ -120,8 +120,8 @@ void Channel::Join(uint64 p, const char *pass)
 
     if (m_announce && (!plr || !plr->GetSession()->HasPermissions(PERM_GMT) || !sWorld.getConfig(CONFIG_SILENTLY_GM_JOIN_TO_CHANNEL)))
     {
-        MakeJoined(&data, p);
-        SendToAll(&data);
+        //MakeJoined(&data, p);
+        //SendToAll(&data);
     }
 
     data.clear();
@@ -174,9 +174,9 @@ void Channel::Leave(uint64 p, bool send)
         players.erase(p);
         if (m_announce && (!plr || !plr->GetSession()->HasPermissions(PERM_GMT) || !sWorld.getConfig(CONFIG_SILENTLY_GM_JOIN_TO_CHANNEL)))
         {
-            WorldPacket data;
-            MakeLeft(&data, p);
-            SendToAll(&data);
+            //WorldPacket data;
+            //MakeLeft(&data, p);
+            //SendToAll(&data);
         }
 
         LeaveNotify(p);
@@ -304,11 +304,11 @@ void Channel::Password(uint64 p, const char *pass)
     }
     else
     {
-        m_password = pass;
+        //m_password = pass;
 
-        WorldPacket data;
-        MakePasswordChanged(&data, p);
-        SendToAll(&data);
+        //WorldPacket data;
+        //MakePasswordChanged(&data, p);
+        //SendToAll(&data);
     }
 }
 
@@ -691,14 +691,14 @@ void Channel::SetOwner(uint64 guid, bool exclaim)
         uint8 oldFlag = GetPlayerFlags(m_ownerGUID);
         players[m_ownerGUID].SetOwner(true);
 
-        WorldPacket data;
-        MakeModeChange(&data, m_ownerGUID, oldFlag);
-        SendToAll(&data);
+        //WorldPacket data;
+        //MakeModeChange(&data, m_ownerGUID, oldFlag);
+        //SendToAll(&data);
 
         if (exclaim)
         {
-            MakeOwnerChanged(&data, m_ownerGUID);
-            SendToAll(&data);
+            //MakeOwnerChanged(&data, m_ownerGUID);
+            //SendToAll(&data);
         }
     }
 }
