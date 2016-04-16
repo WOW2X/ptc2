@@ -148,7 +148,7 @@ int Master::Run()
         return 1;
 
     // set server offline (not connectable)
-    AccountsDatabase.DirectPExecute("UPDATE realms SET flags = flags | %u WHERE realm_id = '%u'", REALM_FLAG_OFFLINE, REALM_FLAG_INVALID, realmID);
+    AccountsDatabase.DirectPExecute("UPDATE realms SET flags = 4 WHERE realm_id = '%u'", REALM_FLAG_OFFLINE, REALM_FLAG_INVALID, realmID);
     ///- Initialize the World
     sWorld.SetInitialWorldSettings();
 
@@ -279,7 +279,7 @@ int Master::Run()
     sWorldSocketMgr->Wait();
 
     ///- Set server offline in realms
-    AccountsDatabase.DirectPExecute("UPDATE realms SET flags = flags | %u WHERE realm_id = '%u'", REALM_FLAG_OFFLINE, realmID);
+    AccountsDatabase.DirectPExecute("UPDATE realms SET flags = 4 WHERE realm_id = '%u'", REALM_FLAG_OFFLINE, realmID);
 
     // when the main thread closes the singletons get unloaded
     // since worldrunnable uses them, it will crash if unloaded after master
