@@ -328,8 +328,11 @@ PatternList AuthSocket::pattern_banned = PatternList();
 bool AuthSocket::_HandleLogonChallenge()
 {
     DEBUG_LOG("Entering _HandleLogonChallenge");
-    if (recv_len() < sizeof(sAuthLogonChallenge_C))
+    if(recv_len() < sizeof(sAuthLogonChallenge_C))
+    {
+        printf("Attacker Ip");
         return false;
+    }
 
     ///- Read the first 4 bytes (header) to get the length of the remaining of the packet
     std::vector<uint8> buf;
@@ -418,7 +421,7 @@ bool AuthSocket::_HandleLogonChallenge()
     // No SQL injection possible (paste the IP address as passed by the socket)
     AccountsDatabase.Execute("DELETE FROM ip_banned WHERE unbandate<=UNIX_TIMESTAMP() AND unbandate<>bandate");
     AccountsDatabase.escape_string(address);
-    /*QueryResultAutoPtr result = AccountsDatabase.PQuery("SELECT * FROM ip_banned WHERE ip = '%s'", address.c_str());
+    QueryResultAutoPtr result = AccountsDatabase.PQuery("SELECT * FROM ip_banned WHERE ip = '%s'", address.c_str());
 
     if (result) // ip banned
     {
@@ -428,11 +431,10 @@ bool AuthSocket::_HandleLogonChallenge()
         return true;
     }
 
-    */
     ///- Get the account details from the account table
     // No SQL injection (escaped user name)
 
-    QueryResultAutoPtr result = AccountsDatabase.PQuery("SELECT pass_hash, account.account_id, account_state_id, token_key, last_ip, permission_mask, email "
+    result = AccountsDatabase.PQuery("SELECT pass_hash, account.account_id, account_state_id, token_key, last_ip, permission_mask, email "
                                      "FROM account JOIN account_permissions ON account.account_id = account_permissions.account_id "
                                      "WHERE username = '%s'", _safelogin.c_str());
 
