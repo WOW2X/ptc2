@@ -352,6 +352,8 @@ bool WorldSession::Update(uint32 diff, PacketFilter& updater)
     uint32 verbose = sWorld.getConfig(CONFIG_SESSION_UPDATE_VERBOSE_LOG);
     std::vector<VerboseLogInfo> packetOpcodeInfo;
 
+    uint32 processedPackets = 0;
+    
     if (updater.ProcessTimersUpdate())
     {
         if (!m_inQueue && !m_playerLoading && (!_player || !_player->IsInWorld()))
@@ -393,6 +395,14 @@ bool WorldSession::Update(uint32 diff, PacketFilter& updater)
             }
             else
                 ProcessPacket(packet);
+
+            #define MAX_PROCESSED_PACKETS_IN_SAME_WORLDSESSION_UPDATE 100
+            processedPackets++;
+            
+            //process only a max amout of packets in 1 Update() call.
+            //Any leftover will be processed in next update
+            if(processedPackets > MAX_PROCESSED_PACKETS_IN_SAME_WORLDSESSION_UPDATE)
+                break;
 
             delete packet;
         }
