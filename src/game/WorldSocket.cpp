@@ -983,10 +983,16 @@ int WorldSocket::HandlePing(WorldPacket& recvPacket)
         }
         else
         {
-            sLog.outLog(LOG_DEFAULT, "ERROR: WorldSocket::HandlePing: peer sent CMSG_PING, "
-                            "but is not authenticated or got recently kicked,"
-                            " address = %s",
-                            GetRemoteAddress().c_str());
+            ACE_INET_Addr addr;
+            peer().get_remote_addr(addr);
+
+            std::string current_ip = GetRemoteAddress().c_str();
+            AccountsDatabase.escape_string(current_ip);
+
+            sLog.outLog(LOG_DEFAULT, "ERROR: WorldSocket::HandlePing: peer sent CMSG_PING, but is not authenticated or got recently kicked, address = %s", GetRemoteAddress().c_str());
+
+            AccountsDatabase.PExecute("INSERT INTO ip_banned VALUES ('%s',UNIX_TIMESTAMP(),UNIX_TIMESTAMP()+'%u','Realm','DDOS: %u times. Ban for: %u seconds')", current_ip.c_str(), 15, 15);
+
              return -1;
         }
     }
