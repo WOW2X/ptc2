@@ -34,7 +34,7 @@
 
 #include "Database/DatabaseEnv.h"
 
-#define WORLD_SLEEP_CONST 50
+#define WORLD_SLEEP_CONST 10
 
 /// Heartbeat for the World
 void WorldRunnable::run()
@@ -65,6 +65,7 @@ void WorldRunnable::run()
         if (diff <= WORLD_SLEEP_CONST + prevSleepTime)
         {
             prevSleepTime = WORLD_SLEEP_CONST + prevSleepTime - diff;
+            sLog.outLog(LOG_DEFAULT, "ERROR: sleep = %u", prevSleepTime);
             ACE_Based::Thread::Sleep(prevSleepTime);
         }
         else
