@@ -226,7 +226,13 @@ void AuthSocket::OnRead()
             {
                 ACE_INET_Addr addr;
                 peer().get_remote_addr(addr);
-                sLog.outString("Got %u AUTH_LOGON_CHALLENGE in a row from '%s', possible ongoing DoS", challengesInARow, addr.get_host_addr());
+
+                std::string current_ip = addr.get_host_addr();
+                AccountsDatabase.escape_string(current_ip);
+                
+                AccountsDatabase.PExecute("INSERT INTO ip_banned VALUES ('%s',UNIX_TIMESTAMP(),UNIX_TIMESTAMP()+'%u','Realm','DDOS: %u times. Ban for: %u seconds')", current_ip.c_str(), 5, 5);
+
+                sLog.outString("Got %u AUTH_LOGON_CHALLENGE in a row from '%s', possible ongoing DoS", challengesInARow, current_ip.c_str());
                 close_connection();
                 return;
             }
