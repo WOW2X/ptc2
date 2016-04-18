@@ -743,6 +743,7 @@
     <ClInclude Include="..\..\src\game\WorldEventProcessor.h" />
     <ClInclude Include="..\..\src\game\WorldSession.h" />
     <ClInclude Include="..\..\src\game\WorldSocket.h" />
+    <ClInclude Include="..\..\src\game\WorldSocketAcceptor.h" />
     <ClInclude Include="..\..\src\game\WorldSocketMgr.h" />
     <ClInclude Include="..\..\src\game\Language.h" />
     <ClInclude Include="..\..\src\game\Tools.h" />

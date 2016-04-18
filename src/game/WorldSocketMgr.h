@@ -73,7 +73,7 @@ class WorldSocketMgr
         std::string m_addr;
         ACE_UINT16 m_port;
 
-        ACE_Event_Handler* m_Acceptor;
+        class WorldSocketAcceptor* m_Acceptor;
 };
 
 #define sWorldSocketMgr WorldSocketMgr::Instance()

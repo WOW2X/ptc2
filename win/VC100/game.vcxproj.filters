@@ -1160,5 +1160,8 @@
     <ClInclude Include="..\..\src\game\GuildMgr.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\game\WorldSocketAcceptor.h">
+      <Filter>Server</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
